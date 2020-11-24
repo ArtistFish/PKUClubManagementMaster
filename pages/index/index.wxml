@@ -1,13 +1,15 @@
 <!--index.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">背景颜色</view>
+</cu-custom>
 <view class="container">
   <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    <button open-type="getUserInfo" bindgetuserinfo="getUserInfo" bindtap="test"> 进入社团主页 </button>
+    <!-- <block wx:else> -->
+    <block>
+      <image bindtap="bindViewTap" src="../../images/3af4c9e677d4ef53a7c07904c472e2d.jpg" mode="aspectFill"></image>
+      <text class="userinfo-nickname">（图片与文字无关）</text>
     </block>
-  </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
   </view>
 </view>

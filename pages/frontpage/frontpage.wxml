@@ -1,0 +1,8 @@
+<!--pages/frontpage/frontpage.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">背景颜色</view>
+</cu-custom>
+<view class='padding flex flex-direction'>
+<button class='cu-btn bg-grey lg' role='button' aria-disabled='false' >加入社团</button>
+</view>

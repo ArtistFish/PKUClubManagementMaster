@@ -50,5 +50,11 @@ Page({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
+  },
+  test: function() {
+    wx.navigateTo({
+      url: '/pages/frontpage/frontpage',  
+      })
   }
 })
+
