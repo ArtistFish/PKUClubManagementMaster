@@ -12,7 +12,7 @@ class DataType(Enum):
 class DataManager:
     datatype: DataType
 
-    def __init__(selsf, datatype):
+    def __init__(self, datatype):
         self.datatype = datatype
 
     # 获取数据库表某一行的信息
