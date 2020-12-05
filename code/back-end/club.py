@@ -1,93 +1,74 @@
-import mysql.connector
+from flask import json
+from datamanager import *
+
 
 
 class Club():
-    def __init__():
-        pass
+    __slots__=('id','name','description','president_wxid','activity_list','member_list','manager_list')
 
+    def __init__(self,club_id=0,club_name='',club_description='',club_president_wxid=''):
+        self.id=club_id
+        self.name=club_name
+        self.description=club_description
+        self.president_wxid=club_president_wxid
+        self.activity_list=[]  #存储活动id
+        self.member_list=[]    #存储成员微信号
+        self.manager_list=[]   #存储管理者微信号
 
-    def createClub(club_id,club_name,club_description='',club_president_user_id=0):
-        conn = mysql.connector.connect(user='root', password='root', database='test_gp10')
-        cursor = conn.cursor()
+    def change_president(self,new_president_wxid):
+        self.president_wxid=new_president_user_id
 
+    def change_description(self,new_description):
+        self.description=new_description
 
-        try:
-            cursor.execute("insert into clubs (club_id,club_name,club_description,club_president_user_id) values (%d,'%s','%s',%d)"%(club_id,club_name,club_description,club_president_user_id))
-        except mysql.connector.errors.IntegrityError:  #Duplicate entry for key 'PRIMARY'
-            return 1
+    def change_name(self,new_name):
+        self.name=new_name
         
-        try:
-            cursor.execute("create table club_%d_activities (activity_id INT primary key)"%(club_id))
-        except mysql.connector.errors.ProgrammingError: #table already exist
-            pass
+    def add_manager(self,manager_wxid):
+        if not manager_wxid in self.manager_list:
+            self.manager_list.append(manager_wxid)
 
-        try:
-            cursor.execute("create table club_%d_members (member_user_id INT primary key)"%(club_id))
-        except mysql.connector.errors.ProgrammingError:
-            pass
+    def delete_manager(self, manager_wxid):
+        if manager_wxid in self.manager_list:
+            self.manager_list.remove(manager_wxid)
 
-        try:
-            cursor.execute("create table club_%d_managers (manager_user_id INT primary key)"%(club_id))
-        except mysql.connector.errors.ProgrammingError:
-            pass
+    def add_member(self,member_wxid):
+        if not member_wxid in self.member_list:
+            self.member_list.append(member_wxid)
 
-        cursor.close()
-        conn.commit()
-        conn.close()
-        return 0
+    def delete_member(self,member_wxid):
+        if member_wxid in self.member_list:
+            self.member_list.remove(member_wxid)
 
-    def updateClubInfo(new_id,new_name,new_prisident='',new_description='',new_ico='',new_picture=''):
-        pass
-       
+    def add_activity(self,activity_id):
+        if not activity_id in self.activity_list:
+            self.activity_list.append(activity_id)
 
-    def deleteClub(club_id):
-        conn = mysql.connector.connect(user='root', password='root', database='test_gp10')
-        cursor = conn.cursor()
-        try:
-            cursor.execute('delete from clubs where club_id=%d'%(club_id))
-        except mysql.connector.errors.ProgrammingError:
-            return 1
+    def delete_activity(self,activity_id):
+        if not activity_id in self.activity_list:
+            self.activity_list.append(activity_id)
 
-        try:
-            cursor.execute("delete table club_%d_activities"%(club_id))
-        except mysql.connector.errors.ProgrammingError: 
-            return 2
+    def Jsonfy(self):
+        activity_name_list=[]
+        member_name_list=[]
+        manager_name_list=[]
+        manager1=DataManager(DataType.activity)
+        manager2=DataManager(DataType.user)
+        for acti_id in self.activity_list:
+            acti=manager1.getInfo(acti_id)
+            activity_name_list.append(acti[0][1]) #表中每一项的第二个元素应该是name
+        for user_id in self.member_list:
+            user=manager2.getInfo(user_id)
+            member_name_list.append(user[0][1]) 
+        for user_id in self.manager_list:
+            user=manager2.getInfo(user_id)
+            manager_name_list.append(user[0][1]) 
 
-        try:
-            cursor.execute("delete table club_%d_members"%(club_id))
-        except mysql.connector.errors.ProgrammingError: 
-            return 3
-
-        try:
-            cursor.execute("delete table club_%d_managers"%(club_id))
-        except mysql.connector.errors.ProgrammingError: 
-            return 4
-
-
-        cursor.close()
-        conn.commit()
-        conn.close()
-        return 0
-
-
-
-    def getClubInfo(club_id): #return a list of tuples
-        conn = mysql.connector.connect(user='root', password='root', database='test_gp10')
-        cursor = conn.cursor()
-
-        try:
-            cursor.execute("select * from clubs where club_id=%d"%(club_id))
-        except mysql.connector.errors.ProgrammingError:       
-            pass
-
-        res = cursor.fetchall()
-        cursor.close()
-        conn.close()
-        return res
-
-
-
-    
+        res={'status':'200 OK','club_id':self.id,'club_name':self.name,'club_description':self.description,
+        'club_president_id':self.president_wxid,'club_members':member_name_list,'club_managers':manager_name_list,
+        'club_activities':activity_name_list}
+        return json.dumps(res)
+        
 
 
 
