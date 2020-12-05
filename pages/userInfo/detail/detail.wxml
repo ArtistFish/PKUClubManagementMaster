@@ -1,0 +1,27 @@
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">个人信息</view></cu-custom>
+<view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+   <view class="cu-item arrow">
+     <view class="content" bind:tap="editInfo" data-cur="姓名">
+      <text class="cuIcon-camerafill"></text>
+      <text> 姓名 </text>
+      </view>
+   </view>
+   <view class="cu-item arrow" bind:tap="editInfo" data-cur="学校">
+     <view class="content">
+      <text class="cuIcon-camerafill"></text>
+      <text> 学校 </text>
+      </view>
+   </view>
+   <view class="cu-item arrow" bind:tap="editInfo" data-cur="性别">
+     <view class="content">
+      <text class="cuIcon-camerafill"></text>
+      <text> 性别 </text>
+      </view>
+   </view>
+   <view class="cu-item arrow" bind:tap="editInfo" data-cur="年龄">
+     <view class="content">
+      <text class="cuIcon-camerafill"></text>
+      <text> 年龄 </text>
+      </view>
+   </view>
+ </view>

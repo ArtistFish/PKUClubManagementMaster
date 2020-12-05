@@ -1,0 +1,27 @@
+<!--pages/userInfo/clublist/clublist.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">我的社团</view></cu-custom>
+<scroll-view scroll-x class="bg-white nav">
+  <view class="flex text-center">
+    <view class="cu-item flex-sub {{tabCur=='join'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='join'>
+      我加入的 ({{infoList['join'].length}})
+    </view>
+    <view class="cu-item flex-sub {{tabCur=='setup'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='setup'>
+      我创建的 ({{infoList['setup'].length}})
+    </view>
+  </view>
+</scroll-view>
+<scroll-view scroll-y class="list bg-gray">
+  <view class="flex flex-direction justify-center align-center background-text">
+    <view wx:if="{{tabCur=='join' && infoList[tabCur].length ==0}}" class="flex flex-direction align-cneter">
+      <view class="text-gray">暂时没有加入的社团～</view>
+      <button class="cu-btn bg-yellow round margin-top-sm" bind:tap="tapBtnClub">去浏览</button>
+    </view>
+    <view wx:if="{{tabCur=='setup' && infoList[tabCur].length ==0}}" class="flex flex-direction align-cneter">
+      <view class="text-gray">暂时没有创建的社团～</view>
+    </view>
+  </view>
+</scroll-view>
+<view wx:if="{{tabCur=='setup'}}" class="foot bg-white flex justify-center">
+  <button class="cu-btn round line-orange lg bottom-btn">
+    <text class="cuIcon-upload"></text> 创建社团</button>
+</view>

@@ -1,0 +1,22 @@
+.list{
+  height: 84vh;
+  width: 100%;
+}
+.background-text{
+  height:50vh;
+  width:100%;
+}
+.foot {
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	z-index: 1024;
+	box-shadow: 0 -1rpx 6rpx rgba(0, 0, 0, 0.1);
+}
+.bottom-btn {
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+  margin-left: 30rpx;
+  margin-right: 30rpx;
+  width: 80%;
+}

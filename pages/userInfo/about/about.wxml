@@ -1,0 +1,13 @@
+<!--pages/userInfo/about/about.wxml-->
+<cu-custom bgColor="bg-gradual-green" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">关于</view></cu-custom>
+<view class='margin-xl bg-white padding-xl radius shadow-lg'>
+  <view class='text-center margin-bottom text-lg  text-grey'>关于我们</view>
+  <view class='text-content'>
+    <view>Hi！欢迎使用社团管理平台小程序！</view>
+    <view class='margin-top-sm'>我们是来自北京大学2020-2021秋季学期软件工程课程实践的第十小组～</view>
+    <view class='margin-top-sm'>我们小组一共有8人，其中叶其琛、张瑞峰、胡冉、牟星名负责前端开发，徐为伯、谢一平、白宇辉、姚一茗负责后端开发。</view>
+    <view class='margin-top-sm'>目前我们的项目已经在github开源，项目仓库地址为：</view>
+    <view class="margin-top-sm">ArtistFish/PKUClubManagementMaster.git</view>
+    <view class='margin-top-sm'>更多功能敬请期待！</view>
+  </view>
+</view>

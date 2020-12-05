@@ -1,0 +1,31 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">认证状态</view></cu-custom>
+<form>
+	<view class="cu-form-group margin-top">
+		<view class="title">真实姓名</view>
+		<text>{{authorization.name}}</text>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+    <view class="title">学号</view>
+    <view class="margin-left-sm"></view>
+		<text>{{authorization.ID}}</text>
+  </view>
+</form>
+<radio-group class="block margin-top">
+  <view class="cu-form-group">
+    <view class="title">性别</view>
+    <text>{{authorization.sex}}</text>
+  </view>
+</radio-group>
+<view class="cu-form-group margin-top">
+  <view class="title">所在学校</view>
+  <text>{{authorization.school}}</text>
+</view>
+<view class="cu-form-group margin-top">
+  <view class="title">所在院系</view>
+  <text>{{authorization.major}}</text>
+</view>
+<view class="flex justify-center margin-top">
+  <button class="cu-btn bg-red round lg shadow" bind:tap="changeAuthorization">修改认证信息</button>
+</view>

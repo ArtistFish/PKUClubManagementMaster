@@ -1,0 +1,66 @@
+<!--pages/userInfo/authorization/authorization.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">身份认证</view></cu-custom>
+<form>
+	<view class="cu-form-group margin-top">
+		<view class="title">真实姓名</view>
+		<input placeholder="例：张瑞峰" bindinput="editInput" data-cur="name"></input>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+    <view class="title">学号</view>
+    <view class="margin-left-sm"></view>
+		<input placeholder="例：1233345678" class="margin-left-lg" bindinput="editInput" data-cur="ID"></input>
+  </view>
+</form>
+<radio-group class="block margin-top">
+  <view class="cu-form-group">
+    <view class="title">性别</view>
+    <view>
+      <radio class="blue radio" bind:tap="tapRadio" data-cur="male"></radio>
+      <text>男</text>
+      <radio class="red margin-left-sm" bind:tap="tapRadio" data-cur="female"></radio>
+      <text>女</text>
+    </view>
+  </view>
+</radio-group>
+<view class="cu-form-group margin-top">
+  <view class="title">所在学校</view>
+  <picker bindchange="SchoolPickerChange" value="{{schoolIndex}}" range="{{schoolList}}">
+    <view class="picker">
+      {{schoolIndex?schoolList[schoolIndex]:'例：北京大学'}}
+    </view>
+  </picker>
+</view>
+<view class="cu-form-group margin-top">
+  <view class="title">所在院系</view>
+  <picker bindchange="MajorPickerChange" value="{{majorIndex}}" range="{{majorList}}">
+    <view class="picker">
+      {{majorIndex?majorList[majorIndex]:'例：信息科学技术学院'}}
+    </view>
+  </picker>
+</view>
+<view class="cu-bar bg-white margin-top">
+		<view class="action">
+			上传学生证/校园一卡通照片
+		</view>
+		<view class="action">
+			{{imgList.length}}/1
+		</view>
+</view>
+<view class="cu-form-group">
+  <view class="grid col-4 grid-square flex-sub">
+    <view class="bg-img" wx:for="{{imgList}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{imgList[index]}}">
+      <image src='{{imgList[index]}}' mode='aspectFill'></image>
+      <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+        <text class="cuIcon-close"></text>
+      </view>
+    </view>
+    <view class="solids" bindtap="ChooseImage" wx:if="{{imgList.length<1}}">
+      <text class="cuIcon-cameraadd"></text>
+    </view>
+  </view>
+</view>
+<view class="flex justify-center margin-top" bind:tap="tapCommit">
+  <button class="cu-btn bg-cyan round lg shadow">提交认证申请</button>
+</view>

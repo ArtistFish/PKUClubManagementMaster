@@ -1,0 +1,29 @@
+<!--pages/userInfo/feedback/feedback.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">意见反馈</view></cu-custom>
+<view class="cu-form-group margin-top">
+		<textarea maxlength="-1" disabled="{{modalName!=null}}" bindinput="textareaAInput" placeholder="请在此写下你想对开发者们说的话"></textarea>
+</view>
+<view class="cu-bar bg-white margin-top">
+		<view class="action">
+			请在此上传您遇到的问题截图
+		</view>
+		<view class="action">
+			{{imgList.length}}/4
+		</view>
+</view>
+<view class="cu-form-group">
+  <view class="grid col-4 grid-square flex-sub">
+    <view class="bg-img" wx:for="{{imgList}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{imgList[index]}}">
+      <image src='{{imgList[index]}}' mode='aspectFill'></image>
+      <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}">
+        <text class="cuIcon-close"></text>
+      </view>
+    </view>
+    <view class="solids" bindtap="ChooseImage" wx:if="{{imgList.length<4}}">
+      <text class="cuIcon-cameraadd"></text>
+    </view>
+  </view>
+</view>
+<view class="flex justify-center margin-top">
+  <button class="cu-btn bg-cyan round lg shadow">提交反馈</button>
+</view>
