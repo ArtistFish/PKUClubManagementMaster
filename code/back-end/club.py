@@ -1,8 +1,8 @@
 import mysql.connector
 
 
-class Club():
-    def __init__():
+class Club:
+    def __init__(self):
         pass
 
 
@@ -12,22 +12,22 @@ class Club():
 
 
         try:
-            cursor.execute("insert into clubs (club_id,club_name,club_description,club_president_user_id) values (%d,'%s','%s',%d)"%(club_id,club_name,club_description,club_president_user_id))
-        except mysql.connector.errors.IntegrityError:  #Duplicate entry for key 'PRIMARY'
-            return 1
-        
+            cursor.execute("insert into clubs (club_id,club_name,club_description,club_president_user_id) values( % d, '%s', '%s', % d)"%(club_id,club_name,club_description,club_president_user_id))
+        except mysql.connector.errors.IntegrityError:  # Duplicate entry for key 'PRIMARY'
+        return 1
+
         try:
-            cursor.execute("create table club_%d_activities (activity_id INT primary key)"%(club_id))
+            cursor.execute("create table club_%d_activities (activity_id INT primary key)" % club_id)
         except mysql.connector.errors.ProgrammingError: #table already exist
             pass
 
         try:
-            cursor.execute("create table club_%d_members (member_user_id INT primary key)"%(club_id))
+            cursor.execute("create table club_%d_members (member_user_id INT primary key)" % club_id)
         except mysql.connector.errors.ProgrammingError:
             pass
 
         try:
-            cursor.execute("create table club_%d_managers (manager_user_id INT primary key)"%(club_id))
+            cursor.execute("create table club_%d_managers (manager_user_id INT primary key)" % club_id)
         except mysql.connector.errors.ProgrammingError:
             pass
 
