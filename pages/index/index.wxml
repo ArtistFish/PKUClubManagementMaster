@@ -1,0 +1,51 @@
+
+<playground wx:if="{{CurPage=='playground'}}"></playground>
+<userInfo wx:if="{{CurPage=='userInfo'}}"></userInfo>
+<message wx:if="{{CurPage=='message'}}"></message>
+<activity wx:if="{{CurPage=='activity'}}"></activity>
+<view class="cu-bar tabbar bg-white shadow foot">
+  <view class="action" bind:tap="NavChange" data-cur="playground">
+    <view wx:if="{{CurPage=='playground'}}">
+      <view class="cuIcon-wefill"></view>
+      <view class="text-green"> 广场 </view>
+    </view>
+    <view wx:else>
+      <view class="cuIcon-we"></view>
+      <view > 广场 </view>
+    </view>
+  </view>
+  <view class="action" bind:tap="NavChange" data-cur="activity">
+    <view wx:if="{{CurPage=='activity'}}">
+      <view class="cuIcon-wefill"></view>
+      <view class="text-green"> 活动 </view>
+    </view>
+    <view wx:else>
+      <view class="cuIcon-we"></view>
+      <view > 活动 </view>
+    </view>
+  </view>
+  <view class="action text-center" bind:tap="NavChange" data-cur="message">
+    <view wx:if="{{CurPage=='message'}}">
+      <view class="cuIcon-messagefill">
+        <view class="cu-tag badge">10</view>
+      </view>
+      <view class="text-green"> 消息</view>
+    </view>
+    <view wx:else>
+      <view class="cuIcon-message">
+        <view class="cu-tag badge">10</view>
+      </view>
+      <view> 消息</view>
+    </view>
+  </view>
+  <view class="action" bind:tap="NavChange" data-cur="userInfo">
+    <view wx:if="{{CurPage=='userInfo'}}">
+      <view class="cuIcon-homefill"></view>
+      <view class="text-green"> 用户</view>
+    </view>
+    <view wx:else>
+      <view class="cuIcon-home"></view>
+      <view> 用户</view>
+    </view>
+  </view>
+</view>

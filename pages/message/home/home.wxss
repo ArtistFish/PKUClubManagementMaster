@@ -1,0 +1,4 @@
+/* pages/message/home/home.wxss */
+.header{
+  height:40px;
+}
