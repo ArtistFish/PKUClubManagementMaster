@@ -20,6 +20,11 @@ Page({
       url: '../../index/index?CurPage=playground',
     })
   },
+  tapSetup: function(e){
+    wx.navigateTo({
+      url: '/pages/playground/signup/signup'
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */

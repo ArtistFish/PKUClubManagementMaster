@@ -114,7 +114,7 @@ Component({
       })
     },
     tapJoin: function(e){
-      if(app.globalData.ourUserInfo.authorization == null){
+      if(app.globalData.personel.authorization.is_authorized == false){
         // let curPage = getCurrentPages().pop()
         wx.showModal({
           title: '您还未进行学生认证!',
@@ -132,6 +132,7 @@ Component({
           }
         })
       }
+      
     }
   }
 })

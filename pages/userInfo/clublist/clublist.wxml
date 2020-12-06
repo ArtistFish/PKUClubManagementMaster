@@ -22,6 +22,6 @@
   </view>
 </scroll-view>
 <view wx:if="{{tabCur=='setup'}}" class="foot bg-white flex justify-center">
-  <button class="cu-btn round line-orange lg bottom-btn">
+  <button class="cu-btn round line-orange lg bottom-btn" bind:tap="tapSetup">
     <text class="cuIcon-upload"></text> 创建社团</button>
 </view>
