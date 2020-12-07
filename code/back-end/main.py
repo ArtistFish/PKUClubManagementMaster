@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, json
 from club import Club
 from datamanager import *
+from message import *
 
 
 app = Flask(__name__)
@@ -70,6 +71,39 @@ def getClubInfo():
     res=club.Jsonfy()
     return res
 
+'''
+API:
+Function: sendMessage(wx_id_sender, wx_id_receiver, type, title, content)
+Return: {'status': status}
+'''
+@app.route('/gp10/sendMessage', methods = ['POST'])
+def sendMessage():
+    message_type = str(json.loads(request.values.get("type")))
+    message_title = str(json.loads(request.values.get("title")))
+    message_content = str(json.loads(request.values.get("content")))
+    message_sender_wxid = str(json.loads(request.values.get("wx_id_sender")))
+    message_receiver_wxid = str(json.loads(request.values.get("wx_id_receiver")))
+    message = Message(message_type=message_type, message_title=message_title, message_content=message_content,
+                      message_sender_wxid=message_sender_wxid, message_receiver_wxid=message_receiver_wxid)
+    manager = DataManager(DataType.message)
+    manager.addInfo(message)
+
+    res = {'status':'200 OK'}
+    return json.dumps(res)
+
+'''
+API:
+Function: getMessages(wx_id)
+Return: {status: ‘’, send_message_list: [ {id: '', type: ‘’, title: ‘’, content: ‘’, sender: ‘’, receiver: ‘’} , …], 
+    receive_message_list: [ {id: '', type: ‘’, title: ‘’, content: ‘’, sender: ‘’, receiver: ‘’} , …]}
+其中send_message_list包含该wx_id发出的信息，receive_message_list包含该wx_id收到的信息
+
+Return in JSON format
+'''
+def getMessages():
+    wxid = str(json.loads(request.values.get("wx_id")))
+    message_list_of_user = MessageListOfUser(wxid=wxid)
+    return json.dumps(message_list_of_user)
 
 
 if __name__ == '__main__':

@@ -62,7 +62,8 @@ class DataManager():
 
     # 获取某一张数据库表的信息
     # 此函数不适用于获取某一club的全部成员或活动，不适用于获取某一activity的成员；这两件事，由getSlaveList函数负责
-    def getList(self):
+    # wxid参数和flag参数只在获取某一用户的message列表时使用。flag为0表示获取发送的消息，flag为1表示获取接收的消息
+    def getList(self, wxid = '', flag = 0):
         conn = mysql.connector.connect(user = 'root', password = 'root', database = self.database_name)
         cursor = conn.cursor()
 
@@ -74,7 +75,14 @@ class DataManager():
             elif self.datatype == DataType.user:
                 cursor.execute("select * from users")
             elif self.datatype == DataType.message:
-                cursor.execute("select * from messages")
+                if wxid == '':
+                    cursor.execute("select * from messages")
+                elif flag == 0:
+                    cursor.execute("select * from messages where message_sender_wxid = '%s'" % wxid)
+                elif flag == 1:
+                    cursor.execute("select * from messages where message_receiver_wxid = '%s'" % wxid)
+                else:
+                    pass
             else:
                 pass
         except mysql.connector.errors.ProgrammingError:
@@ -151,7 +159,7 @@ class DataManager():
                 cursor.execute("insert into messages (message_type, message_title, message_content, message_sender_wxid,"
                                " message_receiver_wxid) "
                                "values ('%s', '%s', '%s', '%s', '%s')" % (object.type, object.title, object.content,
-                                                                          object.sender.wxid, object.receiver.wxid))
+                                                                          object.sender_wxid, object.receiver_wxid))
                 object.id = cursor.lastrowid
             else:
                 pass
