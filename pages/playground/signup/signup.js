@@ -111,6 +111,38 @@ Page({
       contactImg: this.data.coverImgList,
       displayImgList: this.data.displayImgList,
     })
+    wx.showLoading({
+      title: '创建中',
+    })
+    wx.request({
+      url: app.globalData.SERVER_URL + '/createClub_test/' + this.data.name,
+      data: {
+        club_name: this.data.name,
+        club_description: this.data.description,
+        club_president_user_id: app.globalData.openid
+      },
+      method: 'POST',
+      success: (res) => {
+        wx.hideLoading()
+        console.log(res)
+        if(res.data.status == "200 OK"){
+          wx.showToast({
+            title: '创建成功',
+          })
+        }
+        else{
+          wx.showToast({
+            title: '创建失败',
+          })
+        }
+      },
+      fail: () => {
+        wx.hideLoading()
+        wx.showToast({
+          title: '创建失败',
+        })
+      } 
+    })
   },
   /**
    * 生命周期函数--监听页面加载

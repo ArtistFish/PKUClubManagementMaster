@@ -11,13 +11,25 @@ Component({
    * 组件的初始数据
    */
   data: {
-    tabCur: 'inform'
+    tabCur: 'inform',
+    messageList: {inform: [{title: '成功加入社团通知', content: '您已经成功加入北京大学徒步协会'}, {title: '职责变更通知', content: '您已经成功担任北京大学徒步协会会长'}], reply: [], system: []},
+    informTitle: ['社团信息通知', '活动信息通知', '职责变更通知'],
   },
 
   /**
    * 组件的方法列表
    */
   methods: {
+    tapMessage: function(e){
+      let tabCur = this.data.tabCur
+      let index = e.currentTarget.dataset.index
+      let messageList = this.data.messageList[tabCur]
+      wx.showModal({
+        title: messageList[index].title,
+        content: messageList[index].content,
+        confirmText: '我知道了',
+      })
+    },
     tabSelect: function(e)
     {
       this.setData({
@@ -40,7 +52,7 @@ Component({
     ListTouchEnd(e) {
       if (this.data.ListTouchDirection =='left'){
         this.setData({
-          modalName: e.currentTarget.dataset.target
+          modalName: e.currentTarget.dataset.index
         })
       } else {
         this.setData({

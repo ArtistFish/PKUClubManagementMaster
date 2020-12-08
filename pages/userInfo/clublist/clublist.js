@@ -7,8 +7,11 @@ Page({
    */
   data: {
     tabCur: 'join',
-    infoList: {join: [], setup: []},
-
+    infoList: {
+      join: [],
+      setup: [],
+    },
+    loaded: false,
   },
   tabSelect: function(e){
     this.setData({
@@ -29,10 +32,59 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // this.setData({
-    //   joinClubList: app.globalData.ourUserInfo.joinClubList,
-    //   setupClubList: app.globalData.ourUserInfo.setupClubList
-    // })
+    let _this = this
+    let join_id = app.globalData.personel.associated_club_id.join
+    let setup_id = app.globalData.personel.associated_club_id.setup
+    let join = this.data.infoList.join
+    let setup = this.data.infoList.setup
+    let cnt1 = 0
+    let cnt2 = 0
+    let length1 = join_id.length
+    let length2 = setup_id.length
+    for (let id of join_id){
+      wx.request({
+        method: 'POST',
+        url: app.globalData.SERVER_URL + '/getClubInfo?club_id=' + id,
+        data: {
+          club_id: id,
+        },
+        success: (res) => {
+          join.push(res.data)
+          cnt1 += 1
+          if(cnt1 == length1 && cnt2 == length2){
+            _this.setData({
+              infoList:{
+                join: join,
+                setup: setup,
+              },
+              loaded: true,
+            })
+          }
+        }
+      })
+    }
+    for (let id of setup_id){
+      wx.request({
+        method: 'POST',
+        url: app.globalData.SERVER_URL + '/getClubInfo?club_id=' + id,
+        data: {
+          club_id: id,
+        },
+        success: (res) => {
+          setup.push(res.data)
+          cnt2 += 1
+          if(cnt1 == length1 && cnt2 == length2){
+            _this.setData({
+              infoList:{
+                join: join,
+                setup: setup,
+              },
+              loaded: true,
+            })
+          }
+        }
+      })
+    }
   },
 
   /**

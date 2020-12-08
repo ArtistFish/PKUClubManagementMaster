@@ -1,26 +1,6 @@
 let app = getApp()
 Component({
   data: {
-    array:[
-      {
-        name: 'index',
-        title: '空间',
-        color: 'blue',
-        icon: 'camerafill'
-      },
-      {
-        name: 'index',
-        title: '聊天',
-        color: 'red',
-        icon: 'camerafill'
-      },
-      {
-        name: 'index',
-        title: '游戏',
-        color: 'yellow',
-        icon: 'camerafill'
-      }
-    ],
     swiperList: [{
       id: 0,
       type: 'image',
@@ -81,28 +61,40 @@ Component({
       icon: 'brandfill',
       color: 'mauve',
     }],
-    clubList:[{
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }],
-    recentList:[{
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }],
+    clubList: [],
+    recentList:[],
     gridCol: 3,
-    tabCur: 'all'
+    tabCur: 'all',
+    loaded: false,
+  },
+  lifetimes:{
+    ready: function(){
+      let _this = this
+      let club_ids = app.globalData.clubList
+      let clubList = []
+      let cnt = 0
+      let length = club_ids.length
+      for(let id of club_ids){
+        wx.request({
+          url: app.globalData.SERVER_URL + '/getClubInfo?club_id=' + id,
+          data:{
+            club_id: id,
+          },
+          method: 'POST',
+          success: (res) => {
+            cnt += 1
+            clubList.push(res.data)
+            if(cnt == length)
+            {
+              _this.setData({
+                clubList: clubList,
+                loaded: true,
+              })
+            }
+          }
+        })
+      }
+    }
   },
   options:{
     addGlobalClass: true
