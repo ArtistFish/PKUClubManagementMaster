@@ -19,5 +19,5 @@ class MessageListOfUser():
     def __init__(self, wxid):
         self.status = '200 OK'
         datamanager = DataManager(DataType.message)
-        send_message_list = datamanager.getList(wxid=wxid, flag=0)
-        receive_message_list = datamanager.getList(wxid=wxid, flag=1)
+        send_message_list = datamanager.getList(wxid=wxid, flag=1)
+        receive_message_list = datamanager.getList(wxid=wxid, flag=2)
