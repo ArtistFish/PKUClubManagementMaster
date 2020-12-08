@@ -72,6 +72,53 @@ def getClubInfo():
     return res
 
 '''
+API:setClubInfo
+'''
+app.route('/gp10/setClubInfo', methods=['POST'])
+def setClubInfo():
+    club_id= int(json.loads(request.values.get("club_id")))
+    club_name= str(json.loads(request.values.get("club_name")))
+    club_description=str(json.loads(request.values.get("club_description")))
+    club_president_wxid=int(json.loads(request.values.get("club_president_user_id")))
+    club=Club(club_id=club_id,club_name=club_name,club_description=club_description,club_president_wxid=club_president_wxid)
+    manager=DataManager(DataType.club)
+    manager.updateInfo(club)
+    res = {'status':'200 OK'}
+    return json.dumps(res)
+
+'''
+API:getClubList
+'''
+
+@app.route('/gp10/getClubList', methods=['POST','GET'])
+def getClubList():
+    manager=DataManager(DataType.club)
+    res=manager.getList()
+    club_list=[]
+    for club in res:
+        club_list.append((club[0],club[1]))
+    return json.dumps({'status':'200 OK','club_list':club_list})
+
+'''
+API:getRelatedClubList
+输入关键字keyword，返回相关的社团
+'''
+
+@app.route('/gp10/getRelatedClubList', methods=['POST'])
+def getRelatedClubList():
+    keyword = str(json.loads(request.values.get("keyword")))
+    manager=DataManager(DataType.club)
+    res=manager.getList()
+    related_club_list=[]
+    for club in res:
+        if keyword in club[1] or keyword in club[2]:
+            related_club_list.append((club[0],club[1]))
+    return json.dumps({'status':'200 OK','related_club_list':related_club_list})
+    
+
+
+
+'''
 API:
 Function: sendMessage(wx_id_sender, wx_id_receiver, type, title, content)
 Return: {'status': status}
@@ -100,6 +147,7 @@ Return: {status: ‘’, send_message_list: [ {id: '', type: ‘’, title: ‘�
 
 Return in JSON format
 '''
+@app.route('/gp10/getMessage', methods = ['POST'])
 def getMessages():
     wxid = str(json.loads(request.values.get("wx_id")))
     message_list_of_user = MessageListOfUser(wxid=wxid)
@@ -107,4 +155,4 @@ def getMessages():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True,host='0.0.0.0')
+    app.run(debug=True, threaded=True,host='0.0.0.0',port=5000)
