@@ -134,9 +134,9 @@ class DataManager():
                                "values ('%s','%s', '%s')" % (object.name, object.description, object.president_wxid))
                 object.id = cursor.lastrowid # 把得到的自增id赋给对象中的id属性
                 # 创建每一个club对应的几个附庸数据表
-                cursor.execute("create table club_%d_managers (manager_wxid TINYTEXT primary key)" % object.id)
-                cursor.execute("create table club_%d_members (member_wxid TINYTEXT primary key)" % object.id)
-                cursor.execute("create table club_%d_activities (activity_id INT primary key)" % object.id)
+                cursor.execute("create table club_%d_managers (id INT AUTO_INCREMENT, manager_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
+                cursor.execute("create table club_%d_members (id INT AUTO_INCREMENT, member_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
+                cursor.execute("create table club_%d_activities (id INT AUTO_INCREMENT, activity_id TINYTEXT, PRIMARY KEY (id))" % object.id)
             elif self.datatype == DataType.activity:
                 cursor.execute("insert into activities (activity_name, activity_description, activity_club_id, "
                                "activity_place, "
@@ -149,10 +149,10 @@ class DataManager():
                                                                 object.lotteryMethod, object.maxNumber))
                 object.id = cursor.lastrowid # 把得到的自增id赋给对象中的id属性
                 # 创建每一个activity对应的几个附庸数据表
-                cursor.execute("create table activity_%d_registered_people (registered_person_wxid TINYTEXT primary key)"
-                               % object.id)
-                cursor.execute("create table activity_%d_selected_people (selected_person_wxid TINYTEXT primary key)"
-                               % object.id)
+                cursor.execute(
+                    "create table activity_%d_registered_people (id INT AUTO_INCREMENT, registered_person_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
+                cursor.execute(
+                    "create table activity_%d_selected_people (id INT AUTO_INCREMENT, selected_person_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
             elif self.datatype == DataType.user:
                 cursor.execute("insert into users (wxid, user_name) values ('%s', '%s')" % (object.wxid, object.name))
             elif self.datatype == DataType.message:

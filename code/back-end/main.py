@@ -261,7 +261,7 @@ Return in JSON format
 def getMessages():
     wxid = str(json.loads(request.values.get("wx_id")))
     message_list_of_user = MessageListOfUser(wxid=wxid)
-    return json.dumps(message_list_of_user)
+    return json.dumps(message_list_of_user.__dict__)
 
 
 if __name__ == '__main__':
