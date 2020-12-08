@@ -16,7 +16,7 @@ class Club():
         self.manager_list=[]   #存储管理者微信号
 
     def change_president(self,new_president_wxid):
-        self.president_wxid=new_president_user_id
+        self.president_wxid=new_president_wxid
 
     def change_description(self,new_description):
         self.description=new_description

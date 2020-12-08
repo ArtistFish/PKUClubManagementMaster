@@ -62,7 +62,7 @@ class DataManager():
 
     # 获取某一张数据库表的信息
     # 此函数不适用于获取某一club的全部成员或活动，不适用于获取某一activity的成员；这两件事，由getSlaveList函数负责
-    # wxid参数和flag参数只在获取某一用户的message列表时使用。flag为0表示获取发送的消息，flag为1表示获取接收的消息
+    # wxid参数和flag参数只在获取某一用户的message列表时使用。flag为1表示获取发送的消息，flag为2表示获取接收的消息
     def getList(self, wxid = '', flag = 0):
         conn = mysql.connector.connect(user = 'root', password = 'root', database = self.database_name)
         cursor = conn.cursor()
@@ -77,9 +77,9 @@ class DataManager():
             elif self.datatype == DataType.message:
                 if wxid == '':
                     cursor.execute("select * from messages")
-                elif flag == 0:
-                    cursor.execute("select * from messages where message_sender_wxid = '%s'" % wxid)
                 elif flag == 1:
+                    cursor.execute("select * from messages where message_sender_wxid = '%s'" % wxid)
+                elif flag == 2:
                     cursor.execute("select * from messages where message_receiver_wxid = '%s'" % wxid)
                 else:
                     pass
@@ -260,7 +260,7 @@ class DataManager():
         conn.close()
 
     '''
-    更新clubs activities users messages信息，object需要自带id(或wxid)属性
+    更新clubs activities users messages信息，传入的object需要自带id(或wxid)属性
     '''
     def updateInfo(self, object):
         conn = mysql.connector.connect(user='root', password='root', database=self.database_name)
