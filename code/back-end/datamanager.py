@@ -258,3 +258,32 @@ class DataManager():
 
         cursor.close()
         conn.close()
+
+    '''
+    更新clubs activities users messages信息，object需要自带id(或wxid)属性
+    '''
+    def updateInfo(self, object):
+        conn = mysql.connector.connect(user='root', password='root', database=self.database_name)
+        cursor = conn.cursor()
+
+        try:
+            if self.datatype == DataType.club:
+                cursor.execute("update clubs set club_name='%s',club_description='%s',club_president_wxid='%s' where club_id=%d"%(object.name,object.description,object.president_wxid,object.id))
+            elif self.datatype == DataType.activity:
+                cursor.execute("update activities set activity_name='%s', activity_description='%s', activity_club_id=%d, "
+                               "activity_place='%s', "
+                               "activity_start_time='%s', activity_end_time='%s', activity_lottery_time='%s', activity_lottery_method='%s',"
+                               "activity_max_number=%d where activity_id=%d"% (object.name, object.description, object.clubID,object.place,object.startTime, object.endTime, object.lotteryTime,object.lotteryMethod, object.maxNumber,object.id))
+            elif self.datatype == DataType.user:
+                cursor.execute("update users set username='%s' where wxid='%s'"% (object.name,object.wxid))
+            elif self.datatype == DataType.message:
+                cursor.execute("update messages set message_type='%s', message_title='%s', message_content='%s, message_sender_wxid='%s,"
+                               "message_receiver_wxid='%s where message_id='%s'"% (object.type, object.title, object.content,object.sender_wxid, object.receiver_wxid,object.id))
+            else:
+                pass
+            conn.commit()
+        except mysql.connector.errors.ProgrammingError:
+            pass
+
+        cursor.close()
+        conn.close()
