@@ -136,7 +136,7 @@ class DataManager():
                 # 创建每一个club对应的几个附庸数据表
                 cursor.execute("create table club_%d_managers (id INT AUTO_INCREMENT, manager_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
                 cursor.execute("create table club_%d_members (id INT AUTO_INCREMENT, member_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
-                cursor.execute("create table club_%d_activities (id INT AUTO_INCREMENT, activity_id TINYTEXT, PRIMARY KEY (id))" % object.id)
+                cursor.execute("create table club_%d_activities (id INT AUTO_INCREMENT, activity_id INT, PRIMARY KEY (id))" % object.id)
             elif self.datatype == DataType.activity:
                 cursor.execute("insert into activities (activity_name, activity_description, activity_club_id, "
                                "activity_place, "
