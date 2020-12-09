@@ -65,7 +65,7 @@ class Club():
             manager_name_list.append((user_id,user[0][1])) 
 
         res={'status':'200 OK','club_id':self.id,'club_name':self.name,'club_description':self.description,
-        'club_president_id':self.president_wxid,'club_members':member_name_list,'club_managers':manager_name_list,
+        'club_president_wxid':self.president_wxid,'club_members':member_name_list,'club_managers':manager_name_list,
         'club_activities':activity_name_list}
         return json.dumps(res)
         

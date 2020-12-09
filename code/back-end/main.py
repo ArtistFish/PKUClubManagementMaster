@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, json
 from club import Club
 from datamanager import *
 from message import *
+from user import *
 
 app = Flask(__name__)
 
@@ -12,24 +13,28 @@ def test_form():
 
 '''
 API:
-create a club
+create a user (用户注册)
 '''
-@app.route('/gp10/createClub_test/<club_name>', methods=['POST', 'GET'])
-def createClub_test(club_name):
-    club_president_wxid='0x1'
-    club_description='description for test'
-    club=Club(club_name=club_name,club_description=club_description,club_president_wxid=club_president_wxid)
-    manager=DataManager(DataType.club)
-    manager.addInfo(club)
+@app.route('/gp10/createUser', methods=['POST'])
+def createUser():
+    wxid = request.form.get("wx_id")
+    name = request.form.get("user_name")
+    datamanager = DataManager(DataType.user)
+    user = User(wxid=wxid, name=name)
+    datamanager.addInfo(user)
 
-    res={'status':'200 OK'}
+    res = {'status':'200 OK'}
     return json.dumps(res)
 
+'''
+API:
+create a club
+'''
 @app.route('/gp10/createClub', methods=['POST'])
 def createClub():
-    club_name= str(json.loads(request.values.get("club_name")))
-    club_description=str(json.loads(request.values.get("club_description")))
-    club_president_wxid=int(json.loads(request.values.get("club_president_user_id")))
+    club_name = request.form.get("club_name")
+    club_description = request.form.get("club_description")
+    club_president_wxid = request.form.get("club_president_user_id")
 
     club=Club(club_name=club_name,club_description=club_description,club_president_wxid=club_president_wxid)
     manager=DataManager(DataType.club)
@@ -40,25 +45,27 @@ def createClub():
 
 '''
 API:
+delete a club
+'''
+@app.route('/gp10/deleteClub', methods=['POST'])
+def deleteClub():
+    club_id = int(request.form.get("club_id"))
+    manager = DataManager(DataType.club)
+    manager.deleteInfo(club_id)
+
+    res = {'status':'200 OK'}
+    return json.dumps(res)
+
+'''
+API:
 Function: getClubInfo(club_id) 
 Return: {'status':status,'club_name': club_name, 'club_description':club_description,'club_president_user_id',club_president_user_id}
 
 Return in Json format
 '''
-@app.route('/gp10/getClubInfo_test/<club_id>', methods=['POST', 'GET'])
-def getClubInfo_test(club_id):
-    club_id=int(club_id)
-    manager=DataManager(DataType.club)
-    club_info=manager.getInfo(club_id)
-    if len(club_info)==0:
-        return json.dumps({'status:':'Not Found'})
-    club=Club(club_id=club_id,club_name=club_info[0][1],club_description=club_info[0][2],club_president_wxid=club_info[0][3])
-    res=club.Jsonfy()
-    return res
-
 @app.route('/gp10/getClubInfo', methods=['POST'])
 def getClubInfo():
-    club_id= int(json.loads(request.values.get("club_id")))
+    club_id = int(request.form.get("club_id"))
     manager=DataManager(DataType.club)
     club_info=manager.getInfo(club_id)
     if len(club_info)==0:
@@ -73,7 +80,7 @@ API: getClubManagers
 '''
 @app.route('/gp10/getClubManagers', methods = ['POST'])
 def getClubManagers():
-    club_id = int(json.loads(request.values.get("club_id")))
+    club_id = int(request.form.get("club_id"))
     datamanager = DataManager(DataType.club_managers)
     res = datamanager.getSlaveList(club_id)
     return json.dumps({'status':'200 OK', 'club_manager_list': res})
@@ -84,7 +91,7 @@ API: getClubMembers
 '''
 @app.route('/gp10/getClubMembers', methods = ['POST'])
 def getClubMembers():
-    club_id = int(json.loads(request.values.get("club_id")))
+    club_id = int(request.form.get("club_id"))
     datamanager = DataManager(DataType.club_members)
     res = datamanager.getSlaveList(club_id)
     return json.dumps({'status':'200 OK', 'club_member_list': res})
@@ -95,7 +102,7 @@ API: getClubActivities
 '''
 @app.route('/gp10/getClubActivities', methods = ['POST'])
 def getClubActivities():
-    club_id = int(json.loads(request.values.get("club_id")))
+    club_id = int(request.form.get("club_id"))
     datamanager = DataManager(DataType.club_activities)
     res = datamanager.getSlaveList(club_id)
     return json.dumps({'status':'200 OK', 'club_activity_list': res})
@@ -106,8 +113,8 @@ API: addManagerToClub
 '''
 @app.route('/gp10/addManagerToClub', methods = ['POST'])
 def addManagerToClub():
-    club_id = int(json.loads(request.values.get("club_id")))
-    wxid = str(json.loads(request.values.get("wx_id")))
+    club_id = int(request.form.get("club_id"))
+    wxid = request.form.get("wx_id")
     datamanager = DataManager(DataType.club_managers)
     datamanager.addSlaveInfo(club_id, wxid)
 
@@ -120,8 +127,8 @@ API: addMemberToClub
 '''
 @app.route('/gp10/addMemberToClub', methods = ['POST'])
 def addMemberToClub():
-    club_id = int(json.loads(request.values.get("club_id")))
-    wxid = str(json.loads(request.values.get("wx_id")))
+    club_id = int(request.form.get("club_id"))
+    wxid = request.form.get("wx_id")
     datamanager = DataManager(DataType.club_members)
     datamanager.addSlaveInfo(club_id, wxid)
 
@@ -134,8 +141,8 @@ API: addActivityToClub
 '''
 @app.route('/gp10/addActivityToClub', methods = ['POST'])
 def addActivityToClub():
-    club_id = int(json.loads(request.values.get("club_id")))
-    activity_id = int(json.loads(request.values.get("activity_id")))
+    club_id = int(request.form.get("club_id"))
+    activity_id = int(request.form.get("activity_id"))
     datamanager = DataManager(DataType.club_activities)
     datamanager.addSlaveInfo(club_id, activity_id)
 
@@ -148,8 +155,8 @@ API: deleteManagerFromClub
 '''
 @app.route('/gp10/deleteManagerFromClub', methods = ['POST'])
 def deleteManagerFromClub():
-    club_id = int(json.loads(request.values.get("club_id")))
-    wxid = str(json.loads(request.values.get("wx_id")))
+    club_id = int(request.form.get("club_id"))
+    wxid = request.form.get("wx_id")
     datamanager = DataManager(DataType.club_managers)
     datamanager.deleteSlaveInfo(club_id, wxid)
 
@@ -162,8 +169,8 @@ API: deleteMemberFromClub
 '''
 @app.route('/gp10/deleteMemberFromClub', methods = ['POST'])
 def deleteMemberFromClub():
-    club_id = int(json.loads(request.values.get("club_id")))
-    wxid = str(json.loads(request.values.get("wx_id")))
+    club_id = int(request.form.get("club_id"))
+    wxid = request.form.get("wx_id")
     datamanager = DataManager(DataType.club_members)
     datamanager.deleteSlaveInfo(club_id, wxid)
 
@@ -176,8 +183,8 @@ API: deleteActivityFromClub
 '''
 @app.route('/gp10/deleteActivityFromClub', methods = ['POST'])
 def deleteActivityFromClub():
-    club_id = int(json.loads(request.values.get("club_id")))
-    activity_id = int(json.loads(request.values.get("activity_id")))
+    club_id = int(request.form.get("club_id"))
+    activity_id = int(request.form.get("activity_id"))
     datamanager = DataManager(DataType.club_activities)
     datamanager.deleteSlaveInfo(club_id, activity_id)
 
@@ -188,12 +195,12 @@ def deleteActivityFromClub():
 API:setClubInfo
 设定社团信息
 '''
-app.route('/gp10/setClubInfo', methods=['POST'])
+@app.route('/gp10/setClubInfo', methods=['POST'])
 def setClubInfo():
-    club_id= int(json.loads(request.values.get("club_id")))
-    club_name= str(json.loads(request.values.get("club_name")))
-    club_description=str(json.loads(request.values.get("club_description")))
-    club_president_wxid=int(json.loads(request.values.get("club_president_wx_id")))
+    club_id = int(request.form.get("club_id"))
+    club_name = request.form.get("club_name")
+    club_description = request.form.get("club_description")
+    club_president_wxid = request.form.get("club_president_user_id")
     club=Club(club_id=club_id,club_name=club_name,club_description=club_description,club_president_wxid=club_president_wxid)
     manager=DataManager(DataType.club)
     manager.updateInfo(club)
@@ -219,7 +226,7 @@ API:getRelatedClubList
 '''
 @app.route('/gp10/getRelatedClubList', methods=['POST'])
 def getRelatedClubList():
-    keyword = str(json.loads(request.values.get("keyword")))
+    keyword = request.form.get("keyword")
     manager=DataManager(DataType.club)
     res=manager.getList()
     related_club_list=[]
@@ -235,11 +242,11 @@ Return: {'status': status}
 '''
 @app.route('/gp10/sendMessage', methods = ['POST'])
 def sendMessage():
-    message_type = str(json.loads(request.values.get("type")))
-    message_title = str(json.loads(request.values.get("title")))
-    message_content = str(json.loads(request.values.get("content")))
-    message_sender_wxid = str(json.loads(request.values.get("wx_id_sender")))
-    message_receiver_wxid = str(json.loads(request.values.get("wx_id_receiver")))
+    message_type = request.form.get("type")
+    message_title = request.form.get("title")
+    message_content = request.form.get("content")
+    message_sender_wxid = request.form.get("wx_id_sender")
+    message_receiver_wxid = request.form.get("wx_id_receiver")
     message = Message(message_type=message_type, message_title=message_title, message_content=message_content,
                       message_sender_wxid=message_sender_wxid, message_receiver_wxid=message_receiver_wxid)
     manager = DataManager(DataType.message)
@@ -259,7 +266,7 @@ Return in JSON format
 '''
 @app.route('/gp10/getMessages', methods = ['POST'])
 def getMessages():
-    wxid = str(json.loads(request.values.get("wx_id")))
+    wxid = request.form.get("wx_id")
     message_list_of_user = MessageListOfUser(wxid=wxid)
     return json.dumps(message_list_of_user.__dict__)
 
