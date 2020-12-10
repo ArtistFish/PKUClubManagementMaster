@@ -6,10 +6,10 @@
     <view class="cu-bar search margin-top">
       <view class="search-form round">
         <text class="cuIcon-search"></text>
-        <input type="text" placeholder="输入搜索的关键词" confirm-type="search"></input>
+        <input type="text" placeholder="输入搜索的关键词" confirm-type="search" bindinput="editInput"></input>
       </view>
       <view class="action">
-        <button class="cu-btn bg-blue light round">搜索</button>
+        <button class="cu-btn bg-blue light round" bindtap="tapSearch">搜索</button>
       </view>
     </view>
   </view>
@@ -41,7 +41,7 @@
     </scroll-view>
     <loading wx:if="{{!loaded}}"></loading>
     <view wx:if="{{loaded}}" class="cu-list margin-top-xs">
-      <view wx:for="{{tabCur == 'all'? clubList:recentList}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white">
+      <view wx:for="{{tabCur == 'all'? clubList:recentList}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white" bindtap="tapClub" data-index="{{index}}">
         <image class="flex-sub club-card radius-lg" src="https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg" mode="aspectFill">
           <view class="cu-tag my-badge bg-yellow text-center">
             <text class="margin-left-xs">已认证</text>
@@ -57,7 +57,7 @@
             <view class="text-gray margin-top-xs"> {{item.club_description}}</view>
             <view class="flex justify-between align-end">
               <text class="cuIcon-favorfill margin-bottom-sm"> 热度</text>
-              <button class="cu-btn bg-yellow margin-right-xs margin-bottom-sm round" bind:tap="tapJoin">申请加入</button>
+              <button class="cu-btn bg-yellow margin-right-xs margin-bottom-sm round" catchtap="tapJoin" data-index="{{index}}">申请加入</button>
             </view>
           </view>
         </view>

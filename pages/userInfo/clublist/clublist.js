@@ -11,6 +11,10 @@ Page({
       join: [],
       setup: [],
     },
+    idList: {
+      join: [],
+      setup: [],
+    },
     loaded: false,
   },
   tabSelect: function(e){
@@ -28,6 +32,12 @@ Page({
       url: '/pages/playground/signup/signup'
     })
   },
+  tapClub: function(e){
+    let index = e.currentTarget.dataset.index
+    wx.navigateTo({
+      url: '/pages/playground/frontPage/frontPage?club_id=' + this.data.idList[this.data.tabCur][index],
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -35,16 +45,25 @@ Page({
     let _this = this
     let join_id = app.globalData.personel.associated_club_id.join
     let setup_id = app.globalData.personel.associated_club_id.setup
-    let join = this.data.infoList.join
-    let setup = this.data.infoList.setup
+    let join = []
+    let setup = []
     let cnt1 = 0
     let cnt2 = 0
     let length1 = join_id.length
     let length2 = setup_id.length
+    if(length1 == 0 && length2 == 0)
+    {
+      _this.setData({
+        loaded: true,
+      })
+    }
     for (let id of join_id){
       wx.request({
         method: 'POST',
-        url: app.globalData.SERVER_URL + '/getClubInfo?club_id=' + id,
+        url: app.globalData.SERVER_URL + '/getClubInfo',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
         data: {
           club_id: id,
         },
@@ -57,6 +76,10 @@ Page({
                 join: join,
                 setup: setup,
               },
+              idList: {
+                join: join_id,
+                setup: setup_id,
+              },
               loaded: true,
             })
           }
@@ -66,9 +89,12 @@ Page({
     for (let id of setup_id){
       wx.request({
         method: 'POST',
-        url: app.globalData.SERVER_URL + '/getClubInfo?club_id=' + id,
+        url: app.globalData.SERVER_URL + '/getClubInfo',
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
         data: {
-          club_id: id,
+          club_id: id
         },
         success: (res) => {
           setup.push(res.data)
@@ -78,6 +104,10 @@ Page({
               infoList:{
                 join: join,
                 setup: setup,
+              },
+              idList: {
+                join: join_id,
+                setup: setup_id,
               },
               loaded: true,
             })

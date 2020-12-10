@@ -1,3 +1,4 @@
+let app = getApp()
 Component({
   data: {
     array:[
@@ -80,49 +81,72 @@ Component({
       icon: 'brandfill',
       color: 'mauve',
     }],
-    clubList:[{
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }],
-    recentList:[{
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }, {
-      name: 'zrfsb',
-      introduce: 'zrfsb'
-    }],
     gridCol: 2,
-    tabCur: 'all'
+    tabCur: 'all',
+    loaded: false,
+    activity_list: [1],
   },
   options:{
     addGlobalClass: true
   },
+  lifetimes:{
+    ready: function(e){
+      let _this = this
+      let activity_ids = app.globalData.activityList
+      let cnt = 0
+      let length = activity_ids.length
+      let activity_list = []
+      if(length == 0){
+        _this.setData({
+          loaded: true
+        })
+      }
+      for(let activity_id of activity_ids){
+        wx.request({
+          url: app.globalData.SERVER_URL + '/getActivityInfo',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded' //修改此处即可
+          },
+          method: 'POST',
+          data: {
+            activity_id: activity_id
+          },
+          success: res => {
+            if(res.data.status == '200 OK'){
+              activity_list.push(res.data.activity_info)
+              cnt += 1
+              if(cnt == length){
+                _this.setData({
+                  loaded: true,
+                  activity_list: activity_list,
+                })
+              }
+            }
+            else{
+              console.log('get activity info fail', res)
+            }
+          },
+          fail: res => {
+            console.log('get activity info fail', res)
+          }
+        })
+      }
+    }
+  },
   methods:{
+    tapActivity: function(e){
+      let index = e.currentTarget.dataset.index
+      wx.navigateTo({
+        url: '/pages/activity/detail/detail?activity_id=' + app.globalData.activityList[index]
+      })
+    },
     tabSelect: function(e){
       this.setData({
         tabCur:e.currentTarget.dataset.list
       })
+    },
+    tapSignup: function(e){
+      console.log(e)
     }
   }
 })
