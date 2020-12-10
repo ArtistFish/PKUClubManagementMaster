@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "basicInfo": "/pages/clubInfo/clubInfo",
+    "activities": "/pages/clubActivities/clubActivities",
+    "moments": "/pages/clubMoments/clubMoments",
+    "personnel": "/pages/clubPersonnel/clubPersonnel"
+   }
+}

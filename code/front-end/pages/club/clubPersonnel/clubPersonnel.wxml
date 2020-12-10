@@ -1,0 +1,42 @@
+<!--pages/clubPersonnel/clubPersonnel.wxml-->
+<view class="cu-list menu" wx:for="{{['manager', 'member']}}">
+  <view class="cu-item arrow" bindtap="showPersons" data-personkind="{{item}}">
+    <view class="content">
+      <text class="cuIcon-peoplelist {{persons[item].style}}"></text>
+      <text class="text-grey">{{persons[item].role_name}}</text>
+    </view>
+    <view class="action">
+      <view class="cu-avatar-group">
+        <view class="cu-avatar round sm" wx:for="{{persons[item].personlist}}" wx:for-item="avatars" 
+        style="background-image:url({{avatars.avatar}});"></view>
+      </view>
+      <text class="text-grey text-sm">{{persons[item].personlist.length}} 人</text>
+    </view>
+  </view>
+  <view class="cu-bar search" wx:if="{{persons[item].showall}}" wx:for="{{persons[item].personlist}}" wx:for-item="person">
+    <view class="action">
+      <view class="cu-avatar round" style="background-image:url({{person.avatar}});"></view>
+      <text class="text-Abc margin-left-sm">{{person.name}}</text>
+    </view>  
+    <view class="content" wx:if="{{person.duty!==undefined}}">
+      {{person.duty}}
+    </view>
+    <view class="action" bindtap="showModal" data-personduty="{{person.duty}}" data-personname="{{person.name}}">
+      <text class="cuIcon-more"></text>
+    </view>
+  </view>
+</view>
+
+<view class="cu-modal {{modalShow?'show':''}}" bindtap="hideModal">
+  <view class="cu-dialog" catchtap>
+    <!-- <radio-group class="block"> -->
+      <view class="cu-list menu text-left">
+        <view class="cu-item" wx:for="{{tabs}}" wx:key wx:if="{{showTab[index]}}">
+          <button class="cu-btn block margin-tb-sm lg bg-white text-black" data-tabindex="{{index}}" bindtap="tabClick">
+            {{item}}
+          </button>
+        </view>
+      </view>
+    <!-- </radio-group> -->
+  </view>
+</view>
