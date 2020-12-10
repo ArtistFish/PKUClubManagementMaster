@@ -299,7 +299,22 @@ def getActivityInfo():
 
     return res
 
+'''
+API:
+Function: getActivityList()
+Return: ActivityList
 
+list中每一项包含id和name
+'''
+@app.route('/gp10/getActivityList', methods=['POST','GET'])
+def getActivityList():
+    manager = DataManager(DataType.activity)
+    li = manager.getList
+    activity_list = []
+    for activity in li:
+        activity_list.append((activity[0], activity[1]))
+    
+    return json.dumps({'status':'200 OK', 'activity_list':activity_list})
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True,host='0.0.0.0',port=5000)
