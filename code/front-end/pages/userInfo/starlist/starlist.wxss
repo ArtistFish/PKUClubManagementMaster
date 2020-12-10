@@ -1,0 +1,9 @@
+/* pages/userInfo/starlist/starlist.wxss */
+.list{
+  height: 84vh;
+  width: 100%;
+}
+.background-text{
+  height:50vh;
+  width:100%;
+}

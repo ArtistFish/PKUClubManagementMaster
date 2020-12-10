@@ -1,0 +1,20 @@
+<!--pages/userInfo/clublist/activitylist.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">我的收藏</view></cu-custom>
+<scroll-view scroll-x class="bg-white nav">
+  <view class="flex text-center">
+    <view class="cu-item flex-sub {{tabCur=='club'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='club'>
+      社团
+    </view>
+    <view class="cu-item flex-sub {{tabCur=='activity'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='activity'>
+      活动
+    </view>
+  </view>
+</scroll-view>
+<scroll-view scroll-y class="list bg-white">
+  <view class="flex flex-direction justify-center align-center background-text">
+    <view wx:if="{{infoList[tabCur].length ==0}}">
+      <view class="text-gray">暂时没有收藏～</view>
+      <button class="cu-btn bg-yellow round margin-top-sm" bind:tap="tapBtnClub">去收藏</button>
+    </view>
+  </view>
+</scroll-view>

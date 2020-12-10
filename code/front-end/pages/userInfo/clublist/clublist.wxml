@@ -1,0 +1,50 @@
+<!--pages/userInfo/clublist/clublist.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">我的社团</view></cu-custom>
+<scroll-view wx:if="{{loaded}}" scroll-x class="bg-white nav">
+  <view class="flex text-center">
+    <view class="cu-item flex-sub {{tabCur=='join'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='join'>
+      我加入的 ({{infoList.join.length}})
+    </view>
+    <view class="cu-item flex-sub {{tabCur=='setup'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='setup'>
+      我创建的 ({{infoList.setup.length}})
+    </view>
+  </view>
+</scroll-view>
+<loading wx:if="{{!loaded}}"></loading>
+<scroll-view wx:if="{{loaded}}" scroll-y class="list bg-gray scrollPage">
+  <view wx:if="{{infoList[tabCur].length == 0}}" class="flex flex-direction justify-center align-center background-text">
+    <view wx:if="{{tabCur=='join'}}" class="flex flex-direction align-cneter">
+      <view class="text-gray">暂时没有加入的社团～</view>
+      <button class="cu-btn bg-yellow round margin-top-sm" bind:tap="tapBtnClub">去浏览</button>
+    </view>
+    <view wx:else class="flex flex-direction align-cneter">
+      <view class="text-gray">暂时没有创建的社团～</view>
+    </view>
+  </view>
+  <view wx:else class="cu-list margin-top-xs">
+    <view wx:for="{{infoList[tabCur]}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white" bindtap="tapClub" data-index="{{index}}">
+      <image class="flex-sub club-card radius-lg" src="https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg" mode="aspectFill">
+        <view class="cu-tag my-badge bg-yellow text-center">
+          <text class="margin-left-xs">已认证</text>
+        </view>
+      </image>
+      <view class="flex-twice">
+        <view class="flex-direction margin-left-xs">
+          <view class="flex justify-between text-lg text-black margin-top-xs">
+            {{item.club_name}}
+            <text class="cuIcon-peoplefill margin-right margin-top-sm"> 学生</text>
+          </view>
+          <text class="cuIcon-camerafill text-black">  北京大学</text>
+          <view class="text-gray margin-top-xs"> {{item.club_description}}</view>
+          <view class="flex justify-between align-end">
+            <text class="cuIcon-favorfill"> 热度</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</scroll-view>
+<view wx:if="{{tabCur=='setup'}}" class="foot bg-white flex justify-center">
+  <button class="cu-btn round line-orange lg bottom-btn" bind:tap="tapSetup">
+    <text class="cuIcon-upload"></text> 创建社团</button>
+</view>
