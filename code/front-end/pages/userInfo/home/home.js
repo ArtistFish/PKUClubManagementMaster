@@ -9,7 +9,10 @@ Component({
   },
   data: {
     hasUserInfo:false,
-    wxUserInfo:null
+    wxUserInfo:null,
+    clubTotal: 0,
+    activityTotal: 0,
+    collectTotal: 0,
   },
 
   /**
@@ -49,6 +52,42 @@ Component({
           })
         }
       }
+      let club_list = []
+      let activity_list = []
+      let collect_list = []
+      let _this = this
+      club_list.push(...(app.globalData.personel.associated_club_id.join))
+      club_list.push(...(app.globalData.personel.associated_club_id.setup))
+      club_list = Array.from(new Set(club_list))
+      activity_list.push(...(app.globalData.personel.associated_activity_id.join))
+      activity_list.push(...(app.globalData.personel.associated_activity_id.setup))
+      activity_list = Array.from(new Set(activity_list))
+      collect_list.push(...(app.globalData.personel.associated_club_id.star))
+      collect_list.push(...(app.globalData.personel.associated_activity_id.star))
+      collect_list = Array.from(new Set(collect_list))
+      let max = Math.max(club_list.length, activity_list.length, collect_list.length)
+      let i = 0
+      function func(){
+        if(i < max){
+          setTimeout(()=>{
+            _this.setData({
+              clubTotal: i,
+              activityTotal: i,
+              collectTotal: i,
+            })
+            i += 1
+            func()
+          }, 40)
+        }
+        else{
+          _this.setData({
+            clubTotal: club_list.length,
+            activityTotal: activity_list.length,
+            collectTotal: collect_list.length
+          })
+        }
+      }
+      func()
     }
   },
   options:{

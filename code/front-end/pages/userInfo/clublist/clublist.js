@@ -97,21 +97,29 @@ Page({
           club_id: id
         },
         success: (res) => {
-          setup.push(res.data)
-          cnt2 += 1
-          if(cnt1 == length1 && cnt2 == length2){
-            _this.setData({
-              infoList:{
-                join: join,
-                setup: setup,
-              },
-              idList: {
-                join: join_id,
-                setup: setup_id,
-              },
-              loaded: true,
-            })
+          if(res.data.status == '200 OK'){
+            setup.push(res.data)
+            cnt2 += 1
+            if(cnt1 == length1 && cnt2 == length2){
+              _this.setData({
+                infoList:{
+                  join: join,
+                  setup: setup,
+                },
+                idList: {
+                  join: join_id,
+                  setup: setup_id,
+                },
+                loaded: true,
+              })
+            }
           }
+          else{
+            console.log('get club info fail', res)
+          }
+        },
+        fail: res => {
+          console.log('get club info fail', res)
         }
       })
     }

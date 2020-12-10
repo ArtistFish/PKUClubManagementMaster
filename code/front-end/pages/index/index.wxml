@@ -16,11 +16,11 @@
   </view>
   <view class="action" bind:tap="NavChange" data-cur="activity">
     <view wx:if="{{CurPage=='activity'}}">
-      <view class="cuIcon-wefill"></view>
+      <view class="cuIcon-activityfill"></view>
       <view class="text-green"> 活动 </view>
     </view>
     <view wx:else>
-      <view class="cuIcon-we"></view>
+      <view class="cuIcon-activity"></view>
       <view > 活动 </view>
     </view>
   </view>

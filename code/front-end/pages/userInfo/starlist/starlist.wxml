@@ -11,10 +11,9 @@
   </view>
 </scroll-view>
 <scroll-view scroll-y class="list bg-white">
-  <view class="flex flex-direction justify-center align-center background-text">
-    <view wx:if="{{infoList[tabCur].length ==0}}">
-      <view class="text-gray">暂时没有收藏～</view>
-      <button class="cu-btn bg-yellow round margin-top-sm" bind:tap="tapBtnClub">去收藏</button>
-    </view>
+  <view wx:if="{{infoList[tabCur].length ==0}}" class="flex flex-direction justify-center align-center background-text">
+    <image src="/images/noEntry.png"></image>
+    <view class="text-gray">暂时没有收藏～</view>
+    <button class="cu-btn bg-yellow round margin-top-sm" bind:tap="tapBtnClub">去收藏</button>
   </view>
 </scroll-view>

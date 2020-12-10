@@ -42,14 +42,19 @@ Page({
         },
         method: 'POST',
         success: res => {
-          resultList.push(res.data)
-          cnt += 1
-          if(cnt == length){
-            _this.setData({
-              loaded: true,
-              resultList: resultList,
-              resultIds: resultIds,
-            })
+          if(res.data.status == '200 OK'){
+            resultList.push(res.data)
+            cnt += 1
+            if(cnt == length){
+              _this.setData({
+                loaded: true,
+                resultList: resultList,
+                resultIds: resultIds,
+              })
+            }
+          }
+          else{
+            console.log('get search result fail', res)
           }
         },
         fail: res => {

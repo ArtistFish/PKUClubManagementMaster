@@ -75,7 +75,6 @@ Component({
       let clubList = []
       let cnt = 0
       let length = clubs.length
-      console.log(clubs)
       for(let club of clubs){
         let id = club[0]
         wx.request({
@@ -188,16 +187,24 @@ Component({
           keyword: this.data.keyWords
         },
         success: res => {
-          console.log(res)
-          wx.hideLoading()
-          let list = []
-          for(let obj of res.data.related_club_list){
-            list.push(obj[0])
+          if(res.data.status == '200 OK'){
+            wx.hideLoading()
+            let list = []
+            for(let obj of res.data.related_club_list){
+              list.push(obj[0])
+            }
+            list = JSON.stringify(list)
+            wx.navigateTo({
+              url: '/pages/playground/search/search?list=' + list
+            })
           }
-          list = JSON.stringify(list)
-          wx.navigateTo({
-            url: '/pages/playground/search/search?list=' + list
-          })
+          else{
+            wx.hideLoading()
+            console.log('get search result fail', res)
+          }
+        },
+        fail: res => {
+          console.log('get search result fail', res)
         }
       })
     }
