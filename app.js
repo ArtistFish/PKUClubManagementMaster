@@ -1,6 +1,28 @@
 //app.js
 App({
   onLaunch: function () {
+    let app_this = this
+    wx.request({
+      url: this.globalData.SERVER_URL + "/getClubInfo?club_id=2",
+      method: 'POST',
+      success: res=>{
+        app_this.globalData.clubInfo = res.data
+        console.log(app_this.globalData)
+      },
+      fail: res=>{
+        console.log(res)
+      }
+    })
+    // wx.request({
+    //     url: this.globalData.SERVER_URL + "/getMessages",
+    //     data: {
+    //       wx_id: 0
+    //     },
+    //     method: 'POST',
+    //     success: res=>{
+    //       console.log(res.data)
+    //     }
+    //   })
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
@@ -45,6 +67,11 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    userIsManager: false,
+    userIsPresident: true,
+    userIsMember: true,
+    userName: "zrf",
+    SERVER_URL: "http://47.92.240.179:5000/gp10"
   }
 })

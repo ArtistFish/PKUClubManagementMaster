@@ -1,8 +1,14 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/frontpage/frontpage",
     "pages/logs/logs",
-    "pages/frontpage/frontpage"
+    "pages/clubInfo/clubInfo",
+    "pages/clubActivities/clubActivities",
+    "pages/clubMoments/clubMoments",
+    "pages/clubPersonnel/clubPersonnel",
+    "pages/changeInfo/changeInfo",
+    "pages/authorization/authorization"
   ],
   "window": {
     "navigationBarBackgroundColor": "#39b54a",

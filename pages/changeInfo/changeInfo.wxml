@@ -1,0 +1,82 @@
+<!--pages/userInfo/authorization/authorization.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">创建社团</view></cu-custom>
+<form>
+	<view class="cu-form-group margin-top">
+		<view class="title">社团名称</view>
+		<input placeholder="例：北京大学xxx协会" bindinput="editInput" data-cur="name"></input>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+    <view class="title">社团简介</view>
+    <view class="margin-left-sm"></view>
+		<textarea maxlength="-1" bindinput="editInput" placeholder="例：我们社团主要开展户外徒步活动" data-cur="description"></textarea>
+  </view>
+</form>
+<view class="cu-bar bg-white margin-top">
+		<view class="action">
+			上传社团封面图片
+		</view>
+		<view class="action">
+			{{coverImgList.length}}/1
+		</view>
+</view>
+<view class="cu-form-group">
+  <view class="grid col-4 grid-square flex-sub">
+    <view class="bg-img" wx:for="{{coverImgList}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{coverImgList[index]}}" data-cur="cover">
+      <image src='{{coverImgList[index]}}' mode='aspectFill'></image>
+      <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}" data-cur="cover">
+        <text class="cuIcon-close"></text>
+      </view>
+    </view>
+    <view class="solids" bindtap="ChooseImage" wx:if="{{coverImgList.length<1}}" data-cur="cover">
+      <text class="cuIcon-cameraadd"></text>
+    </view>
+  </view>
+</view>
+<view class="cu-bar bg-white margin-top">
+		<view class="action">
+			上传社团联系方式二维码
+		</view>
+		<view class="action">
+			{{contactImgList.length}}/1
+		</view>
+</view>
+<view class="cu-form-group">
+  <view class="grid col-4 grid-square flex-sub">
+    <view class="bg-img" wx:for="{{contactImgList}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{contactImgList[index]}}" data-cur="contact">
+      <image src='{{contactImgList[index]}}' mode='aspectFill'></image>
+      <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}" data-cur="contact">
+        <text class="cuIcon-close"></text>
+      </view>
+    </view>
+    <view class="solids" bindtap="ChooseImage" wx:if="{{contactImgList.length<1}}" data-cur="contact">
+      <text class="cuIcon-cameraadd"></text>
+    </view>
+  </view>
+</view>
+<view class="cu-bar bg-white margin-top">
+		<view class="action">
+			上传社团介绍图片
+		</view>
+		<view class="action">
+			{{displayImgList.length}}/9
+		</view>
+</view>
+<view class="cu-form-group">
+  <view class="grid col-4 grid-square flex-sub">
+    <view class="bg-img" wx:for="{{displayImgList}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{displayImgList[index]}}" data-cur="display">
+      <image src='{{displayImgList[index]}}' mode='aspectFill'></image>
+      <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}" data-cur="display">
+        <text class="cuIcon-close"></text>
+      </view>
+    </view>
+    <view class="solids" bindtap="ChooseImage" wx:if="{{displayImgList.length<9}}" data-cur="display">
+      <text class="cuIcon-cameraadd"></text>
+    </view>
+  </view>
+</view>
+<view class="flex justify-center margin-top" bind:tap="tapCommit">
+  <button class="cu-btn bg-cyan round lg shadow">提交创建申请</button>
+</view>
+<view class="cu-tabbar-height"></view>

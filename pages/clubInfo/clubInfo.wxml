@@ -1,0 +1,31 @@
+<!--pages/clubInfo/clubInfo.wxml-->
+<swiper class="card-swiper {{DotStyle?'square-dot':'round-dot'}}" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500" bindchange="cardSwiper" indicator-color="#8799a3" indicator-active-color="#0081ff">
+  <swiper-item wx:for="{{swiperList}}" wx:key class="{{cardCur==index?'cur':''}}">
+    <view class="swiper-item">
+      <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='image'}}"></image>
+      <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video>
+    </view>  
+  </swiper-item>
+</swiper>
+<view class="flex-sub"  wx:for="{{detailPageContents}}" wx:for-index="key"  wx:for-item="value">
+  <view class="cu-bar margin-top">
+    <view class="action text-bold"> 
+      <view class="cuIcon-title text-blue"></view>{{key}}
+    </view>
+  </view>
+  <view class="text-left padding">
+    {{value}}
+  </view>
+</view>
+<view class="cu-tabbar-height">
+  <!-- 只是占个地方 -->
+</view>
+
+<view wx:if="userIsPresident || userIsManager" class="cu-bar btn-group feet">
+  <button class="cu-btn bg-grey lg shadow-blur round" bindtap="changeClubInfo">修改社团信息</button>
+</view>
+<view wx:elif="!userIsMember" class="cu-bar btn-group feet">
+  <button class="cu-btn bg-green shadow-blur round">加入社团</button>
+  <button class="cu-btn bg-blue shadow-blur round">收藏社团</button>
+</view>
+

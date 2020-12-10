@@ -51,7 +51,34 @@ Page({
       hasUserInfo: true
     })
   },
-  test: function() {
+  test0: function() {
+    getApp().globalData.userIsManager = false
+    getApp().globalData.userIsPresident = true
+    getApp().globalData. userIsMember = false
+    wx.navigateTo({
+      url: '/pages/frontpage/frontpage',  
+      })
+  },
+  test1: function() {
+    getApp().globalData.userIsManager = true
+    getApp().globalData.userIsPresident = false
+    getApp().globalData. userIsMember = false
+    wx.navigateTo({
+      url: '/pages/frontpage/frontpage',  
+      })
+  },
+  test2: function() {
+    getApp().globalData.userIsManager = false
+    getApp().globalData.userIsPresident = false
+    getApp().globalData. userIsMember = true
+    wx.navigateTo({
+      url: '/pages/frontpage/frontpage',  
+      })
+  },
+  test3: function() {
+    getApp().globalData.userIsManager = false
+    getApp().globalData.userIsPresident = false
+    getApp().globalData.userIsMember = false
     wx.navigateTo({
       url: '/pages/frontpage/frontpage',  
       })

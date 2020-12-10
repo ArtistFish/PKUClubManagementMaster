@@ -1,20 +1,38 @@
-// pages/frontpage/frontpage.js
+// pages/clubActivities/clubActivities.js
+let app = getApp();
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    TabCur: 0,
-    scrollLeft:0,
-    Tabs: ["社团详情", "社团活动", "社团动态", "社团人员"],
+    clubList:[{
+      name: 'zrfsb',
+      introduce: 'zrfsb'
+    }, {
+      name: 'zrfsb',
+      introduce: 'zrfsb'
+    }, {
+      name: 'zrfsb',
+      introduce: 'zrfsb'
+    }, {
+      name: 'zrfsb',
+      introduce: 'zrfsb'
+    }, {
+      name: 'zrfsb',
+      introduce: 'zrfsb'
+    }, {
+      name: 'zrfsb',
+      introduce: 'zrfsb'
+    }, {
+      name: 'zrfsb',
+      introduce: 'zrfsb'
+    }],
+    userIsPresident: app.globalData.userIsPresident,
+    userIsManager: app.globalData.userIsManager,
+    userName: app.globalData.userName,
   },
-  tabSelect(e) {
-    this.setData({
-      TabCur: e.currentTarget.dataset.id,
-      scrollLeft: (e.currentTarget.dataset.id-1)*60
-    })
-  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -69,5 +87,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
+  }
 })

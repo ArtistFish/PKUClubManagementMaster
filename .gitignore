@@ -2,6 +2,9 @@
 [Dd]esktop.ini
 Thumbs.db
 $RECYCLE.BIN/
+/colorui/*
+/pagees/*
+/images/*
 
 # macOS
 .DS_Store
