@@ -1,0 +1,27 @@
+.wraper{
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 15px;
+}
+.club-card{
+  height:125px;
+}
+.my-badge {
+	border-radius: 12rpx;
+	position: absolute;
+	top: -10rpx;
+	left: -10rpx;
+	font-size: 25rpx;
+	padding: 0rpx 10rpx;
+	height: 40rpx;
+  color: var(--white);
+  margin-top:1px;
+}
+
+.radius-lg {
+	border-radius: 12rpx;
+}
+
+.xxx{
+  margin-bottom: -10px;
+}

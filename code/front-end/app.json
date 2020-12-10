@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/userInfo/detail/detail",
+    "pages/userInfo/edit/edit",
+    "pages/userInfo/feedback/feedback",
+    "pages/userInfo/about/about",
+    "pages/userInfo/clublist/clublist",
+    "pages/userInfo/activitylist/activitylist",
+    "pages/userInfo/authorization/authorization",
+    "pages/userInfo/starlist/starlist",
+    "pages/userInfo/authorizationstatus/authorizationstatus",
+    "pages/playground/signup/signup",
+    "pages/playground/search/search"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "ColorUI",
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white"
+  },
+  "usingComponents": {
+    "cu-custom": "/colorui/components/cu-custom"
+  },
+  "sitemapLocation": "sitemap.json"
+}

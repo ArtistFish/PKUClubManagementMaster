@@ -1,0 +1,53 @@
+<scroll-view scroll-y class="scrollPage">
+  <image src='/images/BasicsBg.png' mode='widthFix' class='png' style='width:100%;height:486rpx'>
+  </image>
+  <button wx:if="{{!hasUserInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 
+  </button>
+  <view wx:else class="text-center">
+    <image class="cu-avatar lg round" src="{{wxUserInfo.avatarUrl}}"></image>
+    <view class="margin-top">
+      {{wxUserInfo.nickName}}
+    </view>
+  </view>
+  <view class="padding text-center bg-white text-gray shadow-wrap flex margin-top">
+    <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-url="../userInfo/clublist/clublist">
+      <view class="text-orange text-xxl">0</view>
+      <text class="cuIcon-camerafill text-s"> 我的社团</text>
+    </view>
+    <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-url="../userInfo/activitylist/activitylist">
+      <view class="text-orange text-xxl">0</view>
+      <text class="cuIcon-camerafill text-s"> 我的活动</text>
+    </view>
+    <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-url="../userInfo/starlist/starlist">
+      <view class="text-orange text-xxl">0</view>
+      <text class="cuIcon-camerafill text-s"> 我的收藏</text>
+    </view>
+  </view>
+  <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
+   <view class="cu-item arrow">
+     <view class="content" bind:tap="navigation" data-url="../userInfo/detail/detail">
+      <text class="cuIcon-camerafill"></text>
+      <text> 个人信息 </text>
+      </view>
+   </view>
+   <view class="cu-item arrow" bind:tap="navigation" data-url="../userInfo/authorizationstatus/authorizationstatus">
+     <view class="content">
+      <text class="cuIcon-camerafill"></text>
+      <text> 身份认证 </text>
+    </view>
+   </view>
+   <view class="cu-item arrow" bind:tap="navigation" data-url="../userInfo/feedback/feedback">
+     <view class="content">
+      <text class="cuIcon-camerafill"></text>
+      <text> 意见反馈 </text>
+      </view>
+   </view>
+   <view class="cu-item arrow">
+     <view class="content" bind:tap="navigation" data-url="../userInfo/about/about">
+      <text class="cuIcon-camerafill"></text>
+      <text> 关于我们 </text>
+      </view>
+   </view>
+ </view>
+ <view class="cu-tabbar-height"></view>
+</scroll-view>

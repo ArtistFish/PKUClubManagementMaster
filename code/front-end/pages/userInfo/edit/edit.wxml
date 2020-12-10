@@ -1,0 +1,9 @@
+<!--pages/userInfo/edit/edit.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">修改信息</view></cu-custom>
+<form>
+  <view class="cu-form-group">
+    <view class="title">{{title}}</view>
+    <input placeholder="{{innerText}}" bindinput="editInput"></input>
+    <button class="cu-btn bg-green shadow">完成</button>
+  </view>
+</form>
