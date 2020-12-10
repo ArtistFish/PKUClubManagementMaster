@@ -11,40 +11,40 @@
   </view>
   <view class="padding text-center bg-white text-gray shadow-wrap flex margin-top">
     <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-url="../userInfo/clublist/clublist">
-      <view class="text-orange text-xxl">0</view>
-      <text class="cuIcon-camerafill text-s"> 我的社团</text>
+      <view class="text-orange text-xxl">{{clubTotal}}</view>
+      <text class="cuIcon-discoverfill text-s"> 我的社团</text>
     </view>
     <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-url="../userInfo/activitylist/activitylist">
-      <view class="text-orange text-xxl">0</view>
-      <text class="cuIcon-camerafill text-s"> 我的活动</text>
+      <view class="text-orange text-xxl">{{activityTotal}}</view>
+      <text class="cuIcon-explorefill text-s"> 我的活动</text>
     </view>
     <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-url="../userInfo/starlist/starlist">
-      <view class="text-orange text-xxl">0</view>
-      <text class="cuIcon-camerafill text-s"> 我的收藏</text>
+      <view class="text-orange text-xxl">{{collectTotal}}</view>
+      <text class="cuIcon-likefill text-s"> 我的收藏</text>
     </view>
   </view>
   <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
    <view class="cu-item arrow">
      <view class="content" bind:tap="navigation" data-url="../userInfo/detail/detail">
-      <text class="cuIcon-camerafill"></text>
+      <text class="cuIcon-people"></text>
       <text> 个人信息 </text>
       </view>
    </view>
    <view class="cu-item arrow" bind:tap="navigation" data-url="../userInfo/authorizationstatus/authorizationstatus">
      <view class="content">
-      <text class="cuIcon-camerafill"></text>
+      <text class="cuIcon-friendfamous"></text>
       <text> 身份认证 </text>
     </view>
    </view>
    <view class="cu-item arrow" bind:tap="navigation" data-url="../userInfo/feedback/feedback">
      <view class="content">
-      <text class="cuIcon-camerafill"></text>
+      <text class="cuIcon-repair"></text>
       <text> 意见反馈 </text>
       </view>
    </view>
    <view class="cu-item arrow">
      <view class="content" bind:tap="navigation" data-url="../userInfo/about/about">
-      <text class="cuIcon-camerafill"></text>
+      <text class="cuIcon-group"></text>
       <text> 关于我们 </text>
       </view>
    </view>

@@ -7,10 +7,14 @@ App({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
         // console.log(res)
-        console.log('login success')
+        console.log('login success', res)
         if(res.code){
-          let appid = 'wx15b48d32c8913d2c'
-          let secret = '266dbde1825c159269bbaaf61821484a'
+          // 上面这个是我自己的小程序id
+          let appid = 'wxb668543108717363'
+          let secret = 'c1b9e0873c7dd1cf79553828484e1b89'
+          // 下面是测试号
+          // let appid = 'wx15b48d32c8913d2c'
+          // let secret = '266dbde1825c159269bbaaf61821484a'
           let url = 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appid + '&secret=' + secret + '&js_code=' + res.code + '&grant_type=authorization_code'
           wx.request({
             url: url,
@@ -18,7 +22,7 @@ App({
             success: function(res)
             {
               _this.globalData.openid = res.data.openid
-              console.log('get openid success')
+              console.log('get openid success', res.data.openid)
               // console.log(res)
             }
           })
@@ -34,7 +38,7 @@ App({
             success: res => {
               // 可以将 res 发送给后台解码出 unionId
               this.globalData.wxUserInfo = res.userInfo
-              console.log('get userinfo success')
+              console.log('get userinfo success', res.userInfo)
               // console.log(res.userInfo)
               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
               // 所以此处加入 callback 以防止这种情况
@@ -68,7 +72,7 @@ App({
         }
         else
         {
-          console.log('get clublist success')
+          console.log('get clublist success', res.data.club_list)
         }
         _this.globalData.clubList = res.data.club_list
       },
@@ -80,12 +84,36 @@ App({
       }
     })
     wx.request({
+      url: this.globalData.SERVER_URL + '/getActivityList',
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '拉取活动列表失败',
+            image: '/images/fail.png',
+          })
+        }
+        else
+        {
+          console.log('get activity list success', res.data.activity_list)
+        }
+        _this.globalData.activityList = res.data.activity_list
+      },
+      fail: res => {
+        console.log(res)
+        wx.showToast({
+          title: '拉取社团列表失败',
+          image: '/images/fail.png',
+        })
+      }
+    })
+    wx.request({
       url: this.globalData.SERVER_URL + '/getMessages',
       method: 'POST',
       success: res => {
         if(res.data.status != '200 OK'){
           wx.showToast({
-            title: '拉取信息列表失败'
+            title: '拉取信息列表失败',
+            image: '/images/fail.png',
           })
         }
         else
@@ -98,6 +126,7 @@ App({
         console.log(res)
         wx.showToast({
           title: '拉取信息列表失败',
+          image: '/images/fail.png',
         })
       }
     })
@@ -152,8 +181,8 @@ App({
         student_id: undefined
       }, 
       associated_club_id: {
-        join: [20, 21],
-        setup: [20], 
+        join: [],
+        setup: [], 
         manage: [], 
         star: []
       }, 

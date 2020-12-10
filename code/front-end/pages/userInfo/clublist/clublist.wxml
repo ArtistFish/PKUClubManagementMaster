@@ -13,6 +13,7 @@
 <loading wx:if="{{!loaded}}"></loading>
 <scroll-view wx:if="{{loaded}}" scroll-y class="list bg-gray scrollPage">
   <view wx:if="{{infoList[tabCur].length == 0}}" class="flex flex-direction justify-center align-center background-text">
+    <image src="/images/noEntry.png"></image>
     <view wx:if="{{tabCur=='join'}}" class="flex flex-direction align-cneter">
       <view class="text-gray">暂时没有加入的社团～</view>
       <button class="cu-btn bg-yellow round margin-top-sm" bind:tap="tapBtnClub">去浏览</button>
