@@ -7,11 +7,14 @@ class Activity():
                 'lottery_method', 'max_number', 'registered_people_list', 'selected_people_list')
 
     max_id = 0
-    def __int__(self, at_name='', at_description='', at_club_id=0, at_place='', at_start_time=0, at_end_time=0, 
+    def __int__(self, at_id=-1, at_name='', at_description='', at_club_id=0, at_place='', at_start_time=0, at_end_time=0, 
                 at_lottery_time=0, at_lottery_method='', at_max_number=0):
         #self.id = at_id
-        self.id = Activity.max_id + 1    
-        Activity.max_id += 1    #自增   
+        if at_id == -1 :
+            self.id = Activity.max_id + 1  
+            Activity.max_id += 1    #自增
+        else:
+            self.id = at_id    
         self.name = at_name
         self.description = at_description
         self.club_id = at_club_id

@@ -271,5 +271,35 @@ def getMessages():
     return json.dumps(message_list_of_user.__dict__)
 
 
+'''
+API:
+Function: getActivityInfo(Activity_id)
+return:{'status':status, 'activity_name':activity_name, 'activity_description':description, 'activity_club_id':club_id,
+'activity_place':place, 'activity_start_time':start_time, 'activity_end_time':end_time, 'activity_lottery_time':lottery_time,
+'activity_lottery_method':lottery_method, 'activity_max_number':max_number, 'activity_registered_people':registered_people,
+'activity_selected_people':selected_people }
+Return in Json format
+
+返回的是Activity的json化，如果需要返回其他属性，需要修改Activity类的属性及方法
+'''
+@app.route('/gp10/getActivityInfo', methods=['POST'])
+def getActivityInfo():
+    activity_id = int(request.form.get("activity_id"))
+    manager = DataManager(DataType.activity)
+    activity_info = manager.getInfo(activity_id)
+    if len(activity_info) == 0 :
+        return json.dumps({'status':'Not Found'})
+
+    activity = Activity(at_id=activity_id, at_name=activity_info[0][1], at_description=activity_info[0][2], 
+    at_club_id=activity_info[0][3], at_place=activity_info[0][4], at_start_time=activity_info[0][5], 
+    at_end_time=activity_info[0][6], at_lottery_time=activity_info[0][7], at_lottery_method=activity_info[0][8], 
+    at_max_number=activity_info[0][9] )
+    
+    res = activity.Jsonfy()
+
+    return res
+
+
+
 if __name__ == '__main__':
     app.run(debug=True, threaded=True,host='0.0.0.0',port=5000)
