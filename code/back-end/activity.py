@@ -6,12 +6,12 @@ class Activity():
     __slots__ = ('id', 'name', 'description', 'club_id', 'place', 'start_time', 'end_time', 'lottery_time', 
                 'lottery_method', 'max_number', 'registered_people_list', 'selected_people_list')
 
-    #max_id = 0
-    def __int__(self, at_id=0, at_name='', at_description='', at_club_id=0, at_place='', at_start_time=0, at_end_time=0, 
+    max_id = 0
+    def __int__(self, at_name='', at_description='', at_club_id=0, at_place='', at_start_time=0, at_end_time=0, 
                 at_lottery_time=0, at_lottery_method='', at_max_number=0):
-        self.id = at_id
-        #self.id = max_id + 1    #bug    to be fixed
-        #max_id = max_id + 1    #自增   
+        #self.id = at_id
+        self.id = Activity.max_id + 1    
+        Activity.max_id += 1    #自增   
         self.name = at_name
         self.description = at_description
         self.club_id = at_club_id
