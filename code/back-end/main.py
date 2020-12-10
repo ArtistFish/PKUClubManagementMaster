@@ -309,7 +309,7 @@ list中每一项包含id和name
 @app.route('/gp10/getActivityList', methods=['POST','GET'])
 def getActivityList():
     manager = DataManager(DataType.activity)
-    li = manager.getList
+    li = manager.getList()
     activity_list = []
     for activity in li:
         activity_list.append((activity[0], activity[1]))
