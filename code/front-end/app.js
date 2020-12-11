@@ -131,6 +131,57 @@ App({
       }
     })
   },
+  refreshClubList: function(callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/getClubList',
+      success: res => {
+        callback(res)
+      },
+      fail: res => {
+        callback(res)
+      }
+    })
+  },
+  refreshUserInfo: function(callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/getUserInfo',
+      success: res => {
+        callback(res)
+      },
+      fail: res => {
+        callback(res)
+      }
+    })
+  },
+  refreshActivityList: function(callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/getActivityList',
+      success: res => {
+        callback(res)
+      },
+      fail: res => {
+        callback(res)
+      }
+    })
+  },
+  refreshMessageList: function(callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/getMessages',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        wx_id: this.globalData.openid,
+      },
+      success: res => {
+        callback(res)
+      },
+      fail: res => {
+        callback(res)
+      }
+    })
+  },
   globalData: {
     wxUserInfo: null,
     openid: null,

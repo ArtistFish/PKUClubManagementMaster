@@ -5,5 +5,9 @@
     "message": "/pages/message/home/home",
     "activity": "/pages/activity/home/home",
     "loading": "/pages/loading/loading"
+  },
+  "window": {
+    "backgroundTextStyle":"dark",
+    "enablePullDownRefresh": true
   }
 }

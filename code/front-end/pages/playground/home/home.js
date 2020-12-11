@@ -71,35 +71,48 @@ Component({
   lifetimes:{
     ready: function(){
       let _this = this
-      let clubs = app.globalData.clubList
-      let clubList = []
-      let cnt = 0
-      let length = clubs.length
-      for(let club of clubs){
-        let id = club[0]
-        wx.request({
-          url: app.globalData.SERVER_URL + '/getClubInfo',
-          header: {
-            'content-type': 'application/x-www-form-urlencoded' //修改此处即可
-          },
-          data:{
-            club_id: id,
-          },
-          method: 'POST',
-          success: (res) => {
-            // console.log(res)
-            cnt += 1
-            clubList.push(res.data)
-            if(cnt == length)
-            {
-              _this.setData({
-                clubList: clubList,
-                loaded: true,
-              })
-            }
+      app.refreshClubList(res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取社团列表失败'
+          })
+        }
+        else{
+          let clubs = res.data.club_list
+          let clubList = []
+          let cnt = 0
+          let length = clubs.length
+          if(length == 0){
+            _this.setData({
+              loaded: true,
+            })
           }
-        })
-      }
+          for(let club of clubs){
+            let id = club[0]
+            wx.request({
+              url: app.globalData.SERVER_URL + '/getClubInfo',
+              header: {
+                'content-type': 'application/x-www-form-urlencoded',
+              },
+              data:{
+                club_id: id,
+              },
+              method: 'POST',
+              success: (res) => {
+                cnt += 1
+                clubList.push(res.data)
+                if(cnt == length)
+                {
+                  _this.setData({
+                    clubList: clubList,
+                    loaded: true,
+                  })
+                }
+              }
+            })
+          }
+        }
+      })
     }
   },
   options:{
@@ -114,7 +127,7 @@ Component({
     tapClub: function(e){
       let index = e.currentTarget.dataset.index
       wx.navigateTo({
-        url: '/pages/playground/frontPage/frontPage?club_id=' + app.globalData.clubList[index][0]
+        url: '/pages/club/frontpage/frontpage?club_id=' + app.globalData.clubList[index][0]
       })
     },
     tapJoin: function(e){
@@ -138,7 +151,7 @@ Component({
         wx.request({
           url: app.globalData.SERVER_URL + '/addMemberToClub',
           header: {
-            'content-type': 'application/x-www-form-urlencoded' //修改此处即可
+            'content-type': 'application/x-www-form-urlencoded',
           },
           data: {
             club_id: club_id,

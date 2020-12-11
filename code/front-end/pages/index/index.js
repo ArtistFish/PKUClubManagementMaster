@@ -12,6 +12,11 @@ Page({
       CurPage: e.currentTarget.dataset.cur
     })
   },
+  onPullDownRefresh: function(e){
+    setTimeout(()=>{
+      console.log('refresh')
+    }, 500)
+  },
   onLoad: function(option){
     if(option && option.CurPage){
       this.setData({
