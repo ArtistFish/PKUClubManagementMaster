@@ -62,72 +62,95 @@ App({
         }
       },
     })
+  },
+  getClubInfo: function(club_id, callback){
     wx.request({
-      url: this.globalData.SERVER_URL + '/getClubList',
-      success: res => {
-        if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '拉取社团列表失败'
-          })
-        }
-        else
-        {
-          console.log('get clublist success', res.data.club_list)
-        }
-        _this.globalData.clubList = res.data.club_list
+      url: this.globalData.SERVER_URL + '/getClubInfo',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
       },
-      fail: res => {
-        console.log(res)
-        wx.showToast({
-          title: '拉取社团列表失败',
-        })
-      }
-    })
-    wx.request({
-      url: this.globalData.SERVER_URL + '/getActivityList',
-      success: res => {
-        if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '拉取活动列表失败',
-            image: '/images/fail.png',
-          })
-        }
-        else
-        {
-          console.log('get activity list success', res.data.activity_list)
-        }
-        _this.globalData.activityList = res.data.activity_list
+      data: {
+        club_id: club_id,
       },
-      fail: res => {
-        console.log(res)
-        wx.showToast({
-          title: '拉取社团列表失败',
-          image: '/images/fail.png',
-        })
-      }
-    })
-    wx.request({
-      url: this.globalData.SERVER_URL + '/getMessages',
       method: 'POST',
       success: res => {
         if(res.data.status != '200 OK'){
           wx.showToast({
-            title: '拉取信息列表失败',
+            title: '获取信息失败',
             image: '/images/fail.png',
           })
+          console.log('getClubInfo fail', res)
         }
-        else
-        {
-          console.log('get messagelist success')
-          _this.globalData.mseeageList = [res.data.send_message_list, res.data.receive_message_list]
-        }
+        callback(res)
       },
-      fail: res => {
-        console.log(res)
+      fail: res =>{
         wx.showToast({
-          title: '拉取信息列表失败',
+          title: '获取信息失败',
           image: '/images/fail.png',
         })
+        console.log('getClubInfo api fail', res)
+        callback(res)
+      }
+    })
+  },
+  getActivityInfo: function(activity_id, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/getActivityInfo',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        activity_id: activity_id,
+      },
+      method: 'POST',
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('getActivityInfo fail', res)
+        }
+        callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('getActivityInfo api fail', res)
+        callback(res)
+      }
+    })
+  },
+  addMemberToClub: function(club_id, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/addMemberToClub',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        club_id: club_id,
+        wx_id: this.globalData.openid,
+      },
+      method: 'POST',
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('addMemberToClub fail', res)
+        }
+        callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('addMemberToClub api fail', res)
+        callback(res)
       }
     })
   },
@@ -135,9 +158,21 @@ App({
     wx.request({
       url: this.globalData.SERVER_URL + '/getClubList',
       success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('getClubList fail', res)
+        }
         callback(res)
       },
-      fail: res => {
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('getClubList api fail', res)
         callback(res)
       }
     })
@@ -146,9 +181,21 @@ App({
     wx.request({
       url: this.globalData.SERVER_URL + '/getUserInfo',
       success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('getUserInfo fail', res)
+        }
         callback(res)
       },
-      fail: res => {
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('getUserInfo api fail', res)
         callback(res)
       }
     })
@@ -157,9 +204,21 @@ App({
     wx.request({
       url: this.globalData.SERVER_URL + '/getActivityList',
       success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('getActivityList fail', res)
+        }
         callback(res)
       },
-      fail: res => {
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('getActivityList api fail', res)
         callback(res)
       }
     })
@@ -175,9 +234,21 @@ App({
         wx_id: this.globalData.openid,
       },
       success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('getMessages fail', res)
+        }
         callback(res)
       },
-      fail: res => {
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('getMessages api fail', res)
         callback(res)
       }
     })
@@ -185,7 +256,6 @@ App({
   globalData: {
     wxUserInfo: null,
     openid: null,
-    // ourUserInfo: {authorization:{school: 'PKU', name: 'zrf', sex: '女', 'ID': '1700012823', major: '信息科学技术学院'}},
     ourUserInfo: {},
     clubList: [],
     activityList: [],

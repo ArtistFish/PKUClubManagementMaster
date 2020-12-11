@@ -20,27 +20,19 @@ Component({
     ready: function(e){
       let _this = this
       app.refreshMessageList(res => {
-        if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '获取信息失败',
-            image: '/images/fail.png',
-          })
+        let send_message_list = res.data.send_message_list
+        let receive_message_list = res.data.receive_message_list
+        let messageList = {inform: {receive: [], send: []}, reply: {receive: [], send: []}, system: {receive: [], send: []}}
+        for(let message of receive_message_list){
+          messageList[message.type].receive.push(message)
         }
-        else{
-          let send_message_list = res.data.send_message_list
-          let receive_message_list = res.data.receive_message_list
-          let messageList = {inform: {receive: [], send: []}, reply: {receive: [], send: []}, system: {receive: [], send: []}}
-          for(let message of receive_message_list){
-            messageList[message.type].receive.push(message)
-          }
-          for(let message of send_message_list){
-            messageList[message.type].send.push(message)
-          }
-          _this.setData({
-            messageList: messageList,
-            loaded: true,
-          })
+        for(let message of send_message_list){
+          messageList[message.type].send.push(message)
         }
+        _this.setData({
+          messageList: messageList,
+          loaded: true,
+        })
       })
     }
   },

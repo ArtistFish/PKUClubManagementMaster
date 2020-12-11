@@ -63,56 +63,38 @@ Component({
   lifetimes:{
     ready: function(e){
       let _this = this
-      app.refreshActivityList(res => {
-        if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '获取信息失败',
-            image: '/images/fail.png',
+      new Promise((resolve, reject) => {
+        app.refreshActivityList(res => {
+          if(res.data.status != '200 OK'){
+            reject(res)
+          }
+          else
+            resolve(res.data.activity_list)
+      })
+      }).then(activity_list => {
+        let activityList = []
+        let cnt = 0
+        let length = activity_list.length
+        if(length == 0){
+          _this.setData({
+            loaded: true,
           })
         }
-        else{
-          let activities = res.data.activity_list
-          console.log(activities)
-          let cnt = 0
-          let length = activities.length
-          let activity_list = []
-          if(length == 0){
-            _this.setData({
-              loaded: true
-            })
-          }
-          for(let activity of activities){
-            let id = activity[0]
-            wx.request({
-              url: app.globalData.SERVER_URL + '/getActivityInfo',
-              header: {
-                'content-type': 'application/x-www-form-urlencoded' //修改此处即可
-              },
-              method: 'POST',
-              data: {
-                activity_id: id
-              },
-              success: res => {
-                if(res.data.status == '200 OK'){
-                  activity_list.push(res.data.activity_info)
-                  cnt += 1
-                  if(cnt == length){
-                    _this.setData({
-                      loaded: true,
-                      activity_list: activity_list,
-                    })
-                  }
-                }
-                else{
-                  console.log('get activity info fail', res)
-                }
-              },
-              fail: res => {
-                console.log('get activity info fail', res)
-              }
-            })
-          }
+        for(let activity of activity_list){
+          let id = activity[0]
+          app.getActivityInfo(id, res => {
+            cnt += 1
+            activityList.push(res.data)
+            if(cnt == length){
+              _this.setData({
+                activityList: activityList,
+                loaded: true,
+              })
+            }
+          })
         }
+      }).catch(err => {
+        console.log(err)
       })
     }
   },
