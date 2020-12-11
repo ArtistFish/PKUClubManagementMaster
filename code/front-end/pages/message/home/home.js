@@ -1,4 +1,5 @@
 // pages/message/home/home.js
+let app = getApp()
 Component({
   /**
    * 组件的属性列表
@@ -12,10 +13,37 @@ Component({
    */
   data: {
     tabCur: 'inform',
-    messageList: {inform: [{title: '成功加入社团通知', content: '您已经成功加入北京大学徒步协会'}, {title: '职责变更通知', content: '您已经成功担任北京大学徒步协会会长'}], reply: [], system: []},
-    informTitle: ['社团信息通知', '活动信息通知', '职责变更通知'],
+    messageList: {},
+    informTitle: {},
   },
-
+  lifetimes: {
+    ready: function(e){
+      let _this = this
+      app.refreshMessageList(res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+        }
+        else{
+          let send_message_list = res.data.send_message_list
+          let receive_message_list = res.data.receive_message_list
+          let messageList = {inform: {receive: [], send: []}, reply: {receive: [], send: []}, system: {receive: [], send: []}}
+          for(let message of receive_message_list){
+            messageList[message.type].receive.push(message)
+          }
+          for(let message of send_message_list){
+            messageList[message.type].send.push(message)
+          }
+          _this.setData({
+            messageList: messageList,
+            loaded: true,
+          })
+        }
+      })
+    }
+  },
   /**
    * 组件的方法列表
    */

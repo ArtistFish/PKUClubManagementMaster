@@ -43,8 +43,9 @@ Page({
    */
   onLoad: function (options) {
     let _this = this
-    let join_id = app.globalData.personel.associated_club_id.join
-    let setup_id = app.globalData.personel.associated_club_id.setup
+    let obj = JSON.parse(options.obj)
+    let join_id = obj.join
+    let setup_id = obj.setup
     let join = []
     let setup = []
     let cnt1 = 0

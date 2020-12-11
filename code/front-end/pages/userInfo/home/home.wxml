@@ -10,15 +10,15 @@
     </view>
   </view>
   <view class="padding text-center bg-white text-gray shadow-wrap flex margin-top">
-    <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-url="../userInfo/clublist/clublist">
+    <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-cur="clublist">
       <view class="text-orange text-xxl">{{clubTotal}}</view>
       <text class="cuIcon-discoverfill text-s"> 我的社团</text>
     </view>
-    <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-url="../userInfo/activitylist/activitylist">
+    <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-cur="activitylist">
       <view class="text-orange text-xxl">{{activityTotal}}</view>
       <text class="cuIcon-explorefill text-s"> 我的活动</text>
     </view>
-    <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-url="../userInfo/starlist/starlist">
+    <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-cur="starlist">
       <view class="text-orange text-xxl">{{collectTotal}}</view>
       <text class="cuIcon-likefill text-s"> 我的收藏</text>
     </view>
