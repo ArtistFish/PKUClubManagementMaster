@@ -71,47 +71,38 @@ Component({
   lifetimes:{
     ready: function(){
       let _this = this
-      app.refreshClubList(res => {
-        if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '获取社团列表失败'
+      new Promise((resolve, reject) => {
+        app.refreshClubList(res => {
+          if(res.data.status != '200 OK'){
+            reject(res)
+          }
+          else
+            resolve(res.data.club_list)
+      })
+      }).then(club_list => {
+        let clubList = []
+        let cnt = 0
+        let length = club_list.length
+        if(length == 0){
+          _this.setData({
+            loaded: true,
           })
         }
-        else{
-          let clubs = res.data.club_list
-          let clubList = []
-          let cnt = 0
-          let length = clubs.length
-          if(length == 0){
-            _this.setData({
-              loaded: true,
-            })
-          }
-          for(let club of clubs){
-            let id = club[0]
-            wx.request({
-              url: app.globalData.SERVER_URL + '/getClubInfo',
-              header: {
-                'content-type': 'application/x-www-form-urlencoded',
-              },
-              data:{
-                club_id: id,
-              },
-              method: 'POST',
-              success: (res) => {
-                cnt += 1
-                clubList.push(res.data)
-                if(cnt == length)
-                {
-                  _this.setData({
-                    clubList: clubList,
-                    loaded: true,
-                  })
-                }
-              }
-            })
-          }
+        for(let club of club_list){
+          let id = club[0]
+          app.getClubInfo(id, res => {
+            cnt += 1
+            clubList.push(res.data)
+            if(cnt == length){
+              _this.setData({
+                clubList: clubList,
+                loaded: true,
+              })
+            }
+          })
         }
+      }).catch(err => {
+        console.log(err)
       })
     }
   },
@@ -148,6 +139,11 @@ Component({
       else{
         let index = e.currentTarget.dataset.index
         let club_id = this.data.clubList[index].club_id
+        app.addMemerToClub(club_id, res => {
+          if(res.data.status != '200 OK'){
+
+          }
+        })
         wx.request({
           url: app.globalData.SERVER_URL + '/addMemberToClub',
           header: {

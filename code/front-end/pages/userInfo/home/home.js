@@ -69,52 +69,44 @@ Component({
     ready: function(e){
       let _this = this
       app.refreshUserInfo(res => {
-        if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '获取信息失败',
-            image: '/images/fail.png',
-          })
-        }
-        else{
-          let club_list = []
-          let activity_list = []
-          let collect_list = []
-          club_list.push(...(res.data.associated_club_id.join))
-          club_list.push(...(res.data.associated_club_id.setup))
-          club_list = Array.from(new Set(club_list))
-          activity_list.push(...(res.data.associated_activity_id.join))
-          activity_list.push(...(res.data.associated_activity_id.setup))
-          activity_list = Array.from(new Set(activity_list))
-          collect_list.push(...(res.data.associated_club_id.star))
-          collect_list.push(...(res.data.associated_activity_id.star))
-          collect_list = Array.from(new Set(collect_list))
-          let max = Math.max(club_list.length, activity_list.length, collect_list.length)
-          max = Math.min(max, 20)
-          let i = 0
-          function func(){
-            if(i < max){
-              setTimeout(()=>{
-                _this.setData({
-                  clubTotal: i,
-                  activityTotal: i,
-                  collectTotal: i,
-                })
-                i += 1
-                func()
-              }, 40)
-            }
-            else{
+        let club_list = []
+        let activity_list = []
+        let collect_list = []
+        club_list.push(...(res.data.associated_club_id.join))
+        club_list.push(...(res.data.associated_club_id.setup))
+        club_list = Array.from(new Set(club_list))
+        activity_list.push(...(res.data.associated_activity_id.join))
+        activity_list.push(...(res.data.associated_activity_id.setup))
+        activity_list = Array.from(new Set(activity_list))
+        collect_list.push(...(res.data.associated_club_id.star))
+        collect_list.push(...(res.data.associated_activity_id.star))
+        collect_list = Array.from(new Set(collect_list))
+        let max = Math.max(club_list.length, activity_list.length, collect_list.length)
+        max = Math.min(max, 20)
+        let i = 0
+        function func(){
+          if(i < max){
+            setTimeout(()=>{
               _this.setData({
-                clubTotal: club_list.length,
-                activityTotal: activity_list.length,
-                collectTotal: collect_list.length,
-                associated_club_id: res.data.associated_club_id,
-                associated_activity_id: res.data.associated_activity_id,
+                clubTotal: i,
+                activityTotal: i,
+                collectTotal: i,
               })
-            }
+              i += 1
+              func()
+            }, 40)
           }
-          func()
+          else{
+            _this.setData({
+              clubTotal: club_list.length,
+              activityTotal: activity_list.length,
+              collectTotal: collect_list.length,
+              associated_club_id: res.data.associated_club_id,
+              associated_activity_id: res.data.associated_activity_id,
+            })
+          }
         }
+        func()
       })
     }
   },
