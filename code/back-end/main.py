@@ -3,6 +3,7 @@ from club import Club
 from datamanager import *
 from message import *
 from user import *
+from activity import Activity
 
 app = Flask(__name__)
 
@@ -315,6 +316,38 @@ def getActivityList():
         activity_list.append((activity[0], activity[1]))
     
     return json.dumps({'status':'200 OK', 'activity_list':activity_list})
+
+
+'''
+API:
+Function: createActivity(name,description,club_id,place,start_time,end_time,lottery_time,lottery_method,max_number)
+create an activity
+return: {status,id} in JSON format
+'''
+@app.route('/gp10/createActivity',methods=['POST'])
+def createActivity():
+    activity_name = request.form.get("name")
+    activity_description = request.form.get("description")
+    activity_club_id = request.form.get("club_id")
+    activity_place = request.form.get("place")
+    activity_start_time = request.form.get("start_time")
+    activity_end_time = request.form.get("end_time")
+    activity_lottery_time = request.form.get("lottery_time")
+    activity_lottery_method = request.form.get("lottery_method")
+    activity_max_number = request.form.get("max_number")
+
+    newActivity = Activity(at_name=activity_name, at_description=activity_description, at_club_id=activity_club_id,
+    at_place=activity_place, at_start_time=activity_start_time, at_end_time=activity_end_time,
+    at_lottery_time=activity_lottery_time, at_lottery_method=activity_lottery_method,at_max_number=activity_max_number)
+
+    manager = DataManager(DataType.activity)
+    manager.addInfo(newActivity)
+
+    res = {'status':'200 OK', 'id':newActivity.id}
+    return json.dumps(res)
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True,host='0.0.0.0',port=5000)
