@@ -319,7 +319,7 @@ def getActivityList():
 
 
 '''
-API:
+API:createActivity
 Function: createActivity(name,description,club_id,place,start_time,end_time,lottery_time,lottery_method,max_number)
 create an activity
 return: {status,id} in JSON format
@@ -328,13 +328,13 @@ return: {status,id} in JSON format
 def createActivity():
     activity_name = request.form.get("name")
     activity_description = request.form.get("description")
-    activity_club_id = request.form.get("club_id")
+    activity_club_id = int(request.form.get("club_id"))
     activity_place = request.form.get("place")
     activity_start_time = request.form.get("start_time")
     activity_end_time = request.form.get("end_time")
     activity_lottery_time = request.form.get("lottery_time")
     activity_lottery_method = request.form.get("lottery_method")
-    activity_max_number = request.form.get("max_number")
+    activity_max_number = int(request.form.get("max_number"))
 
     newActivity = Activity(at_name=activity_name, at_description=activity_description, at_club_id=activity_club_id,
     at_place=activity_place, at_start_time=activity_start_time, at_end_time=activity_end_time,
@@ -344,6 +344,35 @@ def createActivity():
     manager.addInfo(newActivity)
 
     res = {'status':'200 OK', 'id':newActivity.id}
+    return json.dumps(res)
+
+
+'''
+API: setActivityInfo
+Function: setActivityInfo(id,name,description,club_id,place,start_time,end_time,lottery_time,lottery_method,max_number)
+return:{status} in JSON format
+'''
+@app.route('/gp10/setActivityInfo', methods=['POST'])
+def setActivityInfo():
+    activity_id = int(request.form.get("id"))
+    activity_name = request.form.get("name")
+    activity_description = request.form.get("description")
+    activity_club_id = int(request.form.get("club_id"))
+    activity_place = request.form.get("place")
+    activity_start_time = request.form.get("start_time")
+    activity_end_time = request.form.get("end_time")
+    activity_lottery_time = request.form.get("lottery_time")
+    activity_lottery_method = request.form.get("lottery_method")
+    activity_max_number = int(request.form.get("max_number"))
+    
+    myActivity = Activity(at_id=id, at_name=activity_name, at_description=activity_description, at_club_id=activity_club_id,
+    at_place=activity_place, at_start_time=activity_start_time, at_end_time=activity_end_time,
+    at_lottery_time=activity_lottery_time, at_lottery_method=activity_lottery_method,at_max_number=activity_max_number)
+
+    manager = DataManager(DataType.activity)
+    manager.updateInfo(myActivity)
+
+    res = {'status':'200 OK'}
     return json.dumps(res)
 
 
