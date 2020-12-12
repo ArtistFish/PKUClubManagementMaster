@@ -278,7 +278,8 @@ Function: getActivityInfo(Activity_id)
 return:{'status':status, 'activity_name':activity_name, 'activity_description':description, 'activity_club_id':club_id,
 'activity_place':place, 'activity_start_time':start_time, 'activity_end_time':end_time, 'activity_lottery_time':lottery_time,
 'activity_lottery_method':lottery_method, 'activity_max_number':max_number, 'activity_registered_people':registered_people,
-'activity_selected_people':selected_people }
+'activity_selected_people':selected_people, 'activity_fee':fee, 'activity_sign_up_ddl':sign_up_ddl,
+'activity_sponsor':sponsor, 'activity_undertaker':undertaker }
 Return in Json format
 
 返回的是Activity的json化，如果需要返回其他属性，需要修改Activity类的属性及方法
@@ -294,7 +295,8 @@ def getActivityInfo():
     activity = Activity(at_id=activity_id, at_name=activity_info[0][1], at_description=activity_info[0][2], 
     at_club_id=activity_info[0][3], at_place=activity_info[0][4], at_start_time=activity_info[0][5], 
     at_end_time=activity_info[0][6], at_lottery_time=activity_info[0][7], at_lottery_method=activity_info[0][8], 
-    at_max_number=activity_info[0][9] )
+    at_max_number=activity_info[0][9], at_fee=activity_info[0][10], at_sign_up_ddl=activity_info[0][11],
+    at_sponsor=activity_info[0][12], at_undertaker=activity_info[0][13] )
     
     res = activity.Jsonfy()
 
@@ -320,7 +322,8 @@ def getActivityList():
 
 '''
 API:createActivity
-Function: createActivity(name,description,club_id,place,start_time,end_time,lottery_time,lottery_method,max_number)
+Function: createActivity(name,description,club_id,place,start_time,end_time,lottery_time,lottery_method,max_number,
+                        fee,sign_up_ddl,sponsor,undertaker)
 create an activity
 return: {status,id} in JSON format
 '''
@@ -335,10 +338,15 @@ def createActivity():
     activity_lottery_time = request.form.get("lottery_time")
     activity_lottery_method = request.form.get("lottery_method")
     activity_max_number = int(request.form.get("max_number"))
+    activity_fee = float(request.form.get("fee"))
+    activity_sign_up_ddl = request.form.get("sign_up_ddl")
+    activity_sponsor = request.form.get("sponsor")
+    activity_undertaker = request.form.get("undertaker")
 
     newActivity = Activity(at_name=activity_name, at_description=activity_description, at_club_id=activity_club_id,
     at_place=activity_place, at_start_time=activity_start_time, at_end_time=activity_end_time,
-    at_lottery_time=activity_lottery_time, at_lottery_method=activity_lottery_method,at_max_number=activity_max_number)
+    at_lottery_time=activity_lottery_time, at_lottery_method=activity_lottery_method,at_max_number=activity_max_number,
+    at_fee=activity_fee, at_sign_up_ddl=activity_sign_up_ddl, at_sponsor=activity_sponsor, at_undertaker=activity_undertaker)
 
     manager = DataManager(DataType.activity)
     manager.addInfo(newActivity)
@@ -349,7 +357,8 @@ def createActivity():
 
 '''
 API: setActivityInfo
-Function: setActivityInfo(id,name,description,club_id,place,start_time,end_time,lottery_time,lottery_method,max_number)
+Function: setActivityInfo(id,name,description,club_id,place,start_time,end_time,lottery_time,lottery_method,max_number,
+                            fee,sign_up_ddl,sponsor,undertaker)
 return:{status} in JSON format
 '''
 @app.route('/gp10/setActivityInfo', methods=['POST'])
@@ -364,10 +373,15 @@ def setActivityInfo():
     activity_lottery_time = request.form.get("lottery_time")
     activity_lottery_method = request.form.get("lottery_method")
     activity_max_number = int(request.form.get("max_number"))
+    activity_fee = float(request.form.get("fee"))
+    activity_sign_up_ddl = request.form.get("sign_up_ddl")
+    activity_sponsor = request.form.get("sponsor")
+    activity_undertaker = request.form.get("undertaker")
     
     myActivity = Activity(at_id=id, at_name=activity_name, at_description=activity_description, at_club_id=activity_club_id,
     at_place=activity_place, at_start_time=activity_start_time, at_end_time=activity_end_time,
-    at_lottery_time=activity_lottery_time, at_lottery_method=activity_lottery_method,at_max_number=activity_max_number)
+    at_lottery_time=activity_lottery_time, at_lottery_method=activity_lottery_method,at_max_number=activity_max_number,
+    at_fee=activity_fee, at_sign_up_ddl=activity_sign_up_ddl, at_sponsor=activity_sponsor, at_undertaker=activity_undertaker)
 
     manager = DataManager(DataType.activity)
     manager.updateInfo(myActivity)
