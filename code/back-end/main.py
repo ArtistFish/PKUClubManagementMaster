@@ -389,7 +389,20 @@ def setActivityInfo():
     res = {'status':'200 OK'}
     return json.dumps(res)
 
+'''
+API: deleteActivity
+delete an activity
+Function: deleteActivity(id)
+return:{status} in JSON format
+'''
+@app.route('/gp10/deleteActivity', methods=['POST'])
+def deleteActivity():
+    id = int(request.form.get("id"))
+    manager = DataManager(DataType.activity)
+    manager.deleteInfo(id)
 
+    res = {'status':'200 OK'}
+    return json.dumps(res)
 
 
 if __name__ == '__main__':
