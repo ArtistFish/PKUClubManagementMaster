@@ -363,9 +363,9 @@ def getActivityList():
 
 '''
 API:createActivity
+创建一个活动，并添加进社团
 Function: createActivity(name,description,club_id,place,start_time,end_time,lottery_time,lottery_method,max_number,
                         fee,sign_up_ddl,sponsor,undertaker)
-create an activity
 return: {status,id} in JSON format
 '''
 @app.route('/gp10/createActivity',methods=['POST'])
@@ -387,13 +387,15 @@ def createActivity():
     newActivity = Activity(at_name=activity_name, at_description=activity_description, at_club_id=activity_club_id,
     at_place=activity_place, at_start_time=activity_start_time, at_end_time=activity_end_time,
     at_lottery_time=activity_lottery_time, at_lottery_method=activity_lottery_method,at_max_number=activity_max_number,
-    at_fee=activity_fee,
-                           at_sign_up_ddl=activity_sign_up_ddl,
-                           at_sponsor=activity_sponsor,
-                           at_undertaker=activity_undertaker)
+    at_fee=activity_fee, at_sign_up_ddl=activity_sign_up_ddl, at_sponsor=activity_sponsor,
+    at_undertaker=activity_undertaker)
 
     manager = DataManager(DataType.activity)
     manager.addInfo(newActivity)
+
+    #执行addActivityToClub操作
+    manager2 = DataManager(DataType.club_activities)
+    manager2.addSlaveInfo(activity_club_id, newActivity.id)
 
     res = {'status':'200 OK', 'id':newActivity.id}
     return json.dumps(res)
@@ -435,7 +437,7 @@ def setActivityInfo():
 
 '''
 API: deleteActivity
-delete an activity
+删除一个活动，并从社团当中去掉这个活动
 Function: deleteActivity(id)
 return:{status} in JSON format
 '''
@@ -443,6 +445,16 @@ return:{status} in JSON format
 def deleteActivity():
     id = int(request.form.get("id"))
     manager = DataManager(DataType.activity)
+    #manager.deleteInfo(id)
+
+    #查找activity_club_id
+    myActivity = manager.getInfo(id)
+    club_id = myActivity[0][3]
+
+    #执行deleteActivityFromClub
+    dtmanager = DataManager(DataType.club_activities)
+    dtmanager.deleteSlaveInfo(club_id, id)
+
     manager.deleteInfo(id)
 
     res = {'status':'200 OK'}
