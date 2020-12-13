@@ -1,5 +1,5 @@
 <!--pages/userInfo/authorization/authorization.wxml-->
-<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">创建社团</view></cu-custom>
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">修改社团信息</view></cu-custom>
 <form>
 	<view class="cu-form-group margin-top">
 		<view class="title">社团名称</view>
@@ -77,6 +77,6 @@
   </view>
 </view>
 <view class="flex justify-center margin-top" bind:tap="tapCommit">
-  <button class="cu-btn bg-cyan round lg shadow">提交创建申请</button>
+  <button class="cu-btn bg-cyan round lg shadow">提交修改申请</button>
 </view>
 <view class="cu-tabbar-height"></view>

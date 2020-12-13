@@ -103,14 +103,20 @@ Page({
     }
   },
   tapCommit: function(){
-    console.log({
-      name: this.data.name,
-      description:this.data.description,
-      presidentOpenid: app.globalData.openid,
-      coverImg: this.data.coverImgList,
-      contactImg: this.data.coverImgList,
-      displayImgList: this.data.displayImgList,
-    })
+    // console.log({
+    //   name: this.data.name,
+    //   description:this.data.description,
+    //   presidentOpenid: app.globalData.openid,
+    //   coverImg: this.data.coverImgList,
+    //   contactImg: this.data.coverImgList,
+    //   displayImgList: this.data.displayImgList,
+    // })
+    app.setClubInfo(
+      app.globalData.current_club.club_id,
+      this.data.name,
+      this.data.description,
+      res=>console.log(res)
+    )
   },
   /**
    * 生命周期函数--监听页面加载

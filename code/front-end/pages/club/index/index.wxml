@@ -1,0 +1,18 @@
+<!--index.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">背景颜色</view>
+</cu-custom>
+<view class="container">
+  <view class="userinfo">
+    <button open-type="getUserInfo" bindgetuserinfo="getUserInfo" bindtap="test0"> 社长进入社团主页 </button>
+    <button open-type="getUserInfo" bindgetuserinfo="getUserInfo" bindtap="test1"> 管理员进入社团主页 </button>
+    <button open-type="getUserInfo" bindgetuserinfo="getUserInfo" bindtap="test2"> 社团成员进入社团主页 </button>
+    <button open-type="getUserInfo" bindgetuserinfo="getUserInfo" bindtap="test3"> 非社团成员进入社团主页 </button>
+    <!-- <block wx:else> -->
+    <block>
+      <image bindtap="bindViewTap" src="../../images/3af4c9e677d4ef53a7c07904c472e2d.jpg" mode="aspectFill"></image>
+      <text class="userinfo-nickname">（图片与文字无关）</text>
+    </block>
+  </view>
+</view>

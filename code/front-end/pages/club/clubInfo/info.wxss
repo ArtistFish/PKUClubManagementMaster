@@ -1,0 +1,7 @@
+/* pages/clubInfo/info.wxss */
+.cu-bar.feet {
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	z-index: 1024;
+}
