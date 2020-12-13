@@ -141,12 +141,15 @@ class DataManager():
                 cursor.execute("insert into activities (activity_name, activity_description, activity_club_id, "
                                "activity_place, "
                                "activity_start_time, activity_end_time, activity_lottery_time, activity_lottery_method,"
-                               " activity_max_number) "
+                               " activity_max_number, "
+                               "activity_fee, activity_sign_up_ddl, activity_sponsor, activity_undertaker) "
                                "values ('%s', '%s', %d, '%s', "
-                               "'%s', '%s', '%s', '%s', %d)" % (object.name, object.description, object.clubID,
+                               "'%s', '%s', '%s', '%s', %d,"
+                               "%f, '%s', '%s', '%s')" % (object.name, object.description, object.club_id,
                                                                 object.place,
-                                                        object.startTime, object.endTime, object.lotteryTime,
-                                                                object.lotteryMethod, object.maxNumber))
+                                                        object.start_time, object.end_time, object.lottery_time,
+                                                                object.lottery_method, object.max_number,
+                                                          object.fee, object.sign_up_ddl, object.sponsor, object.undertaker))
                 object.id = cursor.lastrowid # 把得到的自增id赋给对象中的id属性
                 # 创建每一个activity对应的几个附庸数据表
                 cursor.execute(
@@ -273,7 +276,11 @@ class DataManager():
                 cursor.execute("update activities set activity_name='%s', activity_description='%s', activity_club_id=%d, "
                                "activity_place='%s', "
                                "activity_start_time='%s', activity_end_time='%s', activity_lottery_time='%s', activity_lottery_method='%s',"
-                               "activity_max_number=%d where activity_id=%d"% (object.name, object.description, object.clubID,object.place,object.startTime, object.endTime, object.lotteryTime,object.lotteryMethod, object.maxNumber,object.id))
+                               "activity_max_number=%d, "
+                               "activity_fee=%f, activity_sign_up_ddl='%s', activity_sponsor='%s', activity_undertaker='%s' where activity_id=%d"
+                               % (object.name, object.description, object.clubID,object.place,
+                                  object.startTime, object.endTime, object.lotteryTime,object.lotteryMethod, object.maxNumber,
+                                  object.fee, object.sign_up_ddl, object.sponsor, object.undertaker, object.id))
             elif self.datatype == DataType.user:
                 cursor.execute("update users set username='%s' where wxid='%s'"% (object.name,object.wxid))
             elif self.datatype == DataType.message:

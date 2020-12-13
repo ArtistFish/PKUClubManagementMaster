@@ -8,7 +8,7 @@ class Activity():
                 'sponsor', 'undertaker')
 
     #max_id = 0
-    def __int__(self, at_id=0, at_name='', at_description='', at_club_id=0, at_place='', at_start_time='', at_end_time='', 
+    def __init__(self, at_id=0, at_name='', at_description='', at_club_id=0, at_place='', at_start_time='', at_end_time='', 
                 at_lottery_time='', at_lottery_method='', at_max_number=0, at_fee=0.0, at_sign_up_ddl='', at_sponsor='',
                  at_undertaker=''):
         #self.id = at_id

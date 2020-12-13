@@ -387,7 +387,10 @@ def createActivity():
     newActivity = Activity(at_name=activity_name, at_description=activity_description, at_club_id=activity_club_id,
     at_place=activity_place, at_start_time=activity_start_time, at_end_time=activity_end_time,
     at_lottery_time=activity_lottery_time, at_lottery_method=activity_lottery_method,at_max_number=activity_max_number,
-    at_fee=activity_fee, at_sign_up_ddl=activity_sign_up_ddl, at_sponsor=activity_sponsor, at_undertaker=activity_undertaker)
+    at_fee=activity_fee,
+                           at_sign_up_ddl=activity_sign_up_ddl,
+                           at_sponsor=activity_sponsor,
+                           at_undertaker=activity_undertaker)
 
     manager = DataManager(DataType.activity)
     manager.addInfo(newActivity)
