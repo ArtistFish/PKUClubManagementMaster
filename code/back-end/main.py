@@ -138,6 +138,7 @@ def addMemberToClub():
 
 '''
 API: addActivityToClub
+【警告：此API已被废弃，请使用createActivity API！】
 向社团增加活动
 '''
 @app.route('/gp10/addActivityToClub', methods = ['POST'])
@@ -180,6 +181,7 @@ def deleteMemberFromClub():
 
 '''
 API: deleteActivityFromClub
+【警告：此API已被废弃，请使用deleteActivity API！】
 从社团删除活动
 '''
 @app.route('/gp10/deleteActivityFromClub', methods = ['POST'])
@@ -276,6 +278,81 @@ def getClubListOfUser():
 
     return json.dumps({'status': '200 OK', 'president_club_list': president_club_list,
                        'manager_club_list': manager_club_list, 'member_club_list': member_club_list})
+
+'''
+API: registerUserToActivity
+用户注册某一活动
+'''
+@app.route('/gp10/registerUserToActivity', methods = ['POST'])
+def registerUserToActivity():
+    wxid = request.form.get("wx_id")
+    activity_id = int(request.form.get("activity_id"))
+
+    flag = 0
+    # 只有用户是社团的社长/骨干/成员，才能报名社团的活动
+    datamanager = DataManager(DataType.activity)
+    activity_info = datamanager.getInfo(activity_id)
+    club_id = activity_info[0][3]
+
+    datamanager = DataManager(DataType.club)
+    club_info = datamanager.getInfo(club_id)
+    if wxid == club_info[0][3]:
+        flag = 1
+
+    datamanager = DataManager(DataType.club_managers)
+    res_club_managers = datamanager.getSlaveList(club_id)
+    for manager in res_club_managers:
+        if manager[1] == wxid:
+            flag = 1
+
+    datamanager = DataManager(DataType.club_members)
+    res_club_members = datamanager.getSlaveList(club_id)
+    for member in res_club_members:
+        if member[1] == wxid:
+            flag = 1
+
+    if flag == 0:
+        return json.dumps({'status': 'Rejected: User is not member of the club'})
+
+    datamanager = DataManager(DataType.activity_registered_people)
+    datamanager.addSlaveInfo(activity_id, wxid)
+    return json.dumps({'status': '200 OK'})
+
+
+'''
+API: getActivityListOfUser
+输入用户wxid，返回用户报名和被选中的活动
+'''
+@app.route('/gp10/getActivityListOfUser', methods = ['POST'])
+def getActivityListOfUser():
+    wxid = request.form.get("wx_id")
+    datamanager = DataManager(DataType.activity)
+    res = datamanager.getList()
+
+    #获取用户报名的活动
+    registered_activity_list = []
+    for activity in res:
+        activity_id = activity[0]
+        datamanager_activity_registered_people = DataManager(DataType.activity_registered_people)
+        res_activity_registered_people = datamanager_activity_registered_people.getSlaveList(activity_id)
+
+        for user in res_activity_registered_people:
+            if user[1] == wxid:
+                registered_activity_list.append((activity[0], activity[1]))
+
+    #获取用户被选中的活动
+    selected_activity_list = []
+    for activity in res:
+        activity_id = activity[0]
+        datamanager_activity_selected_people = DataManager(DataType.activity_selected_people)
+        res_activity_selected_people = datamanager_activity_selected_people.getSlaveList(activity_id)
+
+        for user in res_activity_selected_people:
+            if user[1] == wxid:
+                selected_activity_list.append((activity[0], activity[1]))
+
+    return json.dumps({'status': '200 OK', 'registered_activity_list': registered_activity_list,
+                       'selected_activity_list': selected_activity_list})
 
 '''
 API:
