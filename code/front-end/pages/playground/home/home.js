@@ -62,6 +62,7 @@ Component({
       color: 'mauve',
     }],
     clubList: [],
+    clubIds: [],
     recentList:[],
     gridCol: 3,
     tabCur: 'all',
@@ -72,7 +73,7 @@ Component({
     ready: function(){
       let _this = this
       new Promise((resolve, reject) => {
-        app.refreshClubList(res => {
+        app.getClubList(res => {
           if(res.data.status != '200 OK'){
             reject(res)
           }
@@ -82,6 +83,7 @@ Component({
       }).then(club_list => {
         let clubList = []
         let cnt = 0
+        let clubIds = []
         let length = club_list.length
         if(length == 0){
           _this.setData({
@@ -90,12 +92,14 @@ Component({
         }
         for(let club of club_list){
           let id = club[0]
+          clubIds.push(id)
           app.getClubInfo(id, res => {
             cnt += 1
             clubList.push(res.data)
             if(cnt == length){
               _this.setData({
                 clubList: clubList,
+                clubIds: clubIds,
                 loaded: true,
               })
             }
@@ -118,7 +122,7 @@ Component({
     tapClub: function(e){
       let index = e.currentTarget.dataset.index
       wx.navigateTo({
-        url: '/pages/club/frontpage/frontpage?club_id=' + app.globalData.clubList[index][0]
+        url: '/pages/club/frontpage/frontpage?club_id=' + this.data.clubIds[index]
       })
     },
     tapJoin: function(e){
@@ -139,7 +143,7 @@ Component({
       else{
         let index = e.currentTarget.dataset.index
         let club_id = this.data.clubList[index].club_id
-        app.addMemerToClub(club_id, res => {
+        app.addMemberToClub(club_id, res => {
           if(res.data.status != '200 OK'){
 
           }
@@ -186,36 +190,17 @@ Component({
         title: '搜索中',
       })
       console.log(this.data.keyWords)
-      wx.request({
-        url: app.globalData.SERVER_URL + '/getRelatedClubList',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded' //修改此处即可
-        },
-        method: 'POST',
-        data: {
-          keyword: this.data.keyWords
-        },
-        success: res => {
-          if(res.data.status == '200 OK'){
-            wx.hideLoading()
-            let list = []
-            for(let obj of res.data.related_club_list){
-              list.push(obj[0])
-            }
-            list = JSON.stringify(list)
-            wx.navigateTo({
-              url: '/pages/playground/search/search?list=' + list
-            })
+      app.getRelatedClubList(this.data.keyWords, res => {
+          wx.hideLoading()
+          let list = []
+          for(let obj of res.data.related_club_list){
+            list.push(obj[0])
           }
-          else{
-            wx.hideLoading()
-            console.log('get search result fail', res)
-          }
-        },
-        fail: res => {
-          console.log('get search result fail', res)
-        }
-      })
+          list = JSON.stringify(list)
+          wx.navigateTo({
+            url: '/pages/playground/search/search?list=' + list
+          })
+        })
     }
   }
 })

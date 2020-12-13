@@ -2,7 +2,9 @@
   <view class="margin-top-xs"></view>
   <view class="header text-white text-center margin-top-xl"> 我的消息 </view>
 </view>
-<scroll-view scroll-x class="bg-white nav">
+<loading wx:if="{{!loaded}}"></loading>
+<view wx:else>
+  <scroll-view scroll-x class="bg-white nav">
   <view class="flex text-center">
     <view class="cu-item flex-sub {{tabCur=='inform'?'text-orange cur':''}}" bind:tap="tabSelect" data-list='inform'>
       通知消息
@@ -14,31 +16,49 @@
       系统消息
     </view>
   </view>
-</scroll-view>
-<view class="cu-bar bg-white solid-bottom margin-top">
-  <view class="action">
-    <text class="cuIcon-title text-orange "></text> 消息列表
+  </scroll-view>
+  <view class="cu-bar bg-white solid-bottom margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-orange "></text> 我发出的
+    </view>
   </view>
-</view>
-<loading wx:if="{{!loaded}}"></loading>
-<view wx:else class="cu-list menu-avatar">
-  <view wx:for="{{messageList[tabCur].receive}}" class="cu-item {{modalName==index?'move-cur':''}}" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd" data-index="{{index}}" bind:tap="tapMessage">
-    <view class="cu-avatar round lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);"></view>
-    <view class="content">
-      <view class="text-grey">{{item.title}}</view>
-      <view class="text-gray text-sm flex">
-        <text class="text-cut">
-            <text class="cuIcon-infofill text-red  margin-right-xs"></text>{{item.content}}
-        </text>
+  <view class="cu-list menu-avatar">
+    <view wx:for="{{messageList[tabCur].send}}" class="cu-item" data-index="{{index}}" data-kind="{{'send'}}" bind:tap="tapMessage">
+      <view class="cu-avatar round lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);"></view>
+      <view class="content">
+        <view class="text-grey">{{item.title}}</view>
+        <view class="text-gray text-sm flex">
+          <text class="text-cut">
+              <text class="cuIcon-infofill text-red  margin-right-xs"></text>{{item.content}}
+          </text>
+        </view>
+      </view>
+      <view class="action">
+        <view class="text-grey text-xs">22:20</view>
+        <view class="cu-tag round bg-red sm">5</view>
       </view>
     </view>
+  </view>
+  <view class="cu-bar bg-white solid-bottom margin-top">
     <view class="action">
-      <view class="text-grey text-xs">22:20</view>
-      <view class="cu-tag round bg-red sm">5</view>
+      <text class="cuIcon-title text-orange "></text> 我收到的
     </view>
-    <view class="move">
-      <view class="bg-grey">置顶</view>
-      <view class="bg-red">删除</view>
+  </view>
+  <view class="cu-list menu-avatar">
+    <view wx:for="{{messageList[tabCur].receive}}" class="cu-item" data-index="{{index}}" data-kind="{{'receive'}}" bind:tap="tapMessage">
+      <view class="cu-avatar round lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);"></view>
+      <view class="content">
+        <view class="text-grey">{{item.title}}</view>
+        <view class="text-gray text-sm flex">
+          <text class="text-cut">
+              <text class="cuIcon-infofill text-red  margin-right-xs"></text>{{item.content}}
+          </text>
+        </view>
+      </view>
+      <view class="action">
+        <view class="text-grey text-xs">22:20</view>
+        <view class="cu-tag round bg-red sm">5</view>
+      </view>
     </view>
   </view>
 </view>
