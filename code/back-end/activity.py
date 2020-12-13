@@ -1,5 +1,5 @@
 from flask import json
-from datamanagement import *
+from datamanager import *
 
 
 class Activity():
