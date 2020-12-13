@@ -64,7 +64,7 @@ Component({
     ready: function(e){
       let _this = this
       new Promise((resolve, reject) => {
-        app.refreshActivityList(res => {
+        app.getActivityList(res => {
           if(res.data.status != '200 OK'){
             reject(res)
           }

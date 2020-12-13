@@ -59,68 +59,40 @@ Page({
       })
     }
     for (let id of join_id){
-      wx.request({
-        method: 'POST',
-        url: app.globalData.SERVER_URL + '/getClubInfo',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        data: {
-          club_id: id,
-        },
-        success: (res) => {
-          join.push(res.data)
-          cnt1 += 1
-          if(cnt1 == length1 && cnt2 == length2){
-            _this.setData({
-              infoList:{
-                join: join,
-                setup: setup,
-              },
-              idList: {
-                join: join_id,
-                setup: setup_id,
-              },
-              loaded: true,
-            })
-          }
+      app.getClubInfo(id, res => {
+        join.push(res.data)
+        cnt1 += 1
+        if(cnt1 == length1 && cnt2 == length2){
+          _this.setData({
+            infoList:{
+              join: join,
+              setup: setup,
+            },
+            idList: {
+              join: join_id,
+              setup: setup_id,
+            },
+            loaded: true,
+          })
         }
       })
     }
     for (let id of setup_id){
-      wx.request({
-        method: 'POST',
-        url: app.globalData.SERVER_URL + '/getClubInfo',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        data: {
-          club_id: id
-        },
-        success: (res) => {
-          if(res.data.status == '200 OK'){
-            setup.push(res.data)
-            cnt2 += 1
-            if(cnt1 == length1 && cnt2 == length2){
-              _this.setData({
-                infoList:{
-                  join: join,
-                  setup: setup,
-                },
-                idList: {
-                  join: join_id,
-                  setup: setup_id,
-                },
-                loaded: true,
-              })
-            }
-          }
-          else{
-            console.log('get club info fail', res)
-          }
-        },
-        fail: res => {
-          console.log('get club info fail', res)
+      app.getClubInfo(id, res => {
+        setup.push(res.data)
+        cnt2 += 1
+        if(cnt1 == length1 && cnt2 == length2){
+          _this.setData({
+            infoList:{
+              join: join,
+              setup: setup,
+            },
+            idList: {
+              join: join_id,
+              setup: setup_id,
+            },
+            loaded: true,
+          })
         }
       })
     }

@@ -32,33 +32,15 @@ Page({
       })
     }
     for(let id of resultIds){
-      wx.request({
-        url: app.globalData.SERVER_URL + '/getClubInfo',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        data: {
-          club_id: id,
-        },
-        method: 'POST',
-        success: res => {
-          if(res.data.status == '200 OK'){
-            resultList.push(res.data)
-            cnt += 1
-            if(cnt == length){
-              _this.setData({
-                loaded: true,
-                resultList: resultList,
-                resultIds: resultIds,
-              })
-            }
-          }
-          else{
-            console.log('get search result fail', res)
-          }
-        },
-        fail: res => {
-          console.log('get search result fail', res)
+      app.getClubInfo(id, res => {
+        resultList.push(res.data)
+        cnt += 1
+        if(cnt == length){
+          _this.setData({
+            loaded: true,
+            resultIds: resultIds,
+            resultList: resultList,
+          })
         }
       })
     }

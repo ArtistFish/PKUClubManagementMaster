@@ -114,37 +114,8 @@ Page({
     wx.showLoading({
       title: '创建中',
     })
-    wx.request({
-      url: app.globalData.SERVER_URL + '/createClub',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: {
-        club_name: this.data.name,
-        club_description: this.data.description,
-        club_president_user_id: app.globalData.openid,
-      },
-      method: 'POST',
-      success: (res) => {
-        wx.hideLoading()
-        console.log('create club success', res)
-        if(res.data.status == "200 OK"){
-          wx.showToast({
-            title: '创建成功',
-          })
-        }
-        else{
-          wx.showToast({
-            title: '创建失败',
-          })
-        }
-      },
-      fail: () => {
-        wx.hideLoading()
-        wx.showToast({
-          title: '创建失败',
-        })
-      } 
+    app.createClub(this.data.name, this.data.description, res => {
+      wx.hideLoading()
     })
   },
   /**

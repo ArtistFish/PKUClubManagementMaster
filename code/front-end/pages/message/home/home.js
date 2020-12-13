@@ -19,7 +19,7 @@ Component({
   lifetimes: {
     ready: function(e){
       let _this = this
-      app.refreshMessageList(res => {
+      app.getMessages(res => {
         let send_message_list = res.data.send_message_list
         let receive_message_list = res.data.receive_message_list
         let messageList = {inform: {receive: [], send: []}, reply: {receive: [], send: []}, system: {receive: [], send: []}}
@@ -42,8 +42,9 @@ Component({
   methods: {
     tapMessage: function(e){
       let tabCur = this.data.tabCur
+      let kind = e.currentTarget.dataset.kind
       let index = e.currentTarget.dataset.index
-      let messageList = this.data.messageList[tabCur]
+      let messageList = this.data.messageList[tabCur][kind]
       wx.showModal({
         title: messageList[index].title,
         content: messageList[index].content,
@@ -54,33 +55,6 @@ Component({
     {
       this.setData({
         tabCur:e.currentTarget.dataset.list
-      })
-    },
-    // ListTouch触摸开始
-    ListTouchStart(e) {
-      this.setData({
-        ListTouchStart: e.touches[0].pageX
-      })
-    },
-    ListTouchMove(e) {
-      this.setData({
-        ListTouchDirection: e.touches[0].pageX - this.data.ListTouchStart > 0 ? 'right' : 'left'
-      })
-    },
-  
-    // ListTouch计算滚动
-    ListTouchEnd(e) {
-      if (this.data.ListTouchDirection =='left'){
-        this.setData({
-          modalName: e.currentTarget.dataset.index
-        })
-      } else {
-        this.setData({
-          modalName: null
-        })
-      }
-      this.setData({
-        ListTouchDirection: null
       })
     },
   },

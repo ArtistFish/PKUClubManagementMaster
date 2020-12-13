@@ -2,15 +2,19 @@
 <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">我的活动</view></cu-custom>
 <scroll-view scroll-x class="bg-white nav">
   <view class="flex text-center">
-    <view class="cu-item flex-sub {{tabCur=='join'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='join'>
-      我参与的
+    <view class="cu-item flex-sub {{tabCur=='registered'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='registered'>
+      我报名的
+    </view>
+    <view class="cu-item flex-sub {{tabCur=='selected'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='selected'>
+      我参加的
     </view>
     <view class="cu-item flex-sub {{tabCur=='setup'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='setup'>
       我发布的
     </view>
   </view>
 </scroll-view>
-<scroll-view scroll-y class="list bg-gray">
+<loading wx:if="{{!loaded}}"></loading>
+<scroll-view wx:else scroll-y class="list bg-gray">
   <view class="flex flex-direction background-text">
     <view class="cu-bar margin-top-sm bg-white solid-bottom">
       <view class="action">

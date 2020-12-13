@@ -13,6 +13,7 @@ Component({
     clubTotal: 0,
     activityTotal: 0,
     collectTotal: 0,
+    loaded: false,
   },
 
   /**
@@ -67,46 +68,99 @@ Component({
       }
     },
     ready: function(e){
-      let _this = this
-      app.refreshUserInfo(res => {
-        let club_list = []
-        let activity_list = []
-        let collect_list = []
-        club_list.push(...(res.data.associated_club_id.join))
-        club_list.push(...(res.data.associated_club_id.setup))
-        club_list = Array.from(new Set(club_list))
-        activity_list.push(...(res.data.associated_activity_id.join))
-        activity_list.push(...(res.data.associated_activity_id.setup))
-        activity_list = Array.from(new Set(activity_list))
-        collect_list.push(...(res.data.associated_club_id.star))
-        collect_list.push(...(res.data.associated_activity_id.star))
-        collect_list = Array.from(new Set(collect_list))
-        let max = Math.max(club_list.length, activity_list.length, collect_list.length)
-        max = Math.min(max, 20)
+      let load_cnt = 0
+      let associated_club_id = {join: [], setup: []}
+      let associated_activity_id = {registered: [], selected: []}
+      app.getClubListOfUser(app.globalData.openid, res => {
+        console.log(res)
+        let president_club_list = res.data.president_club_list
+        let manager_club_list = res.data.manager_club_list
+        let member_club_list = res.data.member_club_list
+        for(let club of president_club_list){
+          let id = club[0]
+          associated_club_id.setup.push(id)
+        }
+        for(let club of manager_club_list){
+          let id = club[0]
+          associated_club_id.join.push(id)
+        }
+        for(let club of member_club_list){
+          let id = club[0]
+          associated_club_id.join.push(id)
+        }
+        associated_club_id.join = Array.from(new Set(associated_club_id.join))
         let i = 0
+        let total = associated_club_id.setup.length + associated_club_id.join.length
+        let _this = this
         function func(){
-          if(i < max){
-            setTimeout(()=>{
+          if(i < total){
+            setTimeout(() => {
               _this.setData({
-                clubTotal: i,
-                activityTotal: i,
-                collectTotal: i,
+                clubTotal: i
               })
               i += 1
               func()
-            }, 40)
+            }, 30)
           }
           else{
             _this.setData({
-              clubTotal: club_list.length,
-              activityTotal: activity_list.length,
-              collectTotal: collect_list.length,
-              associated_club_id: res.data.associated_club_id,
-              associated_activity_id: res.data.associated_activity_id,
+              clubTotal: total
             })
           }
         }
         func()
+        load_cnt += 1
+        if(load_cnt == 2){
+          _this.setData({
+            associated_club_id: associated_club_id,
+            associated_activity_id, associated_activity_id,
+            loaded: true,
+          })
+        }
+      })
+      app.getActivityListOfUser(app.globalData.openid, res => {
+        console.log(res)
+        let registered_activity_list = res.data.registered_activity_list
+        let selected_activity_list = res.data.selected_activity_list
+        for(let activity of registered_activity_list){
+          let id = activity[0]
+          associated_activity_id.registered.push(id)
+        }
+        for(let activity of selected_activity_list){
+          let id = activity[0]
+          associated_activity_id.selected.push(id)
+        }
+        let temp = associated_activity_id.registered
+        temp.push(...associated_activity_id.selected)
+        temp = Array.from(new Set(temp))
+        let i = 0
+        let total = temp.length
+        let _this = this
+        function func(){
+          if(i < total){
+            setTimeout(() => {
+              _this.setData({
+                activityTotal: i
+              })
+              i += 1
+              func()
+            }, 30)
+          }
+          else{
+            _this.setData({
+              activityTotal: total
+            })
+          }
+        }
+        func()
+        load_cnt += 1
+        if(load_cnt == 2){
+          _this.setData({
+            associated_club_id: associated_club_id,
+            associated_activity_id, associated_activity_id,
+            loaded: true,
+          })
+        }
       })
     }
   },
