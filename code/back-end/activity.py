@@ -76,7 +76,7 @@ class Activity():
     
     def add_registered_people(self, registered_wxid):
         if not registered_wxid in self.registered_people_list:
-            registered_people_list.append(registered_wxid)
+            self.registered_people_list.append(registered_wxid)
             return True
         else:
             return False
