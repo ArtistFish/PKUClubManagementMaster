@@ -237,6 +237,47 @@ def getRelatedClubList():
     return json.dumps({'status':'200 OK','related_club_list':related_club_list})
 
 '''
+API: getClubListOfUser
+输入用户wxid，返回用户加入的社团
+'''
+@app.route('/gp10/getClubListOfUser', methods=['POST'])
+def getClubListOfUser():
+    wxid = request.form.get("wx_id")
+
+    # 获取用户作为社长的社团
+    president_club_list = []
+    datamanager = DataManager(DataType.club)
+    res = datamanager.getList()
+    for club in res:
+        if club[3] == wxid:
+            president_club_list.append((club[0], club[1]))
+
+    #获取用户作为骨干的社团
+    manager_club_list = []
+    for club in res:
+        club_id = club[0]
+        datamanager_club_managers = DataManager(DataType.club_managers)
+        res_club_managers = datamanager_club_managers.getSlaveList(club_id)
+
+        for manager in res_club_managers:
+            if manager[1] == wxid:
+                manager_club_list.append((club[0], club[1]))
+
+    #获取用户作为成员的社团
+    member_club_list = []
+    for club in res:
+        club_id = club[0]
+        datamanager_club_members = DataManager(DataType.club_members)
+        res_club_members = datamanager_club_members.getSlaveList(club_id)
+
+        for member in res_club_members:
+            if member[1] == wxid:
+                member_club_list.append((club[0], club[1]))
+
+    return json.dumps({'status': '200 OK', 'president_club_list': president_club_list,
+                       'manager_club_list': manager_club_list, 'member_club_list': member_club_list})
+
+'''
 API:
 Function: sendMessage(wx_id_sender, wx_id_receiver, type, title, content)
 Return: {'status': status}
