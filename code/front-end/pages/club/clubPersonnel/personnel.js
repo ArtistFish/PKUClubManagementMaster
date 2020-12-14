@@ -20,22 +20,22 @@ Component({
       let manager_detail_list = []
       for (let person_id of member_list) {
         member_detail_list.push({
-          id: person_id,
-          name: person_id,
+          id: person_id[1],
+          name: person_id[1].substr(0, 5),
           duty: "社团成员",
           avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10002.jpg'
         })
       }
       manager_detail_list.push({
-        id: president_id,
-        name: president_id,
+        id: president_id[1],
+        name: president_id.substr(0, 5),
         duty: "会长",
         avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10002.jpg'
       })
       for (let person_id of manager_list) {
         manager_detail_list.push({
-          id: person_id,
-          name: person_id,
+          id: person_id[1],
+          name: person_id[1].substr(0, 5),
           duty: "管理员",
           avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10002.jpg'
         })

@@ -11,7 +11,8 @@
     "pages/userInfo/starlist/starlist",
     "pages/userInfo/authorizationstatus/authorizationstatus",
     "pages/playground/signup/signup",
-    "pages/playground/search/search"
+    "pages/playground/search/search",
+    "pages/club/frontpage/frontpage"
   ],
   "window": {
     "backgroundTextStyle": "light",

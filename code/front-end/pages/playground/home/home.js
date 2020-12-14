@@ -145,36 +145,14 @@ Component({
         let club_id = this.data.clubList[index].club_id
         app.addMemberToClub(club_id, res => {
           if(res.data.status != '200 OK'){
-
-          }
-        })
-        wx.request({
-          url: app.globalData.SERVER_URL + '/addMemberToClub',
-          header: {
-            'content-type': 'application/x-www-form-urlencoded',
-          },
-          data: {
-            club_id: club_id,
-            wx_id: app.globalData.openid
-          },
-          method: 'POST',
-          success: res => {
-            console.log(res)
-            if(res.data.status != '200 OK'){
-              wx.showToast({
-                title: '加入社团失败',
-              })
-            }
-            else{
-              wx.showToast({
-                title: '成功加入社团',
-              })
-            }
-          },
-          fail: res => {
-            console.log(res)
             wx.showToast({
               title: '加入社团失败',
+              image: '/images/fail.png',
+            })
+          }
+          else{
+            wx.showToast({
+              title: '加入社团成功',
             })
           }
         })

@@ -1,9 +1,9 @@
 {
   "usingComponents": {
-    "basicInfo": "/pages/clubInfo/info",
-    "activities": "/pages/clubActivities/activities",
-    "moments": "/pages/clubMoments/moments",
-    "personnel": "/pages/clubPersonnel/personnel",
-    "loading": "/pages/loading/loading"
+    "basicInfo": "/pages/club/clubInfo/info",
+    "activities": "/pages/club/clubActivities/activities",
+    "moments": "/pages/club/clubMoments/moments",
+    "personnel": "/pages/club/clubPersonnel/personnel",
+    "loading": "/pages/club/loading/loading"
    }
 }
