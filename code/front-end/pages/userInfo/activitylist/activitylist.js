@@ -33,7 +33,6 @@ Page({
       })
     }
     for(let id of associated_activity_ids.registered){
-      console.log(id)
       app.getActivityInfo(id, res => {
         infoList.registered.during.push(res.data)
         cnt1 += 1
@@ -46,7 +45,6 @@ Page({
       })
     }
     for(let id of associated_activity_ids.selected){
-      console.log(id)
       app.getActivityInfo(id, res => {
         infoList.selected.during.push(res.data)
         cnt2 += 1

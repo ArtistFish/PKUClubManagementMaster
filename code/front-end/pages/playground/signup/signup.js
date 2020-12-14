@@ -116,6 +116,11 @@ Page({
     })
     app.createClub(this.data.name, this.data.description, res => {
       wx.hideLoading()
+      if(res.data.status == '200 OK'){
+        wx.showToast({
+          title: '创建成功',
+        })
+      }
     })
   },
   /**

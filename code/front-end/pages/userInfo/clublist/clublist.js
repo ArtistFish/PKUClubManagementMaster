@@ -16,6 +16,7 @@ Page({
       setup: [],
     },
     loaded: false,
+    hided: false,
   },
   tabSelect: function(e){
     this.setData({
@@ -109,14 +110,47 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    if(this.data.hided){
+      // hided为true则表示刚从创建社团页面返回，需要进行刷新
+      let _this = this
+      _this.setData({
+        loaded: false,
+      })
+      let idList = {join: _this.data.idList.join, setup: []}
+      let infoList = {join: _this.data.infoList.join, setup: []}
+      app.getClubListOfUser(app.globalData.openid, res => {
+        let cnt = 0
+        let length = res.data.president_club_list.length
+        let setup_clubs = res.data.president_club_list
+        for(let club of setup_clubs){
+          let id = club[0]
+          idList.setup.push(id)
+          app.getClubInfo(id, res => {
+            infoList.setup.push(res.data)
+            cnt += 1
+            if(cnt == length){
+              _this.setData({
+                infoList: infoList,
+                idList: idList,
+                loaded: true,
+              })
+            }
+          })
+        }
+      })
+    }
+    this.setData({
+      hided: false,
+    })
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    this.setData({
+      hided: true,
+    })
   },
 
   /**
