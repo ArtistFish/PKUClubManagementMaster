@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "userInfo": "/pages/userInfo/home/home"
+  }
+}

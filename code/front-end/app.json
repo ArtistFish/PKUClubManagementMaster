@@ -12,7 +12,9 @@
     "pages/userInfo/authorizationstatus/authorizationstatus",
     "pages/playground/signup/signup",
     "pages/playground/search/search",
-    "pages/club/frontpage/frontpage"
+    "pages/club/frontpage/frontpage",
+    "pages/activity/activity_detail/activity_detail",
+    "pages/activity/createActivity/createActivity"
   ],
   "window": {
     "backgroundTextStyle": "light",

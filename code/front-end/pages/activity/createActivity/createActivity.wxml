@@ -1,0 +1,112 @@
+<!--pages/userInfo/authorization/authorization.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">发布活动</view></cu-custom>
+<form>
+	<view class="cu-form-group margin-top">
+		<view class="title">活动名称</view>
+		<input placeholder="例：徒步" bindinput="editInput" data-cur="name"></input>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+    <view class="title">活动简介</view>
+    <view class="margin-left-sm"></view>
+		<textarea maxlength="-1" bindinput="editInput" placeholder="例：周末香山徒步" data-cur="description"></textarea>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+    <view class="title">活动地点</view>
+    <view class="margin-left-sm"></view>
+		<textarea maxlength="-1" bindinput="editInput" placeholder="例：香山" data-cur="place"></textarea>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+    <view class="title">活动人数</view>
+    <view class="margin-left-sm"></view>
+		<textarea maxlength="-1" bindinput="editInput" placeholder="例：40" data-cur="max_number"></textarea>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+    <view class="title">活动费用</view>
+    <view class="margin-left-sm"></view>
+		<textarea maxlength="-1" bindinput="editInput" placeholder="例：10" data-cur="fee"></textarea>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+		<view class="title">开始时间</view>
+		<input placeholder="例：2020-12-13 13:00:00" bindinput="editInput" data-cur="start_time"></input>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+		<view class="title">结束时间</view>
+		<input placeholder="例：2020-12-13 13:00:00" bindinput="editInput" data-cur="end_time"></input>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+		<view class="title">报名截止时间</view>
+		<input placeholder="例：2020-12-13 13:00:00" bindinput="editInput" data-cur="sign_up_ddl"></input>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+		<view class="title">抽签公布时间</view>
+		<input placeholder="例：2020-12-13 13:00:00" bindinput="editInput" data-cur="lottery_time"></input>
+  </view>
+</form>
+<form>
+	<view class="cu-form-group margin-top">
+		<view class="title">抽签方式</view>
+		<input placeholder="例：f" bindinput="editInput" data-cur="lottery_method"></input>
+  </view>
+</form>
+<view class="cu-bar bg-white margin-top">
+		<view class="action">
+			上传活动图片
+		</view>
+		<view class="action">
+			{{coverImgList.length}}/1
+		</view>
+</view>
+<view class="cu-form-group">
+  <view class="grid col-4 grid-square flex-sub">
+    <view class="bg-img" wx:for="{{coverImgList}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{coverImgList[index]}}" data-cur="cover">
+      <image src='{{coverImgList[index]}}' mode='aspectFill'></image>
+      <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}" data-cur="cover">
+        <text class="cuIcon-close"></text>
+      </view>
+    </view>
+    <view class="solids" bindtap="ChooseImage" wx:if="{{coverImgList.length<1}}" data-cur="cover">
+      <text class="cuIcon-cameraadd"></text>
+    </view>
+  </view>
+</view>
+<view class="cu-bar bg-white margin-top">
+		<view class="action">
+			上传活动介绍图片
+		</view>
+		<view class="action">
+			{{displayImgList.length}}/9
+		</view>
+</view>
+<view class="cu-form-group">
+  <view class="grid col-4 grid-square flex-sub">
+    <view class="bg-img" wx:for="{{displayImgList}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{displayImgList[index]}}" data-cur="display">
+      <image src='{{displayImgList[index]}}' mode='aspectFill'></image>
+      <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}" data-cur="display">
+        <text class="cuIcon-close"></text>
+      </view>
+    </view>
+    <view class="solids" bindtap="ChooseImage" wx:if="{{displayImgList.length<9}}" data-cur="display">
+      <text class="cuIcon-cameraadd"></text>
+    </view>
+  </view>
+</view>
+<view class="flex justify-center margin-top" bind:tap="tapCommit">
+  <button class="cu-btn bg-cyan round lg shadow">提交发布申请</button>
+</view>
+<view class="cu-tabbar-height"></view>

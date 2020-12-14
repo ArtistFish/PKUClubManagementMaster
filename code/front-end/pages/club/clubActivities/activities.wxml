@@ -1,11 +1,12 @@
 <view class="cu-list margin-top-xs">
       <view class="s-list" >
-        <view class="s-item" wx:for="{{clubList}}" wx:key="key">
+        <view class="s-item" wx:for="{{activityList}}" wx:key="key" data-index="{{index}}" bindtap="tapActivity">
           <image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg" class="si-img"></image>
-          <view class="si-title">活动{{index}}</view>
-          <view class="si-data">2020.12.01 - 2020.12.22</view>
+          <view class="si-title">{{item.activity_name}}</view>
+          <view class="si-data">开始时间:{{item.activity_start_time}}</view>
+          <view class="si-data">报名截止:{{item.activity_sign_up_ddl}}</view>
           <view class="si-other">
-            <view class="sio-price">￥6.66</view>
+            <view class="sio-price">￥{{item.activity_fee}}</view>
             <view class="sio-btn">立即报名</view>
           </view>
         </view>
@@ -16,5 +17,5 @@
   <!-- 只是占个地方 -->
 </view>
 <view wx:if="userIsPresident || userIsManager" class="cu-bar btn-group feet">
-  <button class="cu-btn bg-yellow lg shadow-blur round">创建活动</button>
+  <button class="cu-btn bg-yellow lg shadow-blur round" bindtap="createActivity">创建活动</button>
 </view>

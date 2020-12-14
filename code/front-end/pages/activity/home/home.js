@@ -55,7 +55,8 @@ Component({
     gridCol: 2,
     tabCur: 'all',
     loaded: false,
-    activity_list: [],
+    activityList: [],
+    activityIds: [],
   },
   options:{
     addGlobalClass: true
@@ -72,6 +73,7 @@ Component({
             resolve(res.data.activity_list)
       })
       }).then(activity_list => {
+        let activityIds = []
         let activityList = []
         let cnt = 0
         let length = activity_list.length
@@ -82,13 +84,21 @@ Component({
         }
         for(let activity of activity_list){
           let id = activity[0]
+          activityIds.push(id)
           app.getActivityInfo(id, res => {
             cnt += 1
+            let start_time = res.data.activity_start_time
+            let end_time = res.data.activity_end_time
+            let sign_up_ddl = res.data.activity_sign_up_ddl
+            res.data.activity_start_time = new Date(start_time).toLocaleDateString()
+            res.data.activity_end_time = new Date(end_time).toLocaleDateString()
+            res.data.activity_sign_up_ddl = new Date(sign_up_ddl).toLocaleDateString()
             activityList.push(res.data)
             if(cnt == length){
               _this.setData({
                 activityList: activityList,
                 loaded: true,
+                activityIds: activityIds,
               })
             }
           })
@@ -102,7 +112,7 @@ Component({
     tapActivity: function(e){
       let index = e.currentTarget.dataset.index
       wx.navigateTo({
-        url: '/pages/activity/detail/detail?activity_id=' + app.globalData.activityList[index]
+        url: '/pages/activity/activity_detail/activity_detail?activity_id=' + this.data.activityIds[index]
       })
     },
     tabSelect: function(e){
@@ -112,6 +122,16 @@ Component({
     },
     tapSignup: function(e){
       console.log(e)
+    },
+    tapSearch: function(){
+      app.createActivity('守卫银月城', '银月城永不陷落', 31, '北京', '2020-12-13 12:20:00', '2020-12-13 12:22:00', 
+      '2020_12_13 13:00:00', 'f', 10, 100, '2020-12-13 12:20:00', 'thu', 'pku', res => {
+        if(res.data.status == '200 OK'){
+          wx.showToast({
+            title: '创建活动成功',
+          })
+        }
+      })
     }
   }
 })

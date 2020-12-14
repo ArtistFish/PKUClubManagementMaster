@@ -1,0 +1,53 @@
+<!--pages/activity_detail/activity_detail.wxml-->
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view></cu-custom>
+<scroll-view scroll-y class="scrollPage">
+  <image src="{{top_src}}"  mode='widthFix' class='png' style='width:100%;height:286rpx'>
+  </image> 
+  <view style="text-align:center ">
+    <text style="font-size:40rpx;color:orange">{{activity.name}}\n</text>
+    <text style=" font-size:40rpx; color:red "  >￥{{activity.fee}}</text>
+   <!-- <image src="/images/yellow_star.png" style="width:10% hight:10%"></image>-->
+  </view>
+      
+   
+  <view class="cu-list menu card-menu margin-top-xs margin-bottom-xs shadow-lg radius">  
+   <view class="cu-item ">
+      <view class="content">
+        <text style="font-weight:900"> 报名截止时间： </text>
+        <text>{{activity.sign_up_ddl}}\n</text>
+        <text style="font-weight:900"> 活动起止时间： </text>
+        <text>{{activity.begin_time}}~{{activity.end_time}}\n</text>
+      </view>
+   </view>
+   <view class="cu-item margin-top-xs">
+      <view class="content ">
+        <text style="font-weight:900"> 主办方： </text>
+        <text>{{activity.sponsor}}\n</text>
+        <text style="font-weight:900"> 承办方： </text>
+        <text>{{activity.undertaker}}\n</text>
+      </view>
+   </view>
+   <view class="cu-item margin-top-xs">
+      <view class="content">
+      <text style="font-weight:900"> 活动简介：\n </text>
+      <text>{{activity.description}}</text>
+      </view>
+   </view>
+
+   <view class="cu-bar tabbar bg-white foot justify-start ">  
+      <button class="cu-btn lg bg-yellow  round  "  bindtap="sign_up"  style="width: 60%" wx:if="{{!sign_up_click}}">立即报名</button>
+      <button class="cu-btn lg bg-grey  round  "   style="width: 60%" wx:else>已报名</button>
+      <view class="cuIcon-favorfill  padding-left-xl "  style="color:grey" size="100" bindtap="click" wx:if="{{!isClick}}"></view>
+      <view class="cuIcon-favorfill  padding-left-xl "  style="color:yellow" size="100" bindtap="click" wx:else></view>
+      <text style="font-size:30rpx">{{isClick?"已收藏":"收藏"}}</text>
+   </view>
+
+   <view class="cu-list margin-top-xs">
+      <view wx:for="{{activity_List}}"  style="width:100%"  >
+        <image  src="{{item.url}}">
+        </image>
+      </view>
+    </view>   
+  </view>
+  <view class="cu-tabbar-height"></view>
+</scroll-view>
