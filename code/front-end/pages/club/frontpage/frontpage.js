@@ -27,39 +27,40 @@ Page({
       loaded_manager: false,
       loaded_member: false
     })
-    app.getClubInfo(club_id, function(res)
-    {
-      let cur_club = res.data
-      app.globalData.current_club = cur_club
-      app.globalData.current_club.club_id = club_id
-      console.log(cur_club)
-      _this.setData(
-        {
-          loaded_info: true,
-          club_name: cur_club.club_name,
-          club_tag: cur_club.club_tag,
-        }
-      )
-    })
-    app.getClubMembers(club_id, res=>{
-      let member_list = res.data.club_member_list
-      app.globalData.current_club.member_list = member_list
-      // console.log('member', res)
-      _this.setData(
-        {
-          loaded_member: true,
-          member_number: member_list.length + 1
+    new Promise((resolve, reject) => {
+      app.getClubInfo(club_id, function(res){
+        let cur_club = res.data
+        app.globalData.current_club = cur_club
+        app.globalData.current_club.club_id = club_id
+        // console.log(cur_club)
+        _this.setData({
+            loaded_info: true,
+            club_name: cur_club.club_name,
+            club_tag: cur_club.club_tag,
         })
-    })
-    app.getClubManagers(club_id, res=>{
-      let manager_list = res.data.club_manager_list
-      app.globalData.current_club.manager_list = manager_list
-      // console.log('manager', res)
-      _this.setData(
-        {
-          loaded_manager: true,
-          member_number: _this.data.member_number + manager_list.length
-        })
+        resolve()
+      })
+    }).then(() => {
+      app.getClubMembers(club_id, res=>{
+        let member_list = res.data.club_member_list
+        app.globalData.current_club.member_list = member_list
+        // console.log('member', res)
+        _this.setData(
+          {
+            loaded_member: true,
+            member_number: _this.data.member_number + member_list.length + 1
+          })
+      })
+      app.getClubManagers(club_id, res=>{
+        let manager_list = res.data.club_manager_list
+        app.globalData.current_club.manager_list = manager_list
+        // console.log('manager', res)
+        _this.setData(
+          {
+            loaded_manager: true,
+            member_number: _this.data.member_number + manager_list.length
+          })
+      })
     })
   },
 

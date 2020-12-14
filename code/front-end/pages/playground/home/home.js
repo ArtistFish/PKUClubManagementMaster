@@ -92,9 +92,9 @@ Component({
         }
         for(let club of club_list){
           let id = club[0]
-          clubIds.push(id)
           app.getClubInfo(id, res => {
             cnt += 1
+            clubIds.push(id)
             clubList.push(res.data)
             if(cnt == length){
               _this.setData({
