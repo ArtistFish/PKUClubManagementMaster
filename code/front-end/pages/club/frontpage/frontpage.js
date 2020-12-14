@@ -9,6 +9,7 @@ Page({
     TabCur: 0,
     scrollLeft:0,
     Tabs: ["社团详情", "社团活动", "社团动态", "社团人员"],
+    member_number: 0,
   },
   tabSelect(e) {
     this.setData({
