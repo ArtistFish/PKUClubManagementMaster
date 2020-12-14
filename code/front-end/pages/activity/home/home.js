@@ -84,7 +84,6 @@ Component({
         }
         for(let activity of activity_list){
           let id = activity[0]
-          activityIds.push(id)
           app.getActivityInfo(id, res => {
             cnt += 1
             let start_time = res.data.activity_start_time
@@ -94,6 +93,7 @@ Component({
             res.data.activity_end_time = new Date(end_time).toLocaleDateString()
             res.data.activity_sign_up_ddl = new Date(sign_up_ddl).toLocaleDateString()
             activityList.push(res.data)
+            activityIds.push(id)
             if(cnt == length){
               _this.setData({
                 activityList: activityList,
