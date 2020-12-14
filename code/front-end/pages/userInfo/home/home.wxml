@@ -25,25 +25,25 @@
   </view>
   <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
    <view class="cu-item arrow">
-     <view class="content" bind:tap="navigation" data-url="../userInfo/detail/detail">
+     <view class="content" bind:tap="navigation" data-url="../userInfo/detail/detail" data-cur="detail">
       <text class="cuIcon-people"></text>
       <text> 个人信息 </text>
       </view>
    </view>
-   <view class="cu-item arrow" bind:tap="navigation" data-url="../userInfo/authorizationstatus/authorizationstatus">
+   <view class="cu-item arrow" bind:tap="navigation" data-url="../userInfo/authorizationstatus/authorizationstatus" data-cur="authorizationstatus">
      <view class="content">
       <text class="cuIcon-friendfamous"></text>
       <text> 身份认证 </text>
     </view>
    </view>
-   <view class="cu-item arrow" bind:tap="navigation" data-url="../userInfo/feedback/feedback">
+   <view class="cu-item arrow" bind:tap="navigation" data-url="../userInfo/feedback/feedback" data-cur="feedback">
      <view class="content">
       <text class="cuIcon-repair"></text>
       <text> 意见反馈 </text>
       </view>
    </view>
    <view class="cu-item arrow">
-     <view class="content" bind:tap="navigation" data-url="../userInfo/about/about">
+     <view class="content" bind:tap="navigation" data-url="../userInfo/about/about" data-cur="about">
       <text class="cuIcon-group"></text>
       <text> 关于我们 </text>
       </view>

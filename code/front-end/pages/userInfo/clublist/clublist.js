@@ -36,7 +36,7 @@ Page({
   tapClub: function(e){
     let index = e.currentTarget.dataset.index
     wx.navigateTo({
-      url: '/pages/playground/frontPage/frontPage?club_id=' + this.data.idList[this.data.tabCur][index],
+      url: '/pages/club/frontpage/frontpage?club_id=' + this.data.idList[this.data.tabCur][index],
     })
   },
   /**

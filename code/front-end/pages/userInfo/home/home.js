@@ -31,16 +31,19 @@ Component({
     },
     navigation: function(e){
       let cur = e.currentTarget.dataset.cur
-      let url = '/pages/userInfo/' + cur + '/' + cur + '?obj='
+      let url = '/pages/userInfo/' + cur + '/' + cur
       let option = undefined
       if(cur == 'clublist'){
-        option = JSON.stringify(this.data.associated_club_id)
+        option = '?obj=' + JSON.stringify(this.data.associated_club_id)
       }
       else if(cur == 'activitylist'){
-        option = JSON.stringify(this.data.associated_activity_id)
+        option = '?obj=' + JSON.stringify(this.data.associated_activity_id)
+      }
+      else if(cur == 'starlist'){
+        option = '?obj=' + JSON.stringify([this.data.associated_club_id, this.data.associated_activity_id])
       }
       else{
-        option = JSON.stringify([this.data.associated_club_id, this.data.associated_activity_id])
+        option = ''
       }
       url += option
       wx.navigateTo({
