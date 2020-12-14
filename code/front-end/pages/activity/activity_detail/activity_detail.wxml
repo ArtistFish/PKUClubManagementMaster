@@ -19,7 +19,7 @@
         <text>{{activity.begin_time}}~{{activity.end_time}}\n</text>
       </view>
    </view>
-   <view class="cu-item margin-top-xs">
+   <view class="cu-item margin-top-lg">
       <view class="content ">
         <text style="font-weight:900"> 主办方： </text>
         <text>{{activity.sponsor}}\n</text>
@@ -27,7 +27,7 @@
         <text>{{activity.undertaker}}\n</text>
       </view>
    </view>
-   <view class="cu-item margin-top-xs">
+   <view class="cu-item margin-top-lg">
       <view class="content">
       <text style="font-weight:900"> 活动简介：\n </text>
       <text>{{activity.description}}</text>

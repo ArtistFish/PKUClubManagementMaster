@@ -28,17 +28,17 @@
       "disablePlugins": [],
       "outputPath": ""
     },
-    "enableEngineNative": false,
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
+    "enableEngineNative": false,
     "minifyWXSS": false
   },
   "compileType": "miniprogram",
   "libVersion": "2.4.2",
-  "appid": "wxb668543108717363",
+  "appid": "wx3be057c7b730f0de",
   "projectname": "ColorUI-template",
   "debugOptions": {
     "hidedInDevtools": []
