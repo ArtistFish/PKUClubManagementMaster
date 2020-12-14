@@ -124,14 +124,7 @@ Component({
       console.log(e)
     },
     tapSearch: function(){
-      app.createActivity('守卫银月城', '银月城永不陷落', 31, '北京', '2020-12-13 12:20:00', '2020-12-13 12:22:00', 
-      '2020_12_13 13:00:00', 'f', 10, 100, '2020-12-13 12:20:00', 'thu', 'pku', res => {
-        if(res.data.status == '200 OK'){
-          wx.showToast({
-            title: '创建活动成功',
-          })
-        }
-      })
+      
     }
   }
 })

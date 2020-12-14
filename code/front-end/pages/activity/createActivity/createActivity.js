@@ -127,9 +127,7 @@ Page({
           title: '发布活动成功',
           duration: 1000,
         })
-        wx.redirectTo({
-          url: '/pages/club/frontpage/frontpage?club_id=' + app.globalData.current_club.club_id,
-        })
+        wx.navigateBack()
       }
     })
   },

@@ -32,7 +32,7 @@ Component({
           })
         }
         for(let activity of activity_list){
-          let id = activity[0]
+          let id = activity[1]
           activityIds.push(id)
           app.getActivityInfo(id, res => {
             cnt += 1
