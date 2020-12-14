@@ -25,7 +25,7 @@
 <view wx:if="{{userIsPresident || userIsManager}}" class="cu-bar btn-group feet">
   <button class="cu-btn bg-grey lg shadow-blur round" bindtap="changeClubInfo">修改社团信息</button>
 </view>
-<view wx:elif="{{!userIsMember}}" class="cu-bar btn-group feet">
+<view wx:elif="{{!(userIsMember || userIsManager || userIsPresident)}}" class="cu-bar btn-group feet">
   <button class="cu-btn bg-green shadow-blur round" bindtap="joinClub">加入社团</button>
   <button class="cu-btn bg-blue shadow-blur round" bindtap="likeClub">收藏社团</button>
 </view>

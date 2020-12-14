@@ -26,8 +26,13 @@ Component({
             "入会费用": "100万",
             "联系我们": "110"
           },
+          userIsPresident: app.globalData.userIsPresident,
+          userIsManager: app.globalData.userIsManager,
+          userIsMember: app.globalData.userIsMember,
+          userName: app.globalData.openid.slice(-5),
         }
       )
+      console.log(app.globalData.userIsMember)
     }
   },
   /**
@@ -64,10 +69,6 @@ Component({
       type: 'image',
       url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'
     }],
-    userIsPresident: app.globalData.userIsPresident,
-    userIsManager: app.globalData.userIsManager,
-    userIsMember: app.globalData.userIsMember,
-    userName: app.globalData.userName,
   },
 
   /**

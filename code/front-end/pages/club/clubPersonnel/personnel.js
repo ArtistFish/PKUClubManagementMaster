@@ -12,37 +12,51 @@ Component({
   },
   lifetimes: {
     ready: function() {
+      this.setData(
+        {
+          userIsPresident: app.globalData.userIsPresident,
+          userIsManager: app.globalData.userIsManager,
+          userIsMember: app.globalData.userIsMember,
+          userName: app.globalData.openid.slice(-5),
+        }
+      )
       console.log(app.globalData.current_club)
       let member_list = app.globalData.current_club.member_list
       let manager_list = app.globalData.current_club.manager_list
       let president_id = app.globalData.current_club.club_president_id
       let member_detail_list = []
       let manager_detail_list = []
+      let count = 0
       for (let person_id of member_list) {
+        count += 1
         member_detail_list.push({
           id: person_id[1],
-          name: person_id[1].substr(0, 5),
+          name: person_id[1].slice(-5),
           duty: "社团成员",
-          avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10002.jpg'
+          avatar: `https://ossweb-img.qq.com/images/lol/web201310/skin/big${10000+count%9}.jpg`
         })
       }
+      count += 1
       manager_detail_list.push({
         id: president_id[1],
-        name: president_id.substr(0, 5),
+        name: president_id.slice(-5),
         duty: "会长",
-        avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10002.jpg'
+        avatar: `https://ossweb-img.qq.com/images/lol/web201310/skin/big${10000+count%9}.jpg`
       })
       for (let person_id of manager_list) {
+        count += 1
         manager_detail_list.push({
           id: person_id[1],
-          name: person_id[1].substr(0, 5),
+          name: person_id[1].slice(-5),
           duty: "管理员",
-          avatar: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big10002.jpg'
+          avatar: `https://ossweb-img.qq.com/images/lol/web201310/skin/big${10000+count%9}.jpg`
         })
       }
       this.setData({
         "persons.manager.personlist": manager_detail_list,
+        "persons.manager.personlist_show": manager_detail_list.slice(0, 3).reverse(),
         "persons.member.personlist": member_detail_list,
+        "persons.member.personlist_show": member_detail_list.slice(0, 3).reverse(),
       })
     }
   },
@@ -51,9 +65,6 @@ Component({
    */
   data: {
     modalShow: false,
-    userIsPresident: app.globalData.userIsPresident,
-    userIsManager: app.globalData.userIsManager,
-    userName: app.globalData.userName,
     tabs:[
       "查看个人主页",
       "移交会长",
@@ -171,11 +182,11 @@ Component({
             }
             else if (tabInd === 1)
             {
-              app.sendMessages(app.globalData.openid, this.data.modalId, 0, "移交会长",  "xxx想将社长移交给你", res=>console.log(res))
+              app.sendMessage(app.globalData.openid, this.data.modalId, 0, "移交会长",  "xxx想将社长移交给你", res=>console.log(res))
             }
             else if (tabInd === 2)
             {
-              app.sendMessages(app.globalData.openid, this.data.modalId, 0, "管理员邀请",  "xxx想任命你为社团管理员", res=>console.log(res))
+              app.sendMessage(app.globalData.openid, this.data.modalId, 0, "管理员邀请",  "xxx想任命你为社团管理员", res=>console.log(res))
             }
             else{
               app.deleteManagerFromClub(app.globalData.current_club.club_id, this.data.modalId, res=>console.log(res))

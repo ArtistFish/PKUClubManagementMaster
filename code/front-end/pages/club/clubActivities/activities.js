@@ -12,6 +12,14 @@ Component({
   },
   lifetimes:{
     ready: function(){
+      this.setData(
+        {
+          userIsPresident: app.globalData.userIsPresident,
+          userIsManager: app.globalData.userIsManager,
+          userIsMember: app.globalData.userIsMember,
+          userName: app.globalData.openid.slice(-5),
+        }
+      )
       let _this = this
       new Promise((resolve, reject) => {
         app.getClubActivities(app.globalData.current_club.club_id, res => {
@@ -84,9 +92,6 @@ Component({
       name: 'zrfsb',
       introduce: 'zrfsb'
     }],
-    userIsPresident: app.globalData.userIsPresident,
-    userIsManager: app.globalData.userIsManager,
-    userName: app.globalData.userName
   },
 
   /**

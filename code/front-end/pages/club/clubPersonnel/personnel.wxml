@@ -8,7 +8,7 @@
     </view>
     <view class="action">
       <view class="cu-avatar-group">
-        <view class="cu-avatar round sm" wx:for="{{persons[item].personlist}}" wx:for-item="avatars" 
+        <view class="cu-avatar round sm" wx:for="{{persons[item].personlist_show}}" wx:for-item="avatars" 
         style="background-image:url({{avatars.avatar}});"></view>
       </view>
       <text class="text-grey text-sm">{{persons[item].personlist.length}} 人</text>

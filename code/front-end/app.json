@@ -26,5 +26,6 @@
   "usingComponents": {
     "cu-custom": "/colorui/components/cu-custom"
   },
+  "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

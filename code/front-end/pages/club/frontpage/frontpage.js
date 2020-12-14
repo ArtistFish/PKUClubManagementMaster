@@ -22,6 +22,7 @@ Page({
    */
   onLoad: function (options) {
     let club_id = options.club_id
+    let user_id = app.globalData.openid
     let _this = this
     this.setData({
       loaded_info: false,
@@ -33,6 +34,7 @@ Page({
         let cur_club = res.data
         app.globalData.current_club = cur_club
         app.globalData.current_club.club_id = club_id
+        app.globalData.userIsPresident = (cur_club.club_president_id[1] === user_id)
         // console.log(cur_club)
         _this.setData({
             loaded_info: true,
@@ -45,21 +47,39 @@ Page({
       app.getClubMembers(club_id, res=>{
         let member_list = res.data.club_member_list
         app.globalData.current_club.member_list = member_list
+        app.globalData.userIsMember = false
+        for (let person_id of member_list)
+        {
+          if (person_id[1] === user_id)
+          {
+            app.globalData.userIsMember = true
+            break
+          }
+        }
         // console.log('member', res)
         _this.setData(
           {
             loaded_member: true,
-            member_number: _this.data.member_number + member_list.length + 1
+            member_number: _this.data.member_number + member_list.length
           })
       })
       app.getClubManagers(club_id, res=>{
         let manager_list = res.data.club_manager_list
         app.globalData.current_club.manager_list = manager_list
+        app.globalData.userIsManager = false
+        for (let person_id of manager_list)
+        {
+          if (person_id[1] === user_id)
+          {
+            app.globalData.userIsManager = true
+            break
+          }
+        }
         // console.log('manager', res)
         _this.setData(
           {
             loaded_manager: true,
-            member_number: _this.data.member_number + manager_list.length
+            member_number: _this.data.member_number + manager_list.length + 1
           })
       })
     })

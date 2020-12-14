@@ -1,7 +1,7 @@
 <!--pages/frontpage/frontpage.wxml-->
 <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
   <view slot="backText">返回</view>
-  <!-- <view slot="content">详情</view> -->
+  <view slot="content">社团详情</view>
 </cu-custom>
 <view wx:if="{{loaded_info && loaded_manager && loaded_member}}">
   <view class="grid col-2 padding-sm">
