@@ -45,23 +45,24 @@ Page({
   onLoad: function (options) {
     let _this = this
     let obj = JSON.parse(options.obj)
-    let join_id = obj.join
-    let setup_id = obj.setup
+    let join_id = []
+    let setup_id = []
     let join = []
     let setup = []
     let cnt1 = 0
     let cnt2 = 0
-    let length1 = join_id.length
-    let length2 = setup_id.length
+    let length1 = obj.join.length
+    let length2 = obj.join.length
     if(length1 == 0 && length2 == 0)
     {
       _this.setData({
         loaded: true,
       })
     }
-    for (let id of join_id){
+    for (let id of obj.join){
       app.getClubInfo(id, res => {
         join.push(res.data)
+        join_id.push(id)
         cnt1 += 1
         if(cnt1 == length1 && cnt2 == length2){
           _this.setData({
@@ -78,9 +79,10 @@ Page({
         }
       })
     }
-    for (let id of setup_id){
+    for (let id of obj.setup){
       app.getClubInfo(id, res => {
         setup.push(res.data)
+        setup_id.push(id)
         cnt2 += 1
         if(cnt1 == length1 && cnt2 == length2){
           _this.setData({
