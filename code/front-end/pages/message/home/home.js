@@ -15,6 +15,7 @@ Component({
     tabCur: 'inform',
     messageList: {},
     informTitle: {},
+    types: ['inform', 'reply', 'system'],
   },
   lifetimes: {
     ready: function(e){
@@ -24,10 +25,10 @@ Component({
         let receive_message_list = res.data.receive_message_list
         let messageList = {inform: {receive: [], send: []}, reply: {receive: [], send: []}, system: {receive: [], send: []}}
         for(let message of receive_message_list){
-          messageList[message.type].receive.push(message)
+          messageList[_this.data.types[Number(message[1])]].receive.push(message)
         }
         for(let message of send_message_list){
-          messageList[message.type].send.push(message)
+          messageList[_this.data.types[Number(message[1])]].send.push(message)
         }
         _this.setData({
           messageList: messageList,
@@ -46,8 +47,8 @@ Component({
       let index = e.currentTarget.dataset.index
       let messageList = this.data.messageList[tabCur][kind]
       wx.showModal({
-        title: messageList[index].title,
-        content: messageList[index].content,
+        title: messageList[index][2],
+        content: messageList[index][3],
         confirmText: '我知道了',
       })
     },
