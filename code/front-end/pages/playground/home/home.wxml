@@ -40,9 +40,9 @@
         </view>
       </view>
     </scroll-view>
-    <view wx:if="{{loaded}}" class="cu-list margin-top-xs">
-      <view wx:for="{{tabCur == 'all'? clubList:recentList}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white" bindtap="tapClub" data-index="{{index}}">
-        <image class="flex-sub club-card radius-lg" src="https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg" mode="aspectFill">
+    <view wx:if="{{loaded}}" class="cu-list margin-top-xs bg-gray">
+      <view wx:for="{{tabCur == 'all'? clubList:recentList}}" class="flex p-xs margin-bottom-sm margin-top-sm radius-lg bg-white club-card" bindtap="tapClub" data-index="{{index}}">
+        <image class="flex-sub radius-lg my-picture" src="https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg" mode="aspectFill">
           <view class="cu-tag my-badge bg-yellow text-center">
             <text class="margin-left-xs">已认证</text>
           </view>
@@ -50,14 +50,16 @@
         <view class="flex-twice">
           <view class="flex-direction margin-left-xs">
             <view class="flex justify-between text-lg text-black margin-top-xs">
-              {{item.club_name}}
+              <text class="my-text">{{item.club_name}}</text>
               <text class="cuIcon-peoplefill margin-right margin-top-sm"> 学生</text>
             </view>
             <text class="cuIcon-camerafill text-black">  北京大学</text>
-            <view class="text-gray margin-top-xs"> {{item.club_description}}</view>
-            <view class="flex justify-between align-end">
-              <text class="cuIcon-favorfill margin-bottom-sm"> 热度</text>
-              <button class="cu-btn bg-yellow margin-right-xs margin-bottom-sm round" catchtap="tapJoin" data-index="{{index}}">申请加入</button>
+            <view class="margin-top-xs my-description-wraper">
+              <view class="text-gray my-description"> {{item.club_description}}</view>
+            </view>
+            <view class="flex justify-between margin-top-sm">
+              <text class="cuIcon-favorfill margin-top-xs"> 热度</text>
+              <button class="cu-btn bg-yellow margin-right-xs round" catchtap="tapJoin" data-index="{{index}}">申请加入</button>
             </view>
           </view>
         </view>

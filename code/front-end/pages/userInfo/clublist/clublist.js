@@ -52,7 +52,7 @@ Page({
     let cnt1 = 0
     let cnt2 = 0
     let length1 = obj.join.length
-    let length2 = obj.join.length
+    let length2 = obj.setup.length
     if(length1 == 0 && length2 == 0)
     {
       _this.setData({

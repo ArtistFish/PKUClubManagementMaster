@@ -51,89 +51,34 @@
 .xxx{
   margin-bottom: -10px;
 }
-
-.s-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  box-sizing: border-box;
-  padding: 20rpx;
-}
-.s-item {
-  width: 46%;
-  background-color: #fff;
-  margin-bottom: 50rpx;
-  border-radius: 20rpx;
-  overflow: hidden;
-}
-.si-img {
-  width: 100%;
-  height: 200rpx;
-  object-fit: contain;
-}
-.si-title {
-  font-size: 30rpx;
-  color: #000;
-  font-weight: 400;
-  box-sizing: border-box;
-  padding: 0 20rpx;
-}
-.si-data {
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 200;
-  margin: 10rpx 0 20rpx;
-  box-sizing: border-box;
-  padding: 0 20rpx;
-}
-.si-other {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-sizing: border-box;
-  padding: 0 20rpx;
-  margin-bottom: 30rpx;
-}
-.sio-price {
-  font-size: 38rpx;
-  color: rgb(92, 131, 177);
-  font-weight: 600;
-}
-.sio-btn {
-  width: 150rpx;
-  height: 70rpx;
-  line-height: 70rpx;
-  text-align: center;
-  /* background-color: #ff1145; */
-  border-radius: 70rpx;
-  font-size: 28rpx;
-  color: #000;
-  font-weight: 500;
-}
-.wraper{
-  margin-left: 15px;
-  margin-right: 15px;
-  margin-top: 15px;
-}
 .club-card{
-  height:110px;
+  height: 300rpx;
 }
-.my-badge {
-	border-radius: 12rpx;
+.my-text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 310rpx;
+}
+.my-picture {
+	height: 100%;
+}
+.my-parent {
+	position: relative;
+}
+.my-content {
+	bottom: 0;
+	flex-grow: inherit;
 	position: absolute;
-	top: -10rpx;
-	left: -10rpx;
-	font-size: 25rpx;
-	padding: 0rpx 10rpx;
-	height: 40rpx;
-  color: var(--white);
-  margin-top:1px;
 }
-
-.radius-lg {
-	border-radius: 12rpx;
+.my-description-wraper {
+	height: 85rpx;
+	display: flex;
+	align-items: center;
 }
-
-.xxx{
-  margin-bottom: -10px;
+.my-description {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
 }

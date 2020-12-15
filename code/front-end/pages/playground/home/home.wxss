@@ -3,9 +3,6 @@
   margin-right: 15px;
   margin-top: 15px;
 }
-.club-card{
-  height:125px;
-}
 .my-badge {
 	border-radius: 12rpx;
 	position: absolute;
@@ -23,5 +20,36 @@
 }
 
 .xxx{
-  margin-bottom: -10px;
+  height: 100%;
+}
+.club-card{
+  height: 300rpx;
+}
+.my-text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 310rpx;
+}
+.my-picture {
+	height: 100%;
+}
+.my-parent {
+	position: relative;
+}
+.my-content {
+	bottom: 0;
+	flex-grow: inherit;
+	position: absolute;
+}
+.my-description-wraper {
+	height: 85rpx;
+	display: flex;
+	align-items: center;
+}
+.my-description {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
 }
