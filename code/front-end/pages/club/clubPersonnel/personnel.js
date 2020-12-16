@@ -179,13 +179,20 @@ Component({
             }
             else if (tabInd === 1)
             {
-              app.sendMessage(app.globalData.openid, this.data.modalId, 0, "移交会长",  "xxx想将社长移交给你", res=>console.log(res))
+              app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_presidentExchange,
+                 "移交会长",  
+                 `${this.data.userName}想将${app.globalData.current_club.club_name}社长移交给${modalName}`, 
+                 res=>console.log(res))
             }
             else if (tabInd === 2)
             {
-              app.sendMessage(app.globalData.openid, this.data.modalId, 0, "管理员邀请",  "xxx想任命你为社团管理员", res=>console.log(res))
+              app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_managerInvite, "管理员邀请",  
+              `${this.data.userName}想任命${modalName}为${app.globalData.current_club.club_name}社团管理员`,
+               res=>console.log(res))
             }
             else{
+              app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_normal, "移除管理员",  
+              `${this.data.userName}移除了${modalName}的${app.globalData.current_club.club_name}社团管理员身份`, res=>console.log(res))
               app.deleteManagerFromClub(app.globalData.current_club.club_id, this.data.modalId, res=>console.log(res))
             }
           },
