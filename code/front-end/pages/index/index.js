@@ -5,7 +5,7 @@ Page({
   data: {
     StatusBar: app.globalData.StatusBar,
     CustomBar: app.globalData.CustomBar,
-    CurPage: 'playground'
+    CurPage: 'playground',
   },
   NavChange(e){
     this.setData({
