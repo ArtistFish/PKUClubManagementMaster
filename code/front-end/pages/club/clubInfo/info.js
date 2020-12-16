@@ -1,5 +1,6 @@
 // pages/clubInfo/info.js
-let app = getApp();
+const app = getApp();
+const Api = app.require('utils/util.js');
 Component({
   /**
    * 组件的属性列表
@@ -15,9 +16,13 @@ Component({
       this.towerSwiper('swiperList');
       // 初始化towerSwiper 传已有的数组名即可
     },
+    attached: function () {
+      Api.set_current_user(this)
+    },
     ready: function () {
       // app = getApp()
       // console.log(app.globalData.userIsPresident)
+      
       this.setData(
         {
           detailPageContents: {
@@ -26,13 +31,8 @@ Component({
             "入会费用": "100万",
             "联系我们": "110"
           },
-          userIsPresident: app.globalData.userIsPresident,
-          userIsManager: app.globalData.userIsManager,
-          userIsMember: app.globalData.userIsMember,
-          userName: app.globalData.openid.slice(-5),
         }
       )
-      console.log(app.globalData.userIsMember)
     }
   },
   /**

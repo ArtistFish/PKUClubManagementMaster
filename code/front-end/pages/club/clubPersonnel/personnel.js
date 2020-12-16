@@ -1,5 +1,6 @@
 // pages/clubPersonnel/personnel.js
-let app = getApp();
+const app = getApp();
+const Api = app.require('utils/util.js');
 Component({
   options: {
     addGlobalClass: true
@@ -11,15 +12,11 @@ Component({
 
   },
   lifetimes: {
+    attached: function () {
+      Api.set_current_user(this)
+    },
     ready: function() {
-      this.setData(
-        {
-          userIsPresident: app.globalData.userIsPresident,
-          userIsManager: app.globalData.userIsManager,
-          userIsMember: app.globalData.userIsMember,
-          userName: app.globalData.openid.slice(-5),
-        }
-      )
+      console.log(this.data.userIsManager)
       console.log(app.globalData.current_club)
       let member_list = app.globalData.current_club.member_list
       let manager_list = app.globalData.current_club.manager_list

@@ -50,7 +50,18 @@ function request(requestHandler) {
     }
   })
 }
+function set_current_user(_this)
+{
+  let app = getApp()
+  _this.setData({
+    userIsPresident: app.globalData.userIsPresident,
+    userIsManager: app.globalData.userIsManager,
+    userIsMember: app.globalData.userIsMember,
+    userName: app.globalData.openid.slice(-5),
+  })
+}
 module.exports = {
   formatTime: formatTime,
-  request: request
+  request: request,
+  set_current_user: set_current_user
 }
