@@ -34,8 +34,7 @@ Page({
         let cur_club = res.data
         app.globalData.current_club = cur_club
         app.globalData.current_club.club_id = club_id
-        app.globalData.userIsPresident = (cur_club.club_president_id[1] === user_id)
-        // console.log(cur_club)
+        app.globalData.userIsPresident = (cur_club.club_president_id === user_id)
         _this.setData({
             loaded_info: true,
             club_name: cur_club.club_name,
