@@ -15,7 +15,8 @@
     "pages/playground/search/search",
     "pages/club/frontpage/frontpage",
     "pages/activity/activity_detail/activity_detail",
-    "pages/activity/createActivity/createActivity"
+    "pages/activity/createActivity/createActivity",
+    "pages/userInfo/selfie/selfie"
   ],
   "window": {
     "backgroundTextStyle": "light",

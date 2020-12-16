@@ -82,3 +82,7 @@
 	-webkit-line-clamp: 2;
 	overflow: hidden;
 }
+.my-icon {
+	height: 50rpx;
+	width: 50rpx;
+}

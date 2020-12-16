@@ -4,7 +4,7 @@
   <button wx:if="{{!hasUserInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 
   </button>
   <view wx:else class="text-center">
-    <image class="cu-avatar lg round" src="{{wxUserInfo.avatarUrl}}"></image>
+    <image class="cu-avatar lg round" src="{{wxUserInfo.avatarUrl}}" bind:tap="tapAvatar"></image>
     <view class="margin-top">
       {{wxUserInfo.nickName}}
     </view>

@@ -29,6 +29,11 @@ Component({
         hasUserInfo:true
       })
     },
+    tapAvatar: function(e){
+      wx.navigateTo({
+        url: '/pages/userInfo/selfie/selfie?wx_id=' + app.globalData.openid,
+      })
+    },
     navigation: function(e){
       let cur = e.currentTarget.dataset.cur
       let url = '/pages/userInfo/' + cur + '/' + cur

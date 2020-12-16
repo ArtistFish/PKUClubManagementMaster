@@ -1,0 +1,64 @@
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">个人主页</view></cu-custom>
+<loading wx:if="{{!loaded}}"></loading>
+<view wx:else>
+  <view class="text-center margin-top-xl">
+    <image class="cu-avatar lg round" src="/images/logo.png"></image>
+    <view class="margin-top">
+      名字
+    </view>
+  </view>
+  <view class="cu-bar margin-top">
+    <view class="action">
+      <text class="cuIcon-title text-blue"></text>认证信息
+    </view>
+  </view>
+  <view class="flex auth-card bg-white radius padding">
+    <view class="flex-sub pic-content">
+      <image src='/images/favicon.ico' mode='scaleToFill' class="my-pic bg-white"></image>
+    </view>
+    <view class="flex-twice">
+      <view class="flex-direction">
+        <view>学校</view>
+        <view>专业</view>
+        <view>真实姓名</view>
+        <view>学号</view>
+      </view>
+    </view>
+  </view>
+  <scroll-view scroll-x class="bg-white nav margin-top">
+    <view class="flex text-center">
+      <view class="cu-item flex-sub {{tabCur=='moments'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='moments'>
+        动态
+      </view>
+      <view class="cu-item flex-sub {{tabCur=='clubs'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='clubs'>
+        加入的社团
+      </view>
+    </view>
+  </scroll-view>
+  <view wx:if="{{loaded}}" class="list bg-gray">
+    <view class="cu-list margin-top-xs">
+      <view wx:for="{{infoList[tabCur]}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white club-card" bindtap="tapClub" data-index="{{index}}">
+        <image class="flex-sub club-card radius-lg my-picture" src="https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg" mode="aspectFill">
+          <view class="cu-tag my-badge bg-yellow text-center">
+            <text class="margin-left-xs">已认证</text>
+          </view>
+        </image>
+        <view class="flex-twice">
+          <view class="flex-direction margin-left-xs">
+            <view class="flex justify-between text-lg text-black margin-top-xs">
+                <text class="my-text">{{item.club_name}}</text>
+                <text class="cuIcon-peoplefill margin-right margin-top-sm"> 学生</text>
+            </view>
+            <image src="/images/favicon.ico" class="cu-avatar bg-white my-icon"> </image><text class="text-black">  北京大学</text>
+            <view class="margin-top-xs my-description-wraper">
+                <view class="text-gray my-description"> {{item.club_description}}</view>
+            </view>
+            <view class="flex justify-between margin-top">
+              <text class="cuIcon-favorfill"> 热度</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

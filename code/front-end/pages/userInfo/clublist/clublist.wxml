@@ -35,7 +35,7 @@
               <text class="my-text">{{item.club_name}}</text>
               <text class="cuIcon-peoplefill margin-right margin-top-sm"> 学生</text>
           </view>
-          <text class="cuIcon-camerafill text-black">  北京大学</text>
+          <image src="/images/favicon.ico" class="cu-avatar bg-white my-icon"> </image><text class="text-black">  北京大学</text>
           <view class="margin-top-xs my-description-wraper">
               <view class="text-gray my-description"> {{item.club_description}}</view>
           </view>
