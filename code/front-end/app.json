@@ -18,6 +18,7 @@
     "pages/activity/createActivity/createActivity",
     "pages/userInfo/selfie/selfie"
   ],
+  "entryPagePath": "pages/login/login",
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",

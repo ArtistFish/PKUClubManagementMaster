@@ -21,37 +21,8 @@ Component({
         icon: 'camerafill'
       }
     ],
-    iconList: [{
-      icon: 'cardboardfill',
-      color: 'red',
-    }, {
-      icon: 'recordfill',
-      color: 'orange',
-    }, {
-      icon: 'picfill',
-      color: 'yellow',
-    }, {
-      icon: 'noticefill',
-      color: 'olive',
-    }, {
-      icon: 'upstagefill',
-      color: 'cyan',
-    }, {
-      icon: 'clothesfill',
-      color: 'blue',
-    }, {
-      icon: 'discoverfill',
-      color: 'purple',
-    }, {
-      icon: 'questionfill',
-      color: 'mauve',
-    }, {
-      icon: 'commandfill',
-      color: 'purple',
-    }, {
-      icon: 'brandfill',
-      color: 'mauve',
-    }],
+    recommendList: [],
+    recommendIds: [],
     gridCol: 2,
     tabCur: 'all',
     loaded: false,
@@ -99,6 +70,8 @@ Component({
                 activityList: activityList,
                 loaded: true,
                 activityIds: activityIds,
+                recommendIds: activityIds.slice(0, 6),
+                recommendList: activityList.slice(0, 6),
               })
             }
           })
@@ -113,6 +86,12 @@ Component({
       let index = e.currentTarget.dataset.index
       wx.navigateTo({
         url: '/pages/activity/activity_detail/activity_detail?activity_id=' + this.data.activityIds[index]
+      })
+    },
+    tapRecommend: function(e){
+      let index = e.currentTarget.dataset.index
+      wx.navigateTo({
+        url: '/pages/activity/activity_detail/activity_detail?activity_id=' + this.data.recommendIds[index]
       })
     },
     tabSelect: function(e){

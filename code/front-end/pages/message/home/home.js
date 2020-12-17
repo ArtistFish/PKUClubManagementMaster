@@ -16,19 +16,33 @@ Component({
     messageList: {},
     informTitle: {},
     types: ['inform', 'reply', 'system'],
+    messageType: {
+      inform_normal: '0',
+      inform_managerInvite: '1',
+      inform_presidentExchange: '2',
+      reply_normal: '5',
+      system_normal: '10',
+    },
   },
   lifetimes: {
     ready: function(e){
       let _this = this
+      let types = this.data.messageType
       app.getMessages(res => {
         let send_message_list = res.data.send_message_list
         let receive_message_list = res.data.receive_message_list
         let messageList = {inform: {receive: [], send: []}, reply: {receive: [], send: []}, system: {receive: [], send: []}}
         for(let message of receive_message_list){
-          messageList[_this.data.types[Number(message[1])]].receive.push(message)
+          let type = message[1]
+          if(type == types.inform_normal || type == types.inform_managerInvite || type == inform_presidentExchange){
+            messageList.inform.receive.push(message)
+          }
         }
         for(let message of send_message_list){
-          messageList[_this.data.types[Number(message[1])]].send.push(message)
+          let type = message[1]
+          if(type == types.inform_normal || type == types.inform_managerInvite || type == inform_presidentExchange){
+            messageList.inform.send.push(message)
+          }
         }
         _this.setData({
           messageList: messageList,

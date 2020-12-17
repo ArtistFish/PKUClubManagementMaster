@@ -17,9 +17,9 @@
     <view class="flex flex-direction bg-white margin-top">
       <view class="text-center margin-top"> 活动推荐</view>
       <view class="flex cu-list grid col-{{gridCol}} no-border">
-        <view class="cu-item" wx:for="{{iconList}}" wx:if="{{index<gridCol*3}}">
-          <view class="cuIcon-{{item.icon}} text-{{item.color}}"></view>
-          <text>活动{{index + 1}}</text>
+        <view class="cu-item justify-center align-center" wx:for="{{recommendList}}" wx:if="{{index<gridCol*3}}">
+          <view class="cu-avatar radius lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);" data-index="{{index}}" bind:tap="tapRecommend"></view>
+          <text class="text-cut my-recommend-name">{{item.activity_name}}</text>
         </view>
       </view>
     </view>

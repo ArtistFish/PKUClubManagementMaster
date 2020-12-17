@@ -30,37 +30,8 @@ Component({
       type: 'image',
       url: 'https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg'
     }],
-    iconList: [{
-      icon: 'cardboardfill',
-      color: 'red',
-    }, {
-      icon: 'recordfill',
-      color: 'orange',
-    }, {
-      icon: 'picfill',
-      color: 'yellow',
-    }, {
-      icon: 'noticefill',
-      color: 'olive',
-    }, {
-      icon: 'upstagefill',
-      color: 'cyan',
-    }, {
-      icon: 'clothesfill',
-      color: 'blue',
-    }, {
-      icon: 'discoverfill',
-      color: 'purple',
-    }, {
-      icon: 'questionfill',
-      color: 'mauve',
-    }, {
-      icon: 'commandfill',
-      color: 'purple',
-    }, {
-      icon: 'brandfill',
-      color: 'mauve',
-    }],
+    recommendList: [],
+    recommendIds: [],
     clubList: [],
     clubIds: [],
     recentList:[],
@@ -101,6 +72,8 @@ Component({
                 clubList: clubList,
                 clubIds: clubIds,
                 loaded: true,
+                recommendList: clubList.slice(0, 6),
+                recommendIds: clubIds.slice(0, 6),
               })
             }
           })
@@ -117,6 +90,12 @@ Component({
     tabSelect: function(e){
       this.setData({
         tabCur:e.currentTarget.dataset.list
+      })
+    },
+    tapRecommend: function(e){
+      let index = e.currentTarget.dataset.index
+      wx.navigateTo({
+        url: '/pages/club/frontpage/frontpage?club_id=' + this.data.recommendIds[index]
       })
     },
     tapClub: function(e){
