@@ -76,8 +76,8 @@ Page({
       imgList = this.data.contactImgList
     }
     wx.showModal({
-      title: '召唤师',
-      content: '确定要删除这段回忆吗？',
+      title: '警告',
+      content: '确定要删除这张图片吗？',
       cancelText: '再看看',
       confirmText: '再见',
       success: res => {
@@ -111,17 +111,58 @@ Page({
       contactImg: this.data.coverImgList,
       displayImgList: this.data.displayImgList,
     })
-    wx.showLoading({
-      title: '创建中',
-    })
-    app.createClub(this.data.name, this.data.description, res => {
-      wx.hideLoading()
-      if(res.data.status == '200 OK'){
-        wx.showToast({
-          title: '创建成功',
-        })
-      }
-    })
+    let illegal = false
+    let re = /[^\u4E00-\u9FA5a-zA-Z]/
+    let illegal_type = -1
+    let illegal_inform = ['请输入合法的社团名!', '请输入合法的社团简介!', '请上传封面图片!', '请上传联系方式!', '请上传介绍图片!']
+    
+    if(this.data.name == undefined || this.data.name.length == 0 || re.test(this.data.name)){
+      illegal = true
+      illegal_type = 0
+    }
+    else if(this.data.description == undefined || this.data.description.length == 0){
+      illegal = true
+      illegal_type = 1
+    }
+    else if(this.data.coverImgList.length == 0)
+    {
+      illegal = true
+      illegal_type = 2
+    }
+    else if(this.data.contactImgList.length == 0)
+    {
+      illegal = true
+      illegal_type = 3
+    }
+    else if(this.data.displayImgList.length == 0)
+    {
+      illegal = true
+      illegal_type = 4
+    }
+    if(!illegal)
+    {
+      wx.showLoading({
+        title: '创建中',
+      })
+      app.createClub(this.data.name, this.data.description, res => {
+        wx.hideLoading()
+        if(res.data.status == '200 OK'){
+          wx.showToast({
+            title: '创建成功',
+            duration: 500,
+          })
+          setTimeout(() => {
+            wx.navigateBack()
+          }, 500)
+        }
+      })
+    }
+    else{
+      wx.showToast({
+        title: illegal_inform[illegal_type],
+        icon: 'none',
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面加载

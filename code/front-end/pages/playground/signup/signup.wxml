@@ -3,14 +3,14 @@
 <form>
 	<view class="cu-form-group margin-top">
 		<view class="title">社团名称</view>
-		<input placeholder="例：北京大学xxx协会" bindinput="editInput" data-cur="name"></input>
+		<input placeholder="例：北京大学xxx协会" bindinput="editInput" data-cur="name" maxlength="15"></input>
   </view>
 </form>
 <form>
 	<view class="cu-form-group margin-top">
     <view class="title">社团简介</view>
     <view class="margin-left-sm"></view>
-		<textarea maxlength="-1" bindinput="editInput" placeholder="例：我们社团主要开展户外徒步活动" data-cur="description"></textarea>
+		<textarea maxlength="140" bindinput="editInput" placeholder="例：我们社团主要开展户外徒步活动" data-cur="description"></textarea>
   </view>
 </form>
 <view class="cu-bar bg-white margin-top">

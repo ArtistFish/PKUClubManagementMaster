@@ -78,8 +78,8 @@ Page({
       imgList = this.data.contactImgList
     }
     wx.showModal({
-      title: '召唤师',
-      content: '确定要删除这段回忆吗？',
+      title: '警告',
+      content: '确定要删除这张图片吗？',
       cancelText: '再看看',
       confirmText: '再见',
       success: res => {
@@ -112,24 +112,58 @@ Page({
       contactImg: this.data.coverImgList,
       displayImgList: this.data.displayImgList,
     })
-    wx.showLoading({
-      title: '创建中',
-    })
-    app.createActivity(this.data.name, this.data.description, this.data.club_id, this.data.place, this.data.start_time, this.data.end_time, this.data.lottery_time, this.data.lottery_method, this.data.max_number, this.data.fee, this.data.sign_up_ddl, this.data.sponsor, this.data.undertaker, res => {
-      if(res.data.status != '200 OK'){
-        wx.showToast({
-          title: '发布活动失败',
-          image: '/images/fail.png',
-        })
-      }
-      else{
-        wx.showToast({
-          title: '发布活动成功',
-          duration: 1000,
-        })
-        wx.navigateBack()
-      }
-    })
+    let illegal = false
+    let re = /[^\u4E00-\u9FA5a-zA-Z]/
+    let illegal_type = -1
+    let illegal_inform = ['请输入合法的活动名!', '请输入合法的活动简介!', '请输入合法的活动时间!', '请上传活动封面图片!', '请上传联系方式!', '请上传介绍图片!']
+    if(this.data.name == undefined || this.data.name.length == 0 || re.test(this.data.name)){
+      illegal = true
+      illegal_type = 0
+    }
+    else if(this.data.description == undefined || this.data.description.length == 0){
+      illegal = true
+      illegal_type = 1
+    }
+    else if(this.data.coverImgList.length == 0){
+      illegal = true
+      illegal_type = 3
+    }
+    else if(this.data.contactImgList.length == 0){
+      illegal = true
+      illegal_type = 4
+    }
+    else if(this.data.displayImgList.length == 0){
+      illegal = true
+      illegal_type = 5
+    }
+    if(!illegal){
+      wx.showLoading({
+        title: '创建中',
+      })
+      app.createActivity(this.data.name, this.data.description, this.data.club_id, this.data.place, this.data.start_time, this.data.end_time, this.data.lottery_time, this.data.lottery_method, this.data.max_number, this.data.fee, this.data.sign_up_ddl, this.data.sponsor, this.data.undertaker, res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '发布活动失败',
+            image: '/images/fail.png',
+          })
+        }
+        else{
+          wx.showToast({
+            title: '发布活动成功',
+            duration: 500,
+          })
+          setTimeout(() => {
+            wx.navigateBack()
+          }, 500);
+        }
+      })
+    }
+    else{
+      wx.showToast({
+        title: illegal_inform[illegal_type],
+        icon: 'none',
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面加载

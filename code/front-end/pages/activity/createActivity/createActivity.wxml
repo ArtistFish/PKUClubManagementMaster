@@ -10,14 +10,14 @@
 	<view class="cu-form-group margin-top">
     <view class="title">活动简介</view>
     <view class="margin-left-sm"></view>
-		<textarea maxlength="-1" bindinput="editInput" placeholder="例：周末香山徒步" data-cur="description"></textarea>
+		<textarea maxlength="15" bindinput="editInput" placeholder="例：周末香山徒步" data-cur="description"></textarea>
   </view>
 </form>
 <form>
 	<view class="cu-form-group margin-top">
     <view class="title">活动地点</view>
     <view class="margin-left-sm"></view>
-		<textarea maxlength="-1" bindinput="editInput" placeholder="例：香山" data-cur="place"></textarea>
+		<textarea maxlength="140" bindinput="editInput" placeholder="例：香山" data-cur="place"></textarea>
   </view>
 </form>
 <form>
