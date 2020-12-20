@@ -762,7 +762,7 @@ App({
     clubList: [],
     activityList: [],
     messageList: [],
-    SERVER_URL: 'http://47.92.240.179:5000/gp10',
+    SERVER_URL: 'http://47.92.240.179:80/gp10',
     current_club: {
       id: undefined, 
       club_name: undefined, 
