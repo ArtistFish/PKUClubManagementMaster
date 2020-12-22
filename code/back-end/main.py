@@ -366,6 +366,14 @@ def sendMessage():
     message_content = request.form.get("content")
     message_sender_wxid = request.form.get("wx_id_sender")
     message_receiver_wxid = request.form.get("wx_id_receiver")
+
+    #判断type是否符合规定
+    type_list = ['0', '1', '2', '5', '10', 'inform_normal', 'inform_managerInvite', 'inform_presidentExchange', 
+                'reply_normal', 'system_normal']
+    if not message_type in type_list :
+        myError = {'status':'400 TYPE_ERROR'}
+        return json.dumps(myError)
+
     message = Message(message_type=message_type, message_title=message_title, message_content=message_content,
                       message_sender_wxid=message_sender_wxid, message_receiver_wxid=message_receiver_wxid)
     manager = DataManager(DataType.message)
