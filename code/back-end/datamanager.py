@@ -1,3 +1,7 @@
+'''
+适用于新服务器，连接原数据库
+'''
+
 from enum import Enum
 import mysql.connector
 
@@ -25,7 +29,7 @@ class DataManager():
 
     # 获取数据库表某一行的信息，或获取某一个club或activity的附庸信息
     def getInfo(self, id):
-        conn = mysql.connector.connect(user = 'root', password = 'root', database = self.database_name)
+        conn = mysql.connector.connect(host='47.92.240.179',user = 'root', password = 'root', database = self.database_name)
         cursor = conn.cursor()
 
         try:
@@ -64,7 +68,7 @@ class DataManager():
     # 此函数不适用于获取某一club的全部成员或活动，不适用于获取某一activity的成员；这两件事，由getSlaveList函数负责
     # wxid参数和flag参数只在获取某一用户的message列表时使用。flag为1表示获取发送的消息，flag为2表示获取接收的消息
     def getList(self, wxid = '', flag = 0):
-        conn = mysql.connector.connect(user = 'root', password = 'root', database = self.database_name)
+        conn = mysql.connector.connect(host='47.92.240.179',user = 'root', password = 'root', database = self.database_name)
         cursor = conn.cursor()
 
         try:
@@ -95,7 +99,7 @@ class DataManager():
 
     # 获取某一club的全部成员或活动，或获取某一activity的全部成员
     def getSlaveList(self, id):
-        conn = mysql.connector.connect(user='root', password='root', database=self.database_name)
+        conn = mysql.connector.connect(host='47.92.240.179',user='root', password='root', database=self.database_name)
         cursor = conn.cursor()
 
         try:
@@ -125,7 +129,7 @@ class DataManager():
     # 要增加一个club，activity，user或message，传入的object应是对应类型的对象
     # 此函数不适用于给某一club增加成员或活动，不适用于给某一activity增加成员；这两件事，由addSlaveInfo函数负责
     def addInfo(self, object):
-        conn = mysql.connector.connect(user = 'root', password = 'root', database = self.database_name)
+        conn = mysql.connector.connect(host='47.92.240.179',user = 'root', password = 'root', database = self.database_name)
         cursor = conn.cursor()
 
         try:
@@ -176,7 +180,7 @@ class DataManager():
     # 为某一club增加成员或活动，或给某一activity增加成员
     # id参数是club或activity的id，slave_id是要增加的成员或活动的id（对于成员是wxid）
     def addSlaveInfo(self, id, slave_id):
-        conn = mysql.connector.connect(user='root', password='root', database=self.database_name)
+        conn = mysql.connector.connect(host='47.92.240.179',user='root', password='root', database=self.database_name)
         cursor = conn.cursor()
 
         try:
@@ -205,7 +209,7 @@ class DataManager():
     # 为某一张数据库表删除一行记录
     # 此函数不适用于给某一club删除成员或活动，不适用于给某一activity删除成员；这两件事，由deleteSlaveInfo函数负责
     def deleteInfo(self, id):
-        conn = mysql.connector.connect(user = 'root', password = 'root', database = self.database_name)
+        conn = mysql.connector.connect(host='47.92.240.179',user = 'root', password = 'root', database = self.database_name)
         cursor = conn.cursor()
 
         try:
@@ -236,7 +240,7 @@ class DataManager():
     # 为某一club删除成员或活动，或给某一activity删除成员
     # id参数是club或activity的id，slave_id是要删除的成员或活动的id（对于成员是wxid）
     def deleteSlaveInfo(self, id, slave_id):
-        conn = mysql.connector.connect(user='root', password='root', database=self.database_name)
+        conn = mysql.connector.connect(host='47.92.240.179',user='root', password='root', database=self.database_name)
         cursor = conn.cursor()
 
         try:
@@ -266,7 +270,7 @@ class DataManager():
     更新clubs activities users messages信息，传入的object需要自带id(或wxid)属性
     '''
     def updateInfo(self, object):
-        conn = mysql.connector.connect(user='root', password='root', database=self.database_name)
+        conn = mysql.connector.connect(host='47.92.240.179',user='root', password='root', database=self.database_name)
         cursor = conn.cursor()
 
         try:
