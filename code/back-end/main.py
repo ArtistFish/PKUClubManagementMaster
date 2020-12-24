@@ -4,6 +4,7 @@ from datamanager import *
 from message import *
 from user import *
 from activity import Activity
+import random
 
 app = Flask(__name__)
 
@@ -544,6 +545,30 @@ def deleteActivity():
 
     res = {'status':'200 OK'}
     return json.dumps(res)
+
+'''
+API:getRandomClubList
+获取随机排列的社团列表，暂且作为推荐社团的备选初级方案之一，后面再行修改使用
+Function: getRandomClubList()
+return: {status,club_list} in JSON format
+club_list包含每个社团的id和name
+'''
+def getRandomClubList():
+    manager = DataManager(DataType.club)
+    all_club_list = manager.getList()
+    club_list=[]
+
+    for club in all_club_list:
+        club_list.append((club[0],club[1]))
+    
+    #随机打乱顺序
+    random.shuffle(club_list)
+
+    return json.dumps({'status':'200 OK','club_list':club_list})
+
+
+
+
 
 
 if __name__ == '__main__':
