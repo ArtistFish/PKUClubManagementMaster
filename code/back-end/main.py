@@ -5,6 +5,7 @@ from message import *
 from user import *
 from activity import Activity
 import random
+import requests
 
 app = Flask(__name__)
 
