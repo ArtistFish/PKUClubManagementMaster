@@ -582,7 +582,30 @@ def getOpenid():
     return json.dumps({'status': '200 OK', 'openid': requests.get(url=url).content})
 
 
+'''
+API:getClubListByMemberNum
+获取社团列表，按社团成员人数降序排列
+作为备选，方便社团推荐方案
+Function:getClubListByMemerNum()
+return: {status,club_list}
+club_list 包含id,name,成员人数
+'''
+def getClubListByMemberNum():
 
+    manager = DataManager(DataType.club)
+    member_manager = DataManager(DataType.club_members)
+
+    all_club_list = manager.getList()
+    club_list=[]
+
+    for club in all_club_list:
+        club_member_list = member_manager.getSlaveList(club[0])
+        club_member_num = len(club_member_list)
+        club_list.append((club[0],club[1],club_member_num))
+
+    club_list = sorted(club_list, key=lambda myClub:myClub[2], reverse=True)
+    
+    return json.dumps({'status':'200 OK','club_list':club_list})
 
 
 if __name__ == '__main__':
