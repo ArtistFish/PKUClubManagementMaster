@@ -27,13 +27,13 @@
   <view class="action text-center" bind:tap="NavChange" data-cur="message">
     <view wx:if="{{CurPage=='message'}}">
       <view class="cuIcon-messagefill">
-        <!-- <view class="cu-tag badge">10</view> -->
+        <view wx:if="{{unread_cnt > 0}}" class="cu-tag badge">{{unread_cnt}}</view>
       </view>
       <view class="text-green"> 消息</view>
     </view>
     <view wx:else>
       <view class="cuIcon-message">
-        <!-- <view class="cu-tag badge">10</view> -->
+        <view wx:if="{{unread_cnt > 0}}" class="cu-tag badge">{{unread_cnt}}</view>
       </view>
       <view> 消息</view>
     </view>

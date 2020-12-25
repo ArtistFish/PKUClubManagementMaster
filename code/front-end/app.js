@@ -23,26 +23,30 @@ App({
       success: res => {
         // 发送 res.code 到后台换取 openid
         if(res.code){
-          // 上面这个是我自己的小程序id
-          let appid = 'wxb668543108717363'
-          let secret = 'c1b9e0873c7dd1cf79553828484e1b89'
-          // 下面是测试号
-          // let appid = 'wx15b48d32c8913d2c'
-          // let secret = '266dbde1825c159269bbaaf61821484a'
-          let url = 'https://api.weixin.qq.com/sns/jscode2session?appid=' + appid + '&secret=' + secret + '&js_code=' + res.code + '&grant_type=authorization_code'
           wx.request({
-            url: url,
-            method: 'GET',
-            success: res => {
-              _this.globalData.openid = res.data.openid
-              console.log('get openid success', res.data.openid)
-              callback(res)
+            // url: 'http://127.0.0.1:5000/gp10/getOpenid',
+            url: this.globalData.SERVER_URL + '/getOpenid',
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded',
             },
-            fail: res => {
-              wx.showToast({
-                title: '获取id失败',
-              })
-              console.log('get openid failed', res)
+            data: {
+              js_code: res.code
+            },
+            success: res => {
+              if(res.data.status == '200 OK'){
+                let obj = JSON.parse(res.data.openid)
+                _this.globalData.openid = obj.openid
+                console.log('get openid success', obj.openid)
+                callback(res)
+              }
+              else{
+                wx.showToast({
+                  title: '获取信息失败',
+                  image: '/images/fail.png',
+                })
+                console.log('getClubInfo fail', res)
+              }
             }
           })
         }
@@ -762,7 +766,7 @@ App({
     clubList: [],
     activityList: [],
     messageList: [],
-    SERVER_URL: 'http://47.92.240.179:80/gp10',
+    SERVER_URL: 'https://thunderclub.xyz/gp10',
     current_club: {
       id: undefined, 
       club_name: undefined, 

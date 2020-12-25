@@ -60,8 +60,13 @@ function set_current_user(_this)
     userName: app.globalData.openid.slice(-5),
   })
 }
+function getCurPage(){
+  let pages = getCurrentPages()
+  return pages[pages.length - 1]
+}
 module.exports = {
   formatTime: formatTime,
   request: request,
-  set_current_user: set_current_user
+  set_current_user: set_current_user,
+  getCurPage: getCurPage,
 }

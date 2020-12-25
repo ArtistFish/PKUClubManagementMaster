@@ -80,7 +80,7 @@ Component({
       let associated_club_id = {join: [], setup: []}
       let associated_activity_id = {registered: [], selected: []}
       app.getClubListOfUser(app.globalData.openid, res => {
-        console.log(res)
+        // console.log(res)
         let president_club_list = res.data.president_club_list
         let manager_club_list = res.data.manager_club_list
         let member_club_list = res.data.member_club_list
@@ -127,7 +127,7 @@ Component({
         }
       })
       app.getActivityListOfUser(app.globalData.openid, res => {
-        console.log(res)
+        // console.log(res)
         let registered_activity_list = res.data.registered_activity_list
         let selected_activity_list = res.data.selected_activity_list
         for(let activity of registered_activity_list){
