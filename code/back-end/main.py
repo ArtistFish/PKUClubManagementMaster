@@ -577,10 +577,15 @@ def getOpenid():
     url = 'https://api.weixin.qq.com/sns/jscode2session?appid=wxb668543108717363'
     url += '&secret=c1b9e0873c7dd1cf79553828484e1b89'
     url += '&grant_type=authorization_code'
+
     js_code = str(request.form.get("js_code"))
     url += '&js_code=' + js_code
-    return json.dumps({'status': '200 OK', 'openid': requests.get(url=url).content})
-
+    
+    tmp = requests.get(url=url)
+    res = tmp.content
+    output_text = tmp.text
+    return json.dumps({'status': '200 OK', 'openid': output_text})
+    #return json.dumps({'status': '200 OK'})
 
 '''
 API:getClubListByMemberNum
