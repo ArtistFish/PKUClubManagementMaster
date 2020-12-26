@@ -749,6 +749,37 @@ App({
       }
     })
   },
+  registerUserToActivity: function(wx_id, activity_id,callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/registerUserToActivity',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        wx_id: wx_id,
+        activity_id:activity_id
+      },
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '没有加入社团',
+            image: '/images/fail.png',
+          })
+          console.log('register fail', res)
+        }
+        callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('registerUserToActivity api fail', res)
+        callback(res)
+      }
+    })
+  },
   globalData: {
     messageType: {
       inform_normal: 0,

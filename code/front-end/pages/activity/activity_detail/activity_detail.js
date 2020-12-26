@@ -1,4 +1,5 @@
 // pages/activity_detail/activity_detail.js
+const app = getApp();
 Page({
 
   /**
@@ -6,6 +7,7 @@ Page({
    */
   data: {
     activity: {
+      like:10,
       id: undefined, 
       name: "2020北京大学秋季第一次滑雪活动",
       associated_club_id: undefined, 
@@ -24,7 +26,7 @@ Page({
       sponsor:"北京大学滑雪社",
       undertaker:"滑雪场"
     },
-    URL: 'http://47.92.240.179:5000/gp10',
+    URL: 'https://thunderclub.xyz/gp10/',
     valid:false,
     sign_up_click:false,
     isClick:false,
@@ -47,12 +49,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var _this=this;
-   // _this.setData({activity_id:options.activity_id}),
+    let _this=this;
     _this.setData({activity_id:options.activity_id}),
     console.log(_this.data.activity_id),
     wx.request({
-      url: 'http://47.92.240.179:5000/gp10/getActivityInfo', //仅为示例，并非真实的接口地址
+      url: _this.data.URL+'getActivityInfo', 
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
@@ -61,7 +62,9 @@ Page({
       },
       method:'POST',
       success: function(res) {
-        console.log(res),
+        res.data.activity_sign_up_ddl=new Date(res.data.activity_sign_up_ddl).toLocaleDateString(),
+        res.data.activity_start_time=new Date(res.data.activity_start_time).toLocaleDateString(),
+        res.data.activity_end_time=new Date(res.data.activity_end_time).toLocaleDateString(),
         _this.setData({
           "activity.fee":res.data.activity_fee,
           "activity.id": res.data.activity_id, 
@@ -73,6 +76,20 @@ Page({
           "activity.sponsor":res.data.activity_sponsor,
           "activity.undertaker":res.data.activity_undertaker
         })
+        app.getActivityListOfUser(app.globalData.openid,res=>{
+          if(res.data.status == '200 OK'){
+            console.log(res)
+            for (let temp of res.data.registered_activity_list){
+              if(temp[0]==_this.data.activity.id)
+                _this.setData({
+                  valid:true,
+                  sign_up_click:true
+                })
+            }
+          }
+        
+        })
+
       }
     })
   },
@@ -136,14 +153,21 @@ Page({
   },
 
   sign_up: function(){
-    var s = this.data.sign_up_click
-    if(this.data.valid)
-      this.setData({sign_up_click:!s})
-    else  
-    wx.showToast({
-      title: '请先加入社团',
-      icon: 'loading',
-      duration: 1500
+    let that = this
+    app.registerUserToActivity(app.globalData.openid,this.data.activity_id,res=>{
+      if(res.data.status == '200 OK'){
+        that.setData({valid:true})
+        console.log('register success', res.data.status)
+        if(that.data.valid)
+          that.setData({sign_up_click:!that.data.sign_up_click})
+      }
     })
+    // else  
+    // wx.showToast({
+      // title: '请先加入社团',
+      // icon: 'loading',
+      // duration: 1500
+    // })
   },
+  
 })
