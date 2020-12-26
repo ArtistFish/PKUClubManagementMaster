@@ -44,11 +44,15 @@ class DataManager():
                 cursor.execute("select * from club_%d_members" % id)
             elif self.datatype == DataType.club_activities:
                 cursor.execute("select * from club_%d_activities" % id)
+            elif self.datatype == DataType.club_pictures:
+                cursor.execute("select * from club_%d_pictures" % id)
 
             elif self.datatype == DataType.activity_registered_people:
                 cursor.execute("select * from activity_%d_registered_people" % id)
             elif self.datatype == DataType.activity_selected_people:
                 cursor.execute("select * from activity_%d_selected_people" % id)
+            elif self.datatype == DataType.activity_pictures:
+                cursor.execute("select * from activity_%d_pictures" % id)
             else:
                 pass
 
@@ -93,7 +97,7 @@ class DataManager():
         conn.close()
         return res
 
-    # 获取某一club的全部成员或活动，或获取某一activity的全部成员
+    # 获取某一club的全部成员或活动，或获取某一activity的全部成员(图片新增)
     def getSlaveList(self, id):
         conn = mysql.connector.connect(database=self.database_name)
         cursor = conn.cursor()
@@ -105,11 +109,15 @@ class DataManager():
                 cursor.execute("select * from club_%d_members" % id)
             elif self.datatype == DataType.club_activities:
                 cursor.execute("select * from club_%d_activities" % id)
+            elif self.datatype == DataType.club_pictures:
+                cursor.execute("select * from club_%d_pictures" % id)
 
             elif self.datatype == DataType.activity_registered_people:
                 cursor.execute("select * from activity_%d_registered_people" % id)
             elif self.datatype == DataType.activity_selected_people:
                 cursor.execute("select * from activity_%d_selected_people" % id)
+            elif self.datatype == DataType.activity_pictures:
+                cursor.execute("select * from activity_%d_pictures" % id)
             else:
                 pass
         except mysql.connector.errors.ProgrammingError:
@@ -137,6 +145,7 @@ class DataManager():
                 cursor.execute("create table club_%d_managers (id INT AUTO_INCREMENT, manager_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
                 cursor.execute("create table club_%d_members (id INT AUTO_INCREMENT, member_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
                 cursor.execute("create table club_%d_activities (id INT AUTO_INCREMENT, activity_id INT, PRIMARY KEY (id))" % object.id)
+                cursor.execute("create table club_%d_pictures (id INT AUTO_INCREMENT, filepath TEXT, PRIMARY KEY (id))" % object.id)
             elif self.datatype == DataType.activity:
                 cursor.execute("insert into activities (activity_name, activity_description, activity_club_id, "
                                "activity_place, "
@@ -156,6 +165,8 @@ class DataManager():
                     "create table activity_%d_registered_people (id INT AUTO_INCREMENT, registered_person_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
                 cursor.execute(
                     "create table activity_%d_selected_people (id INT AUTO_INCREMENT, selected_person_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
+                cursor.execute(
+                    "create table activity_%d_pictures (id INT AUTO_INCREMENT, filepath TEXT, PRIMARY KEY (id))" % object.id)
             elif self.datatype == DataType.user:
                 cursor.execute("insert into users (wxid, user_name) values ('%s', '%s')" % (object.wxid, object.name))
             elif self.datatype == DataType.message:
@@ -186,6 +197,8 @@ class DataManager():
                 cursor.execute("insert into club_%d_members (member_wxid) values ('%s')" % (id, slave_id))
             elif self.datatype == DataType.club_activities:
                 cursor.execute("insert into club_%d_activities (activity_id) values (%d)" % (id, slave_id))
+            elif self.datatype == DataType.club_pictures:
+                cursor.execute("insert into club_%d_pictures (filepath) values (%s)" % (id, slave_id))
 
             elif self.datatype == DataType.activity_registered_people:
                 cursor.execute("insert into activity_%d_registered_people (registered_person_wxid) values ('%s')"
@@ -193,6 +206,8 @@ class DataManager():
             elif self.datatype == DataType.activity_selected_people:
                 cursor.execute("insert into activity_%d_selected_people (selected_person_wxid) values ('%s')"
                                % (id, slave_id))
+            elif self.datatype == DataType.activity_pictures:
+                cursor.execute("insert into activity_%d_pictures (filepath) values (%s)" % (id, slave_id))
             else:
                 pass
             conn.commit()

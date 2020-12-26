@@ -27,12 +27,13 @@ class Activity():
         self.lottery_time = at_lottery_time
         self.lottery_method = at_lottery_method
         self.max_number = at_max_number
-        self.fee = at_fee #费用
+        self.fee = at_fee #费用f
         self.sign_up_ddl = at_sign_up_ddl  #报名截止时间
         self.sponsor = at_sponsor #赞助方
         self.undertaker = at_undertaker  #承办方
         self.registered_people_list = [] #报名的人员名单
         self.selected_people_list = [] #选上的人员名单
+        self.picture_list = [] #活动的图片列表
 
     def change_description(self, new_description):
         self.description = new_description
@@ -73,6 +74,20 @@ class Activity():
     #更改承办方
     def change_undertaker(self, new_undertaker):
         self.undertaker = new_undertaker
+
+    def add_picture(self, url):
+        if not url in self.picture_list:
+            self.picture_list.append(url)
+            return True
+        else:
+            return False
+
+    def delete_picture(self, url):
+        if url in self.picture_list:
+            self.picture_list.remove(url)
+            return True
+        else:
+            return False
     
     def add_registered_people(self, registered_wxid):
         if not registered_wxid in self.registered_people_list:
@@ -122,7 +137,7 @@ class Activity():
         'activity_end_time':self.end_time, 'activity_lottery_time':self.lottery_time, 'activity_lottery_method':self.lottery_method,
         'activity_max_number':self.max_number, 'activity_registered_people':registered_username_list,
         'activity_selected_people':selected_username_list, 'activity_fee':self.fee, 'activity_sign_up_ddl':self.sign_up_ddl,
-        'activity_sponsor':self.sponsor, 'activity_undertaker':self.undertaker}
+        'activity_sponsor':self.sponsor, 'activity_undertaker':self.undertaker, 'activity_pictures':self.picture_list}
 
         return json.dumps(res)
 
