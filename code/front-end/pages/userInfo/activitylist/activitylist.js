@@ -15,6 +15,40 @@ Page({
       tabCur: e.currentTarget.dataset.cur
     })
   },
+  createActivity: function(e){
+    let wx_id = app.globalData.openid
+    let club_list = []
+    app.getClubListOfUser(wx_id, res => {
+      club_list.push(...res.data.president_club_list)
+      club_list.push(...res.data.manager_club_list)
+      if(club_list.length > 0){
+        let names = []
+        let ids = []
+        for(let club of club_list){
+          names.push(club[1])
+          ids.push(club[0])
+        }
+        wx.showActionSheet({
+          itemList: names,
+          success: res => {
+            let index = res.tapIndex
+            wx.navigateTo({
+              url: '/pages/activity/createActivity/createActivity?club_id=' + ids[index],
+            })
+          },
+          fail (res) {
+            console.log(res.errMsg)
+          }
+        })
+      }
+      else{
+        wx.showToast({
+          title: '您没有管理的社团',
+          icon: 'none'
+        })
+      }
+    })
+  },
 
   /**
    * 生命周期函数--监听页面加载

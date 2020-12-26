@@ -54,6 +54,6 @@
   <view wx:if="{{tabCur=='setup'}}" class="cu-tabbar-height"></view>
 </scroll-view>
 <view wx:if="{{tabCur=='setup'}}" class="foot bg-white flex justify-center">
-  <button class="cu-btn round line-orange lg bottom-btn">
+  <button class="cu-btn round line-orange lg bottom-btn" bind:tap="createActivity">
     <text class="cuIcon-upload"></text>发布活动</button>
 </view>
