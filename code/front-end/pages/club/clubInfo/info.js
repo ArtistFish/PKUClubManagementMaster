@@ -146,7 +146,10 @@ Component({
       }
     },
     joinClub() {
-      app.addMemberToClub(app.globalData.current_club.club_id, res=>console.log(res))
+      let club_id = app.globalData.current_club.club_id
+      Api.join_club(club_id, () => {
+        this.triggerEvent('refresh', {club_id: club_id})
+      })
     }
   }
 })

@@ -1,4 +1,5 @@
-let app = getApp()
+const app = getApp();
+const Api = app.require('utils/util.js');
 Component({
   data: {
     swiperList: [{
@@ -34,6 +35,7 @@ Component({
     recommendIds: [],
     clubList: [],
     clubIds: [],
+    clubJoined: [],
     recentList:[],
     gridCol: 3,
     tabCur: 'all',
@@ -71,14 +73,20 @@ Component({
               _this.setData({
                 clubList: clubList,
                 clubIds: clubIds,
-                loaded: true,
                 recommendList: clubList.slice(0, 6),
                 recommendIds: clubIds.slice(0, 6),
               })
             }
           })
         }
-      }).catch(err => {
+      }).then(
+        () => {
+          Api.get_relations(relations => {
+            _this.getJoinStatus(relations, _this)
+          })
+        }
+      )
+      .catch(err => {
         console.log(err)
       })
     }
@@ -105,37 +113,27 @@ Component({
       })
     },
     tapJoin: function(e){
-      if(app.globalData.personel.authorization.is_authorized == false){
-        wx.showModal({
-          title: '您还未进行学生认证!',
-          cancelText: '下次吧',
-          confirmText: '马上去',
-          success: function(res){
-            if(res.confirm){
-              wx.navigateTo({
-                url: '/pages/userInfo/authorization/authorization',
-              })
-            }
+      let index = e.currentTarget.dataset.index
+      let club_id = this.data.clubList[index].club_id
+      Api.join_club(club_id, relations=>{
+        this.getJoinStatus(relations, this)
+      })
+    },  
+    getJoinStatus: function(relations, _this) {
+      let joined = []
+        for(let club_id of _this.data.clubIds)
+        {
+          let flag = false
+          if (relations[club_id] !== undefined)
+          {
+            flag = true
           }
+          joined.push(flag)
+        }
+        _this.setData({
+          clubJoined: joined,
+          loaded: true
         })
-      }
-      else{
-        let index = e.currentTarget.dataset.index
-        let club_id = this.data.clubList[index].club_id
-        app.addMemberToClub(club_id, res => {
-          if(res.data.status != '200 OK'){
-            wx.showToast({
-              title: '加入社团失败',
-              image: '/images/fail.png',
-            })
-          }
-          else{
-            wx.showToast({
-              title: '加入社团成功',
-            })
-          }
-        })
-      }
     },
     editInput: function(e){
       this.setData({

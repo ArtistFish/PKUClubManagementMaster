@@ -20,7 +20,7 @@ Component({
       console.log(app.globalData.current_club)
       let member_list = app.globalData.current_club.member_list
       let manager_list = app.globalData.current_club.manager_list
-      let president_id = app.globalData.current_club.club_president_id
+      let president_id = app.globalData.current_club.club_president_wxid
       let member_detail_list = []
       let manager_detail_list = []
       let count = 0
@@ -35,7 +35,7 @@ Component({
       }
       count += 1
       manager_detail_list.push({
-        id: president_id[1],
+        id: president_id,
         name: president_id.slice(-5),
         duty: "会长",
         avatar: `https://ossweb-img.qq.com/images/lol/web201310/skin/big${10000+count%9}.jpg`
