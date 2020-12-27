@@ -1,5 +1,6 @@
 from flask import json
 from datamanager import *
+import random
 
 
 class Activity():
@@ -27,7 +28,7 @@ class Activity():
         self.lottery_time = at_lottery_time
         self.lottery_method = at_lottery_method
         self.max_number = at_max_number
-        self.fee = at_fee #费用f
+        self.fee = at_fee #费用
         self.sign_up_ddl = at_sign_up_ddl  #报名截止时间
         self.sponsor = at_sponsor #赞助方
         self.undertaker = at_undertaker  #承办方
@@ -74,20 +75,6 @@ class Activity():
     #更改承办方
     def change_undertaker(self, new_undertaker):
         self.undertaker = new_undertaker
-
-    def add_picture(self, url):
-        if not url in self.picture_list:
-            self.picture_list.append(url)
-            return True
-        else:
-            return False
-
-    def delete_picture(self, url):
-        if url in self.picture_list:
-            self.picture_list.remove(url)
-            return True
-        else:
-            return False
     
     def add_registered_people(self, registered_wxid):
         if not registered_wxid in self.registered_people_list:
@@ -116,28 +103,50 @@ class Activity():
             return True
         else:
             return False
+
+
+    #从数据库加载registered_people和selected_people,不会加载picture_list
+    def load_slave_data(self):
+        self.registered_people_list=[]
+        self.selected_people_list=[]
+        datamanager = DataManager(DataType.activity_registered_people)
+        li=datamanager.getSlaveList(self.id)
+        for i in range(len(li)):
+            self.registered_people_list.append(li[i][1])
+        datamanager = DataManager(DataType.activity_selected_people)
+        li=datamanager.getSlaveList(self.id)
+        for i in range(len(li)):
+            self.selected_people_list.append(li[i][1])
+
+
+
+    # 随机lottery
+    def lottery_by_random_method(self):   
+       
+        length=len(self.registered_people_list)  
+        if length<=self.max_number:
+            self.selected_people_list=self.registered_people_list
+            return
+        
+        for i in range(self.max_number):
+            selected=random.randint(i,length-1)
+            tmp=self.registered_people_list[i]
+            self.registered_people_list[i]=self.registered_people_list[selected]
+            self.registered_people_list[selected]=tmp
+
+        self.selected_people_list=self.registered_people_list[0:self.max_number]
+
+
     
-    def Jsonfy(self):
-        selected_username_list = []
-        registered_username_list = []
-        manager = DataManager(DataType.user)
-
-        for i in self.registered_people_list:
-            user = manager.getInfo(i)
-            registered_username_list.append(user[0][1])
-            #pass
-
-        for i in self.selected_people_list:
-            user = manager.getInfo(i)
-            selected_username_list.append(user[0][1])
-            #pass
+    def Jsonfy(self):  #之前需要调用load_slave_data
+        
         
         res = {'status':'200 OK', 'activity_id':self.id, 'activity_name':self.name, 'activity_description':self.description,
         'activity_club_id':self.club_id, 'activity_place':self.place, 'activity_start_time':self.start_time, 
         'activity_end_time':self.end_time, 'activity_lottery_time':self.lottery_time, 'activity_lottery_method':self.lottery_method,
-        'activity_max_number':self.max_number, 'activity_registered_people':registered_username_list,
-        'activity_selected_people':selected_username_list, 'activity_fee':self.fee, 'activity_sign_up_ddl':self.sign_up_ddl,
-        'activity_sponsor':self.sponsor, 'activity_undertaker':self.undertaker, 'activity_pictures':self.picture_list}
+        'activity_max_number':self.max_number, 'activity_registered_people':self.registered_people_list,
+        'activity_selected_people':self.selected_people_list, 'activity_fee':self.fee, 'activity_sign_up_ddl':self.sign_up_ddl,
+        'activity_sponsor':self.sponsor, 'activity_undertaker':self.undertaker}
 
         return json.dumps(res)
 
@@ -145,8 +154,3 @@ class Activity():
 
 if __name__=='__main__':
     pass
-
-
-
-
-    
