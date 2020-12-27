@@ -95,38 +95,66 @@ function join_club(club_id, callback){
   }
 }
 // 判断该user和社团的关系
-function getRelations(callback) {
+function getRelations(callback, target='club') {
   let app = getApp()
   let user_id = app.globalData.openid
-  app.getClubListOfUser(user_id, res=>{
-    if(res.data.status != '200 OK')
-    {
-      wx.showToast({
-        title: '获取个人所在社团信息失败',
-        image: '/images/fail.png',
-      })
-      console.log('获取个人所在社团信息失败')
-      return 
-    }
-    let relations = {}
-    for (let joined_club of res.data.president_club_list)
-    {
-      let joined_club_id = joined_club[0]
-      relations[joined_club_id] = 'president'
-    }
-    for (let joined_club of res.data.manager_club_list)
-    {
-      let joined_club_id = joined_club[0]
-      relations[joined_club_id] = 'manager'
-    }
-    for (let joined_club of res.data.member_club_list)
-    {
-      let joined_club_id = joined_club[0]
-      relations[joined_club_id] = 'member'
-    }
-    app.globalData.relations = relations
-    callback(relations)
-  })
+  if(target == 'club'){
+    app.getClubListOfUser(user_id, res=>{
+      if(res.data.status != '200 OK')
+      {
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('获取个人所在社团信息失败')
+        return 
+      }
+      let relations = {}
+      for (let joined_club of res.data.president_club_list)
+      {
+        let joined_club_id = joined_club[0]
+        relations[joined_club_id] = 'president'
+      }
+      for (let joined_club of res.data.manager_club_list)
+      {
+        let joined_club_id = joined_club[0]
+        relations[joined_club_id] = 'manager'
+      }
+      for (let joined_club of res.data.member_club_list)
+      {
+        let joined_club_id = joined_club[0]
+        relations[joined_club_id] = 'member'
+      }
+      app.globalData.relations = relations
+      callback(relations)
+    })
+  }
+  else if(target == 'activity'){
+    app.getActivityListOfUser(user_id, res=>{
+      if(res.data.status != '200 OK')
+      {
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('获取个人所在社团信息失败')
+        return 
+      }
+      let relations = {}
+      for (let registered_activity of res.data.registered_activity_list)
+      {
+        let registered_activity_id = registered_activity[0]
+        relations[registered_activity_id] = 'registered'
+      }
+      for (let selected_activity of res.data.selected_activity_list)
+      {
+        let selected_activity_id = selected_activity[0]
+        relations[selected_activity_id] = 'selected'
+      }
+      // app.globalData.relations = relations
+      callback(relations)
+    })
+  }
 }
 function quitClub(club_id, callback) {
   let app = getApp()
