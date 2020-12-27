@@ -1,26 +1,7 @@
 let app = getApp()
+const Api = app.require('utils/util.js');
 Component({
   data: {
-    array:[
-      {
-        name: 'index',
-        title: '空间',
-        color: 'blue',
-        icon: 'camerafill'
-      },
-      {
-        name: 'index',
-        title: '聊天',
-        color: 'red',
-        icon: 'camerafill'
-      },
-      {
-        name: 'index',
-        title: '游戏',
-        color: 'yellow',
-        icon: 'camerafill'
-      }
-    ],
     recommendList: [],
     recommendIds: [],
     gridCol: 2,
@@ -50,7 +31,7 @@ Component({
         let length = activity_list.length
         if(length == 0){
           _this.setData({
-            loaded: true,
+            // loaded: true,
           })
         }
         for(let activity of activity_list){
@@ -68,7 +49,7 @@ Component({
             if(cnt == length){
               _this.setData({
                 activityList: activityList,
-                loaded: true,
+                // loaded: true,
                 activityIds: activityIds,
                 recommendIds: activityIds.slice(0, 6),
                 recommendList: activityList.slice(0, 6),
@@ -76,12 +57,47 @@ Component({
             }
           })
         }
-      }).catch(err => {
+      }).then(
+        () => {
+          Api.get_relations(relations => {
+            _this.getJoinStatus(relations, _this)
+          }, 'activity')
+        }
+      ).catch(err => {
         console.log(err)
       })
     }
   },
   methods:{
+    getJoinStatus: function(relations, _this) {
+      let joined = []
+      let due = []
+      let cur_time = new Date().getTime()
+      for(let activity_id of _this.data.activityIds)
+      {
+        let flag = false
+        if (relations[activity_id] !== undefined)
+        {
+          flag = true
+        }
+        joined.push(flag)
+      }
+      for(let activity of _this.data.activityList){
+        if(new Date(activity.activity_end_time).getTime() < cur_time){
+          due.push(true)
+        }
+        else{
+          due.push(false)
+        }
+      }
+      // console.log(joined)
+      // console.log(_this.data.activityIds)
+      _this.setData({
+        activityJoined: joined,
+        due: due,
+        loaded: true
+      })
+    },
     tapActivity: function(e){
       let index = e.currentTarget.dataset.index
       wx.navigateTo({
@@ -104,6 +120,25 @@ Component({
     },
     tapSearch: function(){
       
+    },
+    tapSignup: function(e){
+      let _this = this
+      let index = e.currentTarget.dataset.index
+      let activity_id = this.data.activityIds[index]
+      app.registerUserToActivity(app.globalData.openid, activity_id, res => {
+        if(res.data.status == '200 OK'){
+          wx.showToast({
+            title: '报名活动成功',
+          })
+          console.log('register success', res.data.status)
+        }
+        else if(res.data.status == 'Rejected: User is not member of the club'){
+          wx.showToast({
+            title: '清先加入社团',
+            image: '/images/fail.png'
+          })
+        }
+      })
     }
   }
 })
