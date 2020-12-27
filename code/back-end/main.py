@@ -461,7 +461,7 @@ API: getActivityPictures
 获取活动图片列表
 '''
 @app.route('/gp10/getActivityPictures', methods = ['POST'])
-def getClubPictures():
+def getActivityPictures():
     activity_id = int(request.form.get("activity_id"))
     datamanager = DataManager(DataType.activity_pictures)
     res = datamanager.getSlaveList(activity_id)
@@ -678,7 +678,7 @@ return: {status,url}
 def updatePicture():
     pic_obj = request.files.get('fileName')
     pic_randnum = str(random.randint(1,10000000))
-    file_path = os.path.join('/home/images', pic_randnum, pic_obj.fileName, '.jpg')
+    file_path = '/home/images/' + pic_randnum + pic_obj.fileName + '.jpg'
     pic_obj.save(file_path)
 
     res = {'status':'200 OK', 'filepath': file_path}
