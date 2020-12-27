@@ -40,7 +40,7 @@
   <basicInfo bind:refresh="refresh" wx:if="{{TabCur==0}}"></basicInfo>
   <activities wx:if="{{TabCur==1}}"></activities>
   <moments wx:if="{{TabCur==2}}"></moments>
-  <personnel wx:if="{{TabCur==3}}"></personnel>
+  <personnel bind:refresh="refresh" wx:if="{{TabCur==3}}"></personnel>
 </view>
 
 <loading wx:else></loading>
