@@ -66,7 +66,7 @@
 </form>
 <view class="cu-bar bg-white margin-top">
 		<view class="action">
-			上传活动图片
+			上传活动封面图片
 		</view>
 		<view class="action">
 			{{coverImgList.length}}/1
