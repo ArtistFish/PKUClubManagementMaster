@@ -49,18 +49,32 @@ Page({
       }
     })
   },
-
+  tapActivity: function(e){
+    let index = e.currentTarget.dataset.index
+    let type = e.currentTarget.dataset.type
+    let activity_id = this.data.idList[this.data.tabCur][type][index]
+    wx.navigateTo({
+      url: '/pages/activity/activity_detail/activity_detail?activity_id=' + activity_id,
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     let associated_activity_ids = JSON.parse(options.obj)
-    let infoList = {registered: {during: [], finished: []}, selected: [], setup: []}
+    let cur_time = new Date().getTime()
+    this.setData({
+      cur_time: cur_time
+    })
+    let infoList = {registered: {during: [], finished: []}, selected: {during: [], finished: []}, setup: {during: [], finished: []}}
+    let idList = {registered: {during: [], finished: []}, selected: {during: [], finished: []}, setup: {during: [], finished: []}}
     let cnt1 = 0
     let cnt2 = 0
     let length1 = associated_activity_ids.registered.length
     let length2 = associated_activity_ids.selected.length
     let _this = this
+    let start_time
+    let end_time
     if(length1 == 0 && length2 == 0){
       _this.setData({
         loaded: true,
@@ -68,11 +82,23 @@ Page({
     }
     for(let id of associated_activity_ids.registered){
       app.getActivityInfo(id, res => {
-        infoList.registered.during.push(res.data)
+        start_time = res.data.activity_start_time
+        end_time = res.data.activity_end_time
+        res.data.activity_start_time = new Date(start_time).toLocaleDateString()
+        res.data.activity_end_time = new Date(end_time).toLocaleDateString()
+        if(new Date(res.data.activity_end_time).getTime() < _this.data.cur_time){
+          infoList.registered.finished.push(res.data)
+          idList.registered.finished.push(id)
+        }
+        else{
+          infoList.registered.during.push(res.data)
+          idList.registered.during.push(id)
+        }
         cnt1 += 1
         if(cnt1 == length1 && cnt2 == length2){
           _this.setData({
             infoList: infoList,
+            idList: idList,
             loaded: true,
           })
         }
@@ -80,11 +106,23 @@ Page({
     }
     for(let id of associated_activity_ids.selected){
       app.getActivityInfo(id, res => {
-        infoList.selected.during.push(res.data)
+        start_time = res.data.activity_start_time
+        end_time = res.data.activity_end_time
+        res.data.activity_start_time = new Date(start_time).toLocaleDateString()
+        res.data.activity_end_time = new Date(end_time).toLocaleDateString()
+        if(new Date(res.data.activity_end_time).getTime() < _this.data.cur_time){
+          infoList.selected.finished.push(res.data)
+          idList.selected.finished.push(id)
+        }
+        else{
+          infoList.selected.during.push(res.data)
+          idList.selected.during.push(id)
+        }
         cnt2 += 1
         if(cnt1 == length1 && cnt2 == length2){
           _this.setData({
             infoList: infoList,
+            idList: idList,
             loaded: true,
           })
         }

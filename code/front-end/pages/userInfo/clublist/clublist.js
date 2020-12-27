@@ -1,5 +1,6 @@
 // pages/userInfo/clublist/clublist.js
-let app = getApp()
+let app = getApp();
+const Api = app.require('utils/util.js');
 Page({
 
   /**
@@ -17,6 +18,28 @@ Page({
     },
     loaded: false,
     hided: false,
+  },
+  tapExit: function(e) {
+    let index = e.currentTarget.dataset.index
+    let club_id = this.data.idList[this.data.tabCur][index]
+    Api.quit_club(club_id, relations=>{
+      {
+        this.setData({
+          loaded: false
+        })
+      }
+      let club_id_list = this.data.idList.join
+      club_id_list.splice(index, 1)
+      let club_info_list = this.data.infoList.join
+      club_info_list.splice(index, 1)
+      {
+        this.setData({
+          "infoList.join": club_info_list,
+          "idList.join": club_id_list,
+          loaded: true,
+        })
+      }
+    })
   },
   tabSelect: function(e){
     this.setData({
