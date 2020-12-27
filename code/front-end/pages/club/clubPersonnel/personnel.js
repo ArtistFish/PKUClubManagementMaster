@@ -174,7 +174,7 @@ Component({
             let club_id = app.globalData.current_club.club_id
             if (tabInd === 0)
             {
-              // 查看个人主页
+              // 查看个人主页的跳转接口
               wx.navigateTo({
                 url: '/pages/frontpage/frontpage',
               })
