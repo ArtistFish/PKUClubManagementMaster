@@ -148,7 +148,7 @@ Component({
     joinClub() {
       let club_id = app.globalData.current_club.club_id
       Api.join_club(club_id, () => {
-        this.triggerEvent('refresh', {club_id: club_id})
+        this.triggerEvent('refresh', {tab: 0, club_id: club_id})
       })
     }
   }

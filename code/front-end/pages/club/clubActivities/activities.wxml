@@ -7,7 +7,7 @@
           <view class="si-data">报名截止:{{item.activity_sign_up_ddl}}</view>
           <view class="si-other">
             <view class="sio-price">￥{{item.activity_fee}}</view>
-            <view class="sio-btn">立即报名</view>
+            <view class="sio-btn bg-orange">立即报名</view>
           </view>
         </view>
       </view>
@@ -16,6 +16,6 @@
 <view class="cu-tabbar-height">
   <!-- 只是占个地方 -->
 </view>
-<view wx:if="userIsPresident || userIsManager" class="cu-bar btn-group feet">
+<view wx:if="{{userIsPresident || userIsManager}}" class="cu-bar btn-group feet">
   <button class="cu-btn bg-yellow lg shadow-blur round" bindtap="createActivity">创建活动</button>
 </view>
