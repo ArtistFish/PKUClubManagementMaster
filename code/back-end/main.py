@@ -39,8 +39,9 @@ def createClub():
     club_name = request.form.get("club_name")
     club_description = request.form.get("club_description")
     club_president_wxid = request.form.get("club_president_user_id")
+    club_picture_list = request.form.getlist("club_picture_list")
 
-    club=Club(club_name=club_name,club_description=club_description,club_president_wxid=club_president_wxid)
+    club=Club(club_name=club_name,club_description=club_description,club_president_wxid=club_president_wxid,club_picture_list=club_picture_list)
     manager=DataManager(DataType.club)
     manager.addInfo(club)
 
@@ -189,6 +190,20 @@ def deleteManagerFromClub():
     wxid = request.form.get("wx_id")
     datamanager = DataManager(DataType.club_managers)
     datamanager.deleteSlaveInfo(club_id, wxid)
+
+    res = {'status': '200 OK'}
+    return json.dumps(res)
+
+'''
+API: deletePictureFromClub
+从社团删除图片
+'''
+@app.route('/gp10/deletePictureFromClub', methods = ['POST'])
+def deletePictureFromClub():
+    club_id = int(request.form.get("club_id"))
+    filepath = request.form.get("filepath")
+    datamanager = DataManager(DataType.club_pictures)
+    datamanager.deleteSlaveInfo(club_id, filepath)
 
     res = {'status': '200 OK'}
     return json.dumps(res)
@@ -453,6 +468,20 @@ def getClubPictures():
     return json.dumps({'status':'200 OK', 'activity_pictures_list': res})
 
 '''
+API: deletePictureFromClub
+删除活动图片
+'''
+@app.route('/gp10/deletePictureFromActivity', methods = ['POST'])
+def deletePictureFromActivity():
+    activity_id = int(request.form.get("activity_id"))
+    filepath = request.form.get("filepath")
+    datamanager = DataManager(DataType.activity_pictures)
+    datamanager.deleteSlaveInfo(activity_id, filepath)
+
+    res = {'status': '200 OK'}
+    return json.dumps(res)
+
+'''
 API:
 Function: getActivityInfo(Activity_id)
 return:{'status':status, 'activity_name':activity_name, 'activity_description':description, 'activity_club_id':club_id,
@@ -522,12 +551,13 @@ def createActivity():
     activity_sign_up_ddl = request.form.get("sign_up_ddl")
     activity_sponsor = request.form.get("sponsor")
     activity_undertaker = request.form.get("undertaker")
+    activity_picture_list = request.form.getlist("activity_picture_list")
 
     newActivity = Activity(at_name=activity_name, at_description=activity_description, at_club_id=activity_club_id,
     at_place=activity_place, at_start_time=activity_start_time, at_end_time=activity_end_time,
     at_lottery_time=activity_lottery_time, at_lottery_method=activity_lottery_method,at_max_number=activity_max_number,
     at_fee=activity_fee, at_sign_up_ddl=activity_sign_up_ddl, at_sponsor=activity_sponsor,
-    at_undertaker=activity_undertaker)
+    at_undertaker=activity_undertaker, picture_list=activity_picture_list)
 
     manager = DataManager(DataType.activity)
     manager.addInfo(newActivity)

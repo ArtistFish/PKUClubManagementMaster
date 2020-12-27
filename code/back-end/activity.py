@@ -5,12 +5,12 @@ from datamanager import *
 class Activity():
     __slots__ = ('id', 'name', 'description', 'club_id', 'place', 'start_time', 'end_time', 'lottery_time', 
                 'lottery_method', 'max_number', 'registered_people_list', 'selected_people_list', 'fee', 'sign_up_ddl',
-                'sponsor', 'undertaker')
+                'sponsor', 'undertaker', 'picture_list')
 
     #max_id = 0
     def __init__(self, at_id=0, at_name='', at_description='', at_club_id=0, at_place='', at_start_time='', at_end_time='', 
                 at_lottery_time='', at_lottery_method='', at_max_number=0, at_fee=0.0, at_sign_up_ddl='', at_sponsor='',
-                 at_undertaker=''):
+                 at_undertaker='', picture_list=[]):
         #self.id = at_id
         #if at_id == -1 :
         #    self.id = Activity.max_id + 1  
@@ -33,7 +33,7 @@ class Activity():
         self.undertaker = at_undertaker  #承办方
         self.registered_people_list = [] #报名的人员名单
         self.selected_people_list = [] #选上的人员名单
-        self.picture_list = [] #活动的图片列表
+        self.picture_list = picture_list #活动的图片列表
 
     def change_description(self, new_description):
         self.description = new_description
