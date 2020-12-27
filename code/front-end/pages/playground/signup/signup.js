@@ -158,19 +158,17 @@ Page({
             let data = JSON.parse(res.data)
             console.log(data)
             urls[imagesList.indexOf(image)] = data.filepath
-            cnt++
+            cnt += 1
             if(cnt == length){
-              console.log('zrf')
-              // console.log(_this.resolve)
+              let urls_array =[]
+              for(let key of Object.keys(urls)){
+                urls_array.push(urls[key])
+              }
+              resolve(urls_array)
             }
           })
         }
-      }).then(urls => {
-        let urls_array =[]
-        for(let key of urls.keys()){
-          urls_array.push(urls[key])
-        }
-        console.log(urls_array)
+      }).then(urls_array => {
         app.createClub(this.data.name, this.data.description, urls_array, res => {
           wx.hideLoading()
           if(res.data.status == '200 OK'){
