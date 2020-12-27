@@ -17,9 +17,9 @@
     <view class="flex flex-direction bg-white margin-top">
       <view class="text-center margin-top"> 活动推荐</view>
       <view class="flex cu-list grid col-{{gridCol}} no-border">
-        <view class="cu-item justify-center align-center" wx:for="{{recommendList}}" wx:if="{{index<gridCol*3}}">
+        <view class="cu-item justify-center align-center" wx:for="{{recommendIds}}" wx:if="{{index<gridCol*3}}">
           <view class="cu-avatar radius lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);" data-index="{{index}}" bind:tap="tapRecommend"></view>
-          <text class="text-cut my-recommend-name">{{item.activity_name}}</text>
+          <text class="text-cut my-recommend-name">{{activityList[item].activity_name}}</text>
         </view>
       </view>
     </view>
@@ -37,13 +37,13 @@
   </scroll-view>
   <view class="cu-list margin-top-xs">
     <view class="s-list" >
-      <view class="s-item" wx:for="{{tabCur == 'all'? activityList:recent_list}}" wx:key="key" bindtap="tapActivity" data-index="{{index}}">
+      <view class="s-item" wx:for="{{tabCur == 'all'? activityIds:recent_list}}" wx:key="key" bindtap="tapActivity" data-index="{{index}}">
         <image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg" class="si-img"></image>
-        <view class="si-title">{{item.activity_name}}</view>
-        <view class="si-data">开始时间:{{item.activity_start_time}}</view>
-        <view class="si-data">报名截止:{{item.activity_sign_up_ddl}}</view>
+        <view class="si-title">{{activityList[item].activity_name}}</view>
+        <view class="si-data">开始时间:{{activityList[item].activity_start_time}}</view>
+        <view class="si-data">报名截止:{{activityList[item].activity_sign_up_ddl}}</view>
         <view class="si-other">
-          <view class="sio-price">¥{{item.activity_fee}}</view>
+          <view class="sio-price">¥{{activityList[item].activity_fee}}</view>
           <view wx:if="{{due[index]}}" class="sio-btn bg-gray" style="hover-class:'none'">已结束</view>
           <view wx:if="{{!due[index] && activityJoined[index]}}" class="sio-btn bg-gray" style="hover-class:'none'">已报名</view>
           <view wx:if="{{!(activityJoined[index] || due[index])}}" class="sio-btn bg-yellow" catchtap="tapSignup" data-index="{{index}}">立即报名</view>

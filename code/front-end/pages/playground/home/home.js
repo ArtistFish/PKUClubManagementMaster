@@ -51,42 +51,68 @@ Component({
             reject(res)
           }
           else
-            resolve(res.data.club_list)
+          {
+            let clubIds = []
+            for(let club of res.data.club_list){
+              clubIds.push(club[0])
+            }
+            _this.setData({
+              clubIds: clubIds
+            })
+            resolve()
+          }
       })
-      }).then(club_list => {
-        let clubList = []
-        let cnt = 0
-        let clubIds = []
-        let length = club_list.length
+      }).then(() => {
+        let clubList = {}
+        let pictureList = {}
+        let length = _this.data.clubIds.length
+        let cnt1 = 0
+        let cnt2 = length
         if(length == 0){
           _this.setData({
-            loaded: true,
+            clubList: clubList,
+            pictureList: pictureList,
+            recommendIds: [],
+            data_loaded: true
           })
         }
-        for(let club of club_list){
-          let id = club[0]
+        for(let id of _this.data.clubIds){
           app.getClubInfo(id, res => {
-            cnt += 1
-            clubIds.push(id)
-            clubList.push(res.data)
-            if(cnt == length){
-              _this.setData({
-                clubList: clubList,
-                clubIds: clubIds,
-                recommendList: clubList.slice(0, 6),
-                recommendIds: clubIds.slice(0, 6),
-              })
+            if(res.data.status == '200 OK'){
+              cnt1 += 1
+              clubList[id] = res.data
+              if(cnt1 == length && cnt2 == length){
+                _this.setData({
+                  clubList: clubList,
+                  recommendIds: _this.data.clubIds.slice(0, 6),
+                  data_loaded: true
+                })
+              }
             }
           })
+          // app.getClubPictures(id, res => {
+          //   if(res.data.status == '200 OK'){
+          //     cnt2 += 1
+          //     let pic_li = []
+          //     for(let path of res.data.club_pictures_list){
+          //       pic_li.push(app.globalData.SERVER_ROOT_URL + path)
+          //     }
+          //     pictureList[id] = pic_li
+          //     if(cnt1 == length && cnt2 == length){
+          //       _this.setData({
+          //         clubList: clubList,
+          //         pictureList: pictureList,
+          //         recommendIds: _this.data.clubIds.slice(0, 6),
+          //         data_loaded: true
+          //       })
+          //     }
+          //   }
+          // })
         }
-      }).then(
-        () => {
-          Api.get_relations(relations => {
-            _this.getJoinStatus(relations, _this)
-          })
-        }
-      )
-      .catch(err => {
+        Api.get_relations(relations => {
+          _this.getJoinStatus(relations, _this)
+        })
+      }).catch(err => {
         console.log(err)
       })
     }
@@ -132,7 +158,7 @@ Component({
         }
         _this.setData({
           clubJoined: joined,
-          loaded: true
+          join_loaded: true
         })
     },
     editInput: function(e){

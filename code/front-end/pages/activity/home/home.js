@@ -21,49 +21,74 @@ Component({
           if(res.data.status != '200 OK'){
             reject(res)
           }
-          else
-            resolve(res.data.activity_list)
+          else{
+            // resolve(res.data.activity_list)
+            let activityIds = []
+            for(let activity of res.data.activity_list){
+              activityIds.push(activity[0])
+            }
+            _this.setData({
+              activityIds: activityIds
+            })
+            resolve()
+          }
       })
-      }).then(activity_list => {
-        let activityIds = []
-        let activityList = []
-        let cnt = 0
-        let length = activity_list.length
+      }).then(() => {
+        let activityList = {}
+        let pictureList = {}
+        let length = _this.data.activityIds.length
+        let cnt1 = 0
+        let cnt2 = length
         if(length == 0){
           _this.setData({
-            // loaded: true,
+            activityList: activityList,
+            pictureList: pictureList,
+            recommendIds: [],
+            data_loaded: true
           })
         }
-        for(let activity of activity_list){
-          let id = activity[0]
+        for(let id of _this.data.activityIds){
           app.getActivityInfo(id, res => {
-            cnt += 1
+            cnt1 += 1
             let start_time = res.data.activity_start_time
             let end_time = res.data.activity_end_time
             let sign_up_ddl = res.data.activity_sign_up_ddl
             res.data.activity_start_time = new Date(start_time).toLocaleDateString()
             res.data.activity_end_time = new Date(end_time).toLocaleDateString()
             res.data.activity_sign_up_ddl = new Date(sign_up_ddl).toLocaleDateString()
-            activityList.push(res.data)
-            activityIds.push(id)
-            if(cnt == length){
+            activityList[id] = res.data
+            if(cnt1 == length && cnt2 == length){
+              // console.log(activityList)
               _this.setData({
                 activityList: activityList,
-                // loaded: true,
-                activityIds: activityIds,
-                recommendIds: activityIds.slice(0, 6),
-                recommendList: activityList.slice(0, 6),
+                loaded: true,
+                recommendIds: _this.data.activityIds.slice(0, 6),
               })
             }
           })
         }
-      }).then(
-        () => {
-          Api.get_relations(relations => {
-            _this.getJoinStatus(relations, _this)
-          }, 'activity')
-        }
-      ).catch(err => {
+        // app.getActivityPictures(id, res => {
+          //   if(res.data.status == '200 OK'){
+          //     cnt2 += 1
+          //     let pic_li = []
+          //     for(let path of res.data.club_pictures_list){
+          //       pic_li.push(app.globalData.SERVER_ROOT_URL + path)
+          //     }
+          //     pictureList[id] = pic_li
+          //     if(cnt1 == length && cnt2 == length){
+          //       _this.setData({
+          //         activityList: activityList,
+          //         pictureList: pictureList,
+          //         recommendIds: _this.data.clubIds.slice(0, 6),
+          //         data_loaded: true
+          //       })
+          //     }
+          //   }
+          // })
+        Api.get_relations(relations => {
+          _this.getJoinStatus(relations, _this)
+        }, 'activity')
+      }).catch(err => {
         console.log(err)
       })
     }
@@ -76,19 +101,17 @@ Component({
       for(let activity_id of _this.data.activityIds)
       {
         let flag = false
+        let finished = false
         if (relations[activity_id] !== undefined)
         {
           flag = true
         }
+        if(new Date(_this.data.activityList[activity_id].activity_end_time).getTime() < cur_time)
+        {
+          finished = true
+        }
         joined.push(flag)
-      }
-      for(let activity of _this.data.activityList){
-        if(new Date(activity.activity_end_time).getTime() < cur_time){
-          due.push(true)
-        }
-        else{
-          due.push(false)
-        }
+        due.push(finished)
       }
       // console.log(joined)
       // console.log(_this.data.activityIds)

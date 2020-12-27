@@ -111,6 +111,7 @@ Page({
       contactImg: this.data.coverImgList,
       displayImgList: this.data.displayImgList,
     })
+    let _this = this
     let illegal = false
     let re = /[^\u4E00-\u9FA5a-zA-Z]/
     let illegal_type = -1
@@ -141,20 +142,50 @@ Page({
     }
     if(!illegal)
     {
-      wx.showLoading({
-        title: '创建中',
-      })
-      app.createClub(this.data.name, this.data.description, res => {
-        wx.hideLoading()
-        if(res.data.status == '200 OK'){
-          wx.showToast({
-            title: '创建成功',
-            duration: 500,
+      // wx.showLoading({
+      //   title: '创建中',
+      // })
+      new Promise((resolve, reject) => {
+        let imagesList = []
+        imagesList.push(...this.data.coverImgList)
+        imagesList.push(...this.data.contactImgList)
+        imagesList.push(...this.data.displayImgList)
+        let length = imagesList.length
+        let cnt = 0
+        let urls = {}
+        for(let image of imagesList){
+          app.updatePicture(image, res => {
+            let data = JSON.parse(res.data)
+            console.log(data)
+            urls[imagesList.indexOf(image)] = data.filepath
+            cnt++
+            if(cnt == length){
+              console.log('zrf')
+              // console.log(_this.resolve)
+            }
           })
-          setTimeout(() => {
-            wx.navigateBack()
-          }, 500)
         }
+      }).then(urls => {
+        let urls_array =[]
+        for(let key of urls.keys()){
+          urls_array.push(urls[key])
+        }
+        console.log(urls_array)
+        app.createClub(this.data.name, this.data.description, urls_array, res => {
+          wx.hideLoading()
+          if(res.data.status == '200 OK'){
+            wx.showToast({
+              title: '创建成功',
+              duration: 500,
+            })
+            setTimeout(() => {
+              wx.navigateBack()
+            }, 500)
+          }
+        })
+      }).catch(() => {
+        wx.hideLoading()
+        console.log('上传图片失败')
       })
     }
     else{
