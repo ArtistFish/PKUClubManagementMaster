@@ -5,17 +5,17 @@
 <loading wx:if="{{!loaded}}"></loading>
 <view wx:else>
   <scroll-view scroll-x class="bg-white nav">
-  <view class="flex text-center">
-    <view class="cu-item flex-sub {{tabCur=='inform'?'text-orange cur':''}}" bind:tap="tabSelect" data-list='inform'>
-      通知消息
+    <view class="flex text-center">
+      <view class="cu-item flex-sub {{tabCur=='inform'?'text-orange cur':''}}" bind:tap="tabSelect" data-list='inform'>
+        通知消息
+      </view>
+      <view class="cu-item flex-sub {{tabCur=='reply'?'text-orange cur':''}}" bind:tap="tabSelect" data-list='reply'>
+        回复/评论
+      </view>
+      <view class="cu-item flex-sub {{tabCur=='system'?'text-orange cur':''}}" bind:tap="tabSelect" data-list='system'>
+        系统消息
+      </view>
     </view>
-    <view class="cu-item flex-sub {{tabCur=='reply'?'text-orange cur':''}}" bind:tap="tabSelect" data-list='reply'>
-      回复/评论
-    </view>
-    <view class="cu-item flex-sub {{tabCur=='system'?'text-orange cur':''}}" bind:tap="tabSelect" data-list='system'>
-      系统消息
-    </view>
-  </view>
   </scroll-view>
   <view class="cu-bar bg-white solid-bottom margin-top">
     <view class="action">
