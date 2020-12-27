@@ -7,13 +7,18 @@ from activity import Activity
 import random
 import requests
 import os
+import time
+import datetime
 
 app = Flask(__name__)
 
 # for test
-@app.route("/gp10",methods=['GET'])
+@app.route("/gp10/test",methods=['GET','POST'])
 def test_form():
     return "response from SE group 10"
+
+
+
 
 '''
 API:
@@ -28,6 +33,23 @@ def createUser():
     datamanager.addInfo(user)
 
     res = {'status':'200 OK'}
+    return json.dumps(res)
+
+
+
+'''
+API:
+获取用户name
+'''
+@app.route('/gp10/getUserInfo', methods=['POST'])
+def getUserInfo():
+    wxid = request.form.get("wx_id")
+    datamanager = DataManager(DataType.user)
+    res=datamanager.getInfo(wxid)
+    if len(res)==0:
+        return json.dumps({'status':'Not Found'})
+    user_name=res[0][2]
+    res = {'status':'200 OK','user_name':user_name}
     return json.dumps(res)
 
 '''
@@ -67,6 +89,7 @@ Function: getClubInfo(club_id)
 Return: {'status':status,'club_name': club_name, 'club_description':club_description,'club_president_user_id',club_president_user_id}
 
 Return in Json format
+********注意：该API只返回社团基本信息，关于人员、活动的信息请使用getClubManagers......
 '''
 @app.route('/gp10/getClubInfo', methods=['POST'])
 def getClubInfo():
@@ -132,6 +155,10 @@ def addManagerToClub():
     club_id = int(request.form.get("club_id"))
     wxid = request.form.get("wx_id")
     datamanager = DataManager(DataType.club_managers)
+    res=datamanager.getSlaveList(club_id)
+    for i in range(len(res)):
+        if wxid==res[i][1]:
+            return json.dumps({'status':'Already in the club! failed!'})
     datamanager.addSlaveInfo(club_id, wxid)
 
     res = {'status':'200 OK'}
@@ -146,8 +173,12 @@ def addMemberToClub():
     club_id = int(request.form.get("club_id"))
     wxid = request.form.get("wx_id")
     datamanager = DataManager(DataType.club_members)
-    datamanager.addSlaveInfo(club_id, wxid)
+    res=datamanager.getSlaveList(club_id)
+    for i in range(len(res)):
+        if wxid==res[i][1]:
+            return json.dumps({'status':'Already in the club! failed!'})
 
+    datamanager.addSlaveInfo(club_id, wxid)
     res = {'status': '200 OK'}
     return json.dumps(res)
 
@@ -169,7 +200,7 @@ def addPictureToClub():
 API: addActivityToClub
 【警告：此API已被废弃，请使用createActivity API！】
 向社团增加活动
-'''
+
 @app.route('/gp10/addActivityToClub', methods = ['POST'])
 def addActivityToClub():
     club_id = int(request.form.get("club_id"))
@@ -179,6 +210,7 @@ def addActivityToClub():
 
     res = {'status':'200 OK'}
     return json.dumps(res)
+'''
 
 '''
 API: deleteManagerFromClub
@@ -226,7 +258,7 @@ def deleteMemberFromClub():
 API: deleteActivityFromClub
 【警告：此API已被废弃，请使用deleteActivity API！】
 从社团删除活动
-'''
+
 @app.route('/gp10/deleteActivityFromClub', methods = ['POST'])
 def deleteActivityFromClub():
     club_id = int(request.form.get("club_id"))
@@ -236,6 +268,7 @@ def deleteActivityFromClub():
 
     res = {'status': '200 OK'}
     return json.dumps(res)
+'''
 
 '''
 API:setClubInfo
@@ -358,6 +391,10 @@ def registerUserToActivity():
         return json.dumps({'status': 'Rejected: User is not member of the club'})
 
     datamanager = DataManager(DataType.activity_registered_people)
+    res=datamanager.getSlaveList(activity_id)
+    for member in res:
+        if member[1]==wxid:
+            return json.dumps({'status': 'Rejected: Already registered'})
     datamanager.addSlaveInfo(activity_id, wxid)
     return json.dumps({'status': '200 OK'})
 
@@ -492,6 +529,7 @@ return:{'status':status, 'activity_name':activity_name, 'activity_description':d
 Return in Json format
 
 返回的是Activity的json化，如果需要返回其他属性，需要修改Activity类的属性及方法
+注意：会返回registered_people和selected_people，内容为wxid,但不会返回picture_list!
 '''
 @app.route('/gp10/getActivityInfo', methods=['POST'])
 def getActivityInfo():
@@ -506,6 +544,8 @@ def getActivityInfo():
     at_end_time=activity_info[0][6], at_lottery_time=activity_info[0][7], at_lottery_method=activity_info[0][8], 
     at_max_number=activity_info[0][9], at_fee=activity_info[0][10], at_sign_up_ddl=activity_info[0][11],
     at_sponsor=activity_info[0][12], at_undertaker=activity_info[0][13])
+
+    activity.load_slave_data()  
     
     res = activity.Jsonfy()
 
@@ -709,6 +749,45 @@ def getClubListByMemberNum():
     club_list = sorted(club_list, key=lambda myClub:myClub[2], reverse=True)
     
     return json.dumps({'status':'200 OK','club_list':club_list})
+
+'''
+  Check if it is the time to start a lottery.
+  Not for the front-end
+  不要调用这个API
+'''
+@app.route('/gp10/checkLottery', methods=['GET','POST'])
+def checkLottery():
+    manager = DataManager(DataType.activity)
+    activity_info = manager.getList()
+    now_time=datetime.datetime.now().strftime('%F %T')
+    format_regex = '%Y-%m-%d %H:%M:%S'
+    GMT_FORMAT = '%a, %d %b %Y %H:%M:%S GMT'
+
+
+    for i in range(len(activity_info)):
+
+        if (now_time<scheduled_time):
+            continue
+
+        activity=Activity(at_id=activity_info[i][0], at_name=activity_info[i][1], at_description=activity_info[i][2], 
+            at_club_id=activity_info[i][3], at_place=activity_info[i][4], at_start_time=activity_info[i][5], 
+            at_end_time=activity_info[i][6], at_lottery_time=activity_info[i][7], at_lottery_method=activity_info[i][8], 
+            at_max_number=activity_info[i][9], at_fee=activity_info[i][10], at_sign_up_ddl=activity_info[i][11],
+            at_sponsor=activity_info[i][12], at_undertaker=activity_info[i][13] )
+        activity.load_slave_data()
+        if len(activity.selected_people_list)>0:
+            continue
+        activity.lottery_by_random_method()
+
+        manager = DataManager(DataType.activity_selected_people)
+        for j in activity.selected_people_list:
+            manager.addSlaveInfo(activity.id,j)
+
+    return "200 OK"
+        
+
+
+
 
 
 if __name__ == '__main__':
