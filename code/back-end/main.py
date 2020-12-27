@@ -676,9 +676,9 @@ return: {status,url}
 '''
 @app.route('/gp10/updatePicture', methods=['POST'])
 def updatePicture():
-    pic_obj = request.files.get('fileName')
+    pic_obj = request.files.get('filename')
     pic_randnum = str(random.randint(1,10000000))
-    file_path = '/home/images/' + pic_randnum + pic_obj.fileName + '.jpg'
+    file_path = '/home/images/' + pic_randnum + pic_obj.filename + '.jpg'
     pic_obj.save(file_path)
 
     res = {'status':'200 OK', 'filepath': file_path}
