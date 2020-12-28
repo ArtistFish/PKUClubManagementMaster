@@ -59,7 +59,8 @@
             </view>
             <view class="flex justify-between margin-top-xs">
               <text class="cuIcon-favorfill margin-top"> 热度</text>
-              <button class="cu-btn bg-yellow margin-right-xs round" catchtap="tapJoin" data-index="{{index}}">申请加入</button>
+              <view wx:if="{{clubJoined[index]}}" class="cu-btn bg-gray margin-right-xs round" style="hover-class:'none'">已加入</view>
+              <button wx:else class="cu-btn bg-yellow margin-right-xs round" catchtap="tapJoin" data-index="{{index}}">申请加入</button>
             </view>
           </view>
         </view>

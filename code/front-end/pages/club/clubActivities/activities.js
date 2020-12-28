@@ -14,6 +14,7 @@ Component({
   lifetimes:{
     attached: function () {
       Api.set_current_user(this)
+      console.log(this.data)
     },
     ready: function(){
       let _this = this

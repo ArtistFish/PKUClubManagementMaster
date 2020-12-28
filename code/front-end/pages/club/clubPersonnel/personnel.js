@@ -20,7 +20,7 @@ Component({
       console.log(app.globalData.current_club)
       let member_list = app.globalData.current_club.member_list
       let manager_list = app.globalData.current_club.manager_list
-      let president_id = app.globalData.current_club.club_president_id
+      let president_id = app.globalData.current_club.club_president_wxid
       let member_detail_list = []
       let manager_detail_list = []
       let count = 0
@@ -35,7 +35,7 @@ Component({
       }
       count += 1
       manager_detail_list.push({
-        id: president_id[1],
+        id: president_id,
         name: president_id.slice(-5),
         duty: "会长",
         avatar: `https://ossweb-img.qq.com/images/lol/web201310/skin/big${10000+count%9}.jpg`
@@ -171,8 +171,10 @@ Component({
           content: content[tabInd],
           cancelColor: 'cancelColor',
           success: res=>{
+            let club_id = app.globalData.current_club.club_id
             if (tabInd === 0)
             {
+              // 查看个人主页的跳转接口
               wx.navigateTo({
                 url: '/pages/frontpage/frontpage',
               })
@@ -189,11 +191,14 @@ Component({
               app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_managerInvite, "管理员邀请",  
               `${this.data.userName}想任命${modalName}为${app.globalData.current_club.club_name}社团管理员`,
                res=>console.log(res))
+              app.addManagerToClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
+               this.triggerEvent('refresh', {tab: 3, club_id: club_id}))
             }
             else{
               app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_normal, "移除管理员",  
               `${this.data.userName}移除了${modalName}的${app.globalData.current_club.club_name}社团管理员身份`, res=>console.log(res))
-              app.deleteManagerFromClub(app.globalData.current_club.club_id, this.data.modalId, res=>console.log(res))
+              app.deleteManagerFromClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
+                this.triggerEvent('refresh', {tab: 3, club_id: club_id}))
             }
           },
           fail: res=>{console.log(res)}

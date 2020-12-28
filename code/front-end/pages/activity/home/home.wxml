@@ -44,7 +44,9 @@
         <view class="si-data">报名截止:{{item.activity_sign_up_ddl}}</view>
         <view class="si-other">
           <view class="sio-price">¥{{item.activity_fee}}</view>
-          <view class="sio-btn bg-yellow" catchtap="tapSignup" data-index="{{index}}">立即报名</view>
+          <view wx:if="{{due[index]}}" class="sio-btn bg-gray" style="hover-class:'none'">已结束</view>
+          <view wx:if="{{!due[index] && activityJoined[index]}}" class="sio-btn bg-gray" style="hover-class:'none'">已报名</view>
+          <view wx:if="{{!(activityJoined[index] || due[index])}}" class="sio-btn bg-yellow" catchtap="tapSignup" data-index="{{index}}">立即报名</view>
         </view>
       </view>
     </view>

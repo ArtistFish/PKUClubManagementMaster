@@ -812,6 +812,7 @@ App({
       club_president_id: undefined, 
       club_manager_list: [], 
       club_member_list: [], 
+      relation: undefined,
       collector_id: []
     },
     club: {

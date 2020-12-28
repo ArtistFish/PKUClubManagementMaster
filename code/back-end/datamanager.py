@@ -150,8 +150,8 @@ class DataManager():
                 cursor.execute("create table club_%d_members (id INT AUTO_INCREMENT, member_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
                 cursor.execute("create table club_%d_activities (id INT AUTO_INCREMENT, activity_id INT, PRIMARY KEY (id))" % object.id)
                 cursor.execute("create table club_%d_pictures (id INT AUTO_INCREMENT, filepath TEXT, PRIMARY KEY (id))" % object.id)
-                for picture in object.picture_list:
-                    cursor.execute("insert into club_%d_pictures (filepath) values (%s)" % (object.id, picture))
+                for picture in object.club_picture_list:
+                    cursor.execute("insert into club_%d_pictures (filepath) values ('%s')" % (object.id, picture))
             elif self.datatype == DataType.activity:
                 cursor.execute("insert into activities (activity_name, activity_description, activity_club_id, "
                                "activity_place, "
@@ -173,9 +173,9 @@ class DataManager():
                     "create table activity_%d_selected_people (id INT AUTO_INCREMENT, selected_person_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
                 cursor.execute(
                     "create table activity_%d_pictures (id INT AUTO_INCREMENT, filepath TEXT, PRIMARY KEY (id))" % object.id)
-                for picture in object.picture_list:
-                    cursor.execute(
-                      "insert into activity_%d_pictures (filepath) values (%s)" % (object.id, picture))
+                for picture in object.activity_picture_list:
+                   cursor.execute(
+                      "insert into activity_%d_pictures (filepath) values ('%s')" % (object.id, picture))
             elif self.datatype == DataType.user:
                 cursor.execute("insert into users (wxid, user_name) values ('%s', '%s')" % (object.wxid, object.name))
             elif self.datatype == DataType.message:
@@ -207,7 +207,7 @@ class DataManager():
             elif self.datatype == DataType.club_activities:
                 cursor.execute("insert into club_%d_activities (activity_id) values (%d)" % (id, slave_id))
             elif self.datatype == DataType.club_pictures:
-                cursor.execute("insert into club_%d_pictures (filepath) values (%s)" % (id, slave_id))
+                cursor.execute("insert into club_%d_pictures (filepath) values ('%s')" % (id, slave_id))
 
             elif self.datatype == DataType.activity_registered_people:
                 cursor.execute("insert into activity_%d_registered_people (registered_person_wxid) values ('%s')"
@@ -216,7 +216,7 @@ class DataManager():
                 cursor.execute("insert into activity_%d_selected_people (selected_person_wxid) values ('%s')"
                                % (id, slave_id))
             elif self.datatype == DataType.activity_pictures:
-                cursor.execute("insert into activity_%d_pictures (filepath) values (%s)" % (id, slave_id))
+                cursor.execute("insert into activity_%d_pictures (filepath) values ('%s')" % (id, slave_id))
             else:
                 pass
             conn.commit()
@@ -273,7 +273,7 @@ class DataManager():
             elif self.datatype == DataType.club_activities:
                 cursor.execute("delete from club_%d_activities where activity_id = %d" % (id, slave_id))
             elif self.datatype == DataType.club_pictures:
-                cursor.execute("delete from club_%d_pictures where filepath = %s" % (id, slave_id))
+                cursor.execute("delete from club_%d_pictures where filepath = '%s'" % (id, slave_id))
 
             elif self.datatype == DataType.activity_registered_people:
                 cursor.execute("delete from activity_%d_registered_people where registered_person_wxid = '%s'"
@@ -313,7 +313,7 @@ class DataManager():
                                   object.startTime, object.endTime, object.lotteryTime,object.lotteryMethod, object.maxNumber,
                                   object.fee, object.sign_up_ddl, object.sponsor, object.undertaker, object.id))
             elif self.datatype == DataType.user:
-                cursor.execute("update users set username='%s' where wxid='%s'"% (object.name,object.wxid))
+                cursor.execute("update users set user_name='%s' where wxid='%s'"% (object.name,object.wxid))
             elif self.datatype == DataType.message:
                 cursor.execute("update messages set message_type='%s', message_title='%s', message_content='%s', message_sender_wxid='%s',"
                                "message_receiver_wxid='%s' where message_id='%s'"% (object.type, object.title, object.content,object.sender_wxid, object.receiver_wxid,object.id))

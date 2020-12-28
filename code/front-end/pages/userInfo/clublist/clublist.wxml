@@ -39,8 +39,9 @@
           <view class="margin-top-xs my-description-wraper">
               <view class="text-gray my-description"> {{item.club_description}}</view>
           </view>
-          <view class="flex justify-between margin-top">
+          <view class="flex justify-between margin-top-xs">
             <text class="cuIcon-favorfill"> 热度</text>
+            <button class="cu-btn bg-yellow margin-right-xs round" catchtap="tapExit" data-index="{{index}}">退出社团</button>
           </view>
         </view>
       </view>
