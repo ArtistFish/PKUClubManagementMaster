@@ -155,6 +155,7 @@ Page({
         let urls = {}
         for(let image of imagesList){
           app.updatePicture(image, res => {
+            console.log(res.data)
             let data = JSON.parse(res.data)
             console.log(data)
             urls[imagesList.indexOf(image)] = data.filepath
@@ -169,6 +170,7 @@ Page({
           })
         }
       }).then(urls_array => {
+        console.log(urls_array)
         app.createClub(this.data.name, this.data.description, urls_array, res => {
           wx.hideLoading()
           if(res.data.status == '200 OK'){

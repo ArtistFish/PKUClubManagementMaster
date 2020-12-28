@@ -15,9 +15,9 @@
   </view>
   <view class="wraper shadow">
     <swiper class="screen-swiper square-dot radius" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
-      <swiper-item wx:for="{{swiperList}}">
-        <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='image'}}"></image>
-        <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video>
+      <swiper-item wx:for="{{recommendIds}}">
+        <image src="{{pictureList[item][0]}}" mode="aspectFill"></image>
+        <!-- <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video> -->
       </swiper-item>
     </swiper>
     <view class="flex flex-direction bg-white margin-top">

@@ -67,7 +67,7 @@ Component({
         let pictureList = {}
         let length = _this.data.clubIds.length
         let cnt1 = 0
-        let cnt2 = length
+        let cnt2 = 0
         if(length == 0){
           _this.setData({
             clubList: clubList,
@@ -76,6 +76,7 @@ Component({
             data_loaded: true
           })
         }
+        console.log(_this.data.clubIds)
         for(let id of _this.data.clubIds){
           app.getClubInfo(id, res => {
             if(res.data.status == '200 OK'){
@@ -90,24 +91,24 @@ Component({
               }
             }
           })
-          // app.getClubPictures(id, res => {
-          //   if(res.data.status == '200 OK'){
-          //     cnt2 += 1
-          //     let pic_li = []
-          //     for(let path of res.data.club_pictures_list){
-          //       pic_li.push(app.globalData.SERVER_ROOT_URL + path)
-          //     }
-          //     pictureList[id] = pic_li
-          //     if(cnt1 == length && cnt2 == length){
-          //       _this.setData({
-          //         clubList: clubList,
-          //         pictureList: pictureList,
-          //         recommendIds: _this.data.clubIds.slice(0, 6),
-          //         data_loaded: true
-          //       })
-          //     }
-          //   }
-          // })
+          app.getClubPictures(id, res => {
+            if(res.data.status == '200 OK'){
+              cnt2 += 1
+              let pic_li = []
+              for(let path of res.data.club_pictures_list){
+                pic_li.push(app.globalData.SERVER_ROOT_URL + path[1])
+              }
+              pictureList[id] = pic_li
+              if(cnt1 == length && cnt2 == length){
+                _this.setData({
+                  clubList: clubList,
+                  pictureList: pictureList,
+                  recommendIds: _this.data.clubIds.slice(0, 6),
+                  data_loaded: true
+                })
+              }
+            }
+          })
         }
         Api.get_relations(relations => {
           _this.getJoinStatus(relations, _this)
