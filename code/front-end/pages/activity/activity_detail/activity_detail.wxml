@@ -16,7 +16,7 @@
       </view>   
     </view>
   </view>
-   <!-- <image src="/images/yellow_star.png" style="width:10% hight:10%"></image>-->
+ 
   
       
    
@@ -64,15 +64,11 @@
     </view>   
   </view>
 
-   <!-- <view class="cu-bar tabbar bg-white foot " style="justify-content: space-between ">   -->
     <view class=" cu-bar btn-group bg-white foot">
       <button class="cu-btn  bg-yellow  round  "  bindtap="sign_up"   wx:if="{{!sign_up_click}}">立即报名</button>
       <button class="cu-btn  bg-grey  round  "  wx:else>已报名</button>
       <button class="cu-btn  bg-blue  round  "  bindtap="click"  wx:if="{{!isClick}}">收藏</button>
       <button class="cu-btn  bg-grey  round  "  bindtap="click"  wx:else>已收藏</button>
-      <!-- <view class="cuIcon-favorfill  padding-left-xl "  style="color:grey" size="100" bindtap="click" wx:if="{{!isClick}}"></view> -->
-      <!-- <view class="cuIcon-favorfill  padding-left-xl "  style="color:yellow" size="100" bindtap="click" wx:else></view> -->
-      <!-- <text style="font-size:30rpx">{{isClick?"已收藏":"收藏"}}</text> -->
    </view>
    
   <view class="cu-tabbar-height"></view>

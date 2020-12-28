@@ -75,7 +75,7 @@ Page({
               pic.push(app.globalData.SERVER_ROOT_URL + path[1])
             }
             _this.setData({
-              top_src:pic[1],
+              top_src:pic[0],
               activity_List:pic
             })
             console.log(_this.data.activity_List)
