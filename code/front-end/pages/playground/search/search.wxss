@@ -137,3 +137,7 @@
 .xxx{
   margin-bottom: -10px;
 }
+.my-icon {
+	height: 50rpx;
+	width: 50rpx;
+}

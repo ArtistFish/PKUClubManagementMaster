@@ -17,6 +17,50 @@ App({
       },
     })
   },
+  getClubPictures: function(club_id, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/getClubPictures',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        club_id: club_id,
+      },
+      method: 'POST',
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('getClubPictures fail', res)
+        }
+        callback(res)
+      }
+    })
+  },
+  getActivityPictures: function(activity_id, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/getActivityPictures',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        activity_id: activity_id,
+      },
+      method: 'POST',
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('getActivityPictures fail', res)
+        }
+        callback(res)
+      }
+    })
+  },
   getOpenid: function(callback){
     let _this = this
     wx.login({
@@ -167,17 +211,17 @@ App({
       }
     })
   },
-  getUserInfo: function(callback){
+  getUserInfo: function(wx_id, callback){
     wx.request({
       url: this.globalData.SERVER_URL + '/getUserInfo',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: 'POST',
+      data: {
+        wx_id: wx_id,
+      },
       success: res => {
-        if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '获取信息失败',
-            image: '/images/fail.png',
-          })
-          console.log('getUserInfo fail', res)
-        }
         callback(res)
       },
       fail: res =>{
@@ -186,7 +230,31 @@ App({
           image: '/images/fail.png',
         })
         console.log('getUserInfo api fail', res)
+        // callback(res)
+      }
+    })
+  },
+  setUserInfo: function(user_name, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/setUserInfo',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      method: 'POST',
+      data: {
+        wx_id: this.globalData.openid,
+        user_name: user_name
+      },
+      success: res => {
         callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('setUserInfo api fail', res)
+        // callback(res)
       }
     })
   },
@@ -243,7 +311,30 @@ App({
       }
     })
   },
-  createClub: function(club_name, club_description, callback){
+  createUser: function(wx_id, user_name, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/createUser',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        wx_id: wx_id,
+        user_name: user_name,
+      },
+      method: 'POST',
+      success: res => {
+        callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('createClub api fail', res)
+      }
+    })
+  },
+  createClub: function(club_name, club_description, club_pircure_list=[], callback){
     wx.request({
       url: this.globalData.SERVER_URL + '/createClub',
       header: {
@@ -253,6 +344,7 @@ App({
         club_name: club_name,
         club_description: club_description, 
         club_president_user_id: this.globalData.openid,
+        club_picture_list: club_pircure_list
       },
       method: 'POST',
       success: res => {
@@ -264,7 +356,7 @@ App({
           console.log('createClub fail', res)
         }
         callback(res)
-      },
+      }, 
       fail: res =>{
         wx.showToast({
           title: '获取信息失败',
@@ -275,7 +367,7 @@ App({
       }
     })
   },
-  createActivity: function(activity_name, activity_description, club_id, place, start_time, end_time, lottery_time, lottery_method, max_number, fee, sign_up_ddl, sponsor, undertaker, callback){
+  createActivity: function(activity_name, activity_description, club_id, place, start_time, end_time, lottery_time, lottery_method, max_number, fee, sign_up_ddl, sponsor, undertaker, activity_picture_list = [], callback){
     wx.request({
       url: this.globalData.SERVER_URL + '/createActivity',
       header: {
@@ -295,6 +387,7 @@ App({
         sign_up_ddl: sign_up_ddl,
         sponsor: sponsor,
         undertaker: undertaker,
+        activity_picture_list: activity_picture_list
       },
       method: 'POST',
       success: res => {
@@ -780,6 +873,16 @@ App({
       }
     })
   },
+  updatePicture: function(filePath, callback){
+    wx.uploadFile({
+      filePath: filePath,
+      name: 'filename',
+      url: this.globalData.SERVER_URL + '/updatePicture',
+      success: res => {
+        callback(res)
+      }
+    })
+  },
   globalData: {
     messageType: {
       inform_normal: 0,
@@ -798,6 +901,7 @@ App({
     activityList: [],
     messageList: [],
     SERVER_URL: 'https://thunderclub.xyz/gp10',
+    SERVER_ROOT_URL: 'https://thunderclub.xyz',
     current_club: {
       id: undefined, 
       club_name: undefined, 

@@ -13,32 +13,53 @@ Page({
   tapClub: function(e){
     let index = e.currentTarget.dataset.index
     wx.navigateTo({
-      url: '/pages/playground/frontPage/frontPage?club_id=' + this.data.resultIds[index],
+      url: '/pages/club/frontpage/frontpage?club_id=' + this.data.resultIds[index],
     })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let resultIds = JSON.parse(options.list)
-    let resultList = []
-    let cnt = 0
-    let length = resultIds.length
     let _this = this
+    let resultIds = JSON.parse(options.list)
+    _this.setData({
+      resultIds: resultIds
+    })
+    let resultList = {}
+    let pictureList = {}
+    let cnt1 = 0
+    let cnt2 = 0
+    let length = resultIds.length
     if(length == 0){
       _this.setData({
         loaded: true,
-        resultIds: resultIds,
       })
     }
     for(let id of resultIds){
       app.getClubInfo(id, res => {
-        resultList.push(res.data)
-        cnt += 1
-        if(cnt == length){
+        if(res.data.status == '200 OK'){
+          resultList[id] = res.data
+          cnt1 += 1
+          if(cnt1 == length && cnt2 == length){
+            _this.setData({
+              loaded: true,
+              pictureList: pictureList,
+              resultList: resultList,
+            })
+          }
+        }
+      })
+      app.getClubPictures(id, res => {
+        let pic_list = []
+        for(let path of res.data.club_pictures_list){
+          pic_list.push(app.globalData.SERVER_ROOT_URL + path[1])
+        }
+        pictureList[id] = pic_list
+        cnt2 += 1
+        if(cnt1 == length && cnt2 == length){
           _this.setData({
             loaded: true,
-            resultIds: resultIds,
+            pictureList: pictureList,
             resultList: resultList,
           })
         }

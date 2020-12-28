@@ -4,6 +4,6 @@
   <view class="cu-form-group">
     <view class="title">{{title}}</view>
     <input placeholder="{{innerText}}" bindinput="editInput"></input>
-    <button class="cu-btn bg-green shadow">完成</button>
+    <button class="cu-btn bg-green shadow" bind:tap="tapCommit">完成</button>
   </view>
 </form>

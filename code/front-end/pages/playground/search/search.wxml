@@ -1,8 +1,8 @@
 <!--pages/playground/search/search.wxml-->
 <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">搜索结果</view></cu-custom>
 <view class="cu-list margin-top-xs">
-  <view wx:for="{{resultList}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white"  bindtap="tapClub" data-index="{{index}}">
-    <image class="flex-sub club-card radius-lg" src="https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg" mode="aspectFill">
+  <view wx:for="{{resultIds}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white"  bindtap="tapClub" data-index="{{index}}">
+    <image class="flex-sub club-card radius-lg" src="{{pictureList[item][0]}}" mode="aspectFill">
       <view class="cu-tag my-badge bg-yellow text-center">
         <text class="margin-left-xs">已认证</text>
       </view>
@@ -10,12 +10,12 @@
     <view class="flex-twice">
       <view class="flex-direction margin-left-xs">
         <view class="flex justify-between text-lg text-black margin-top-xs">
-          {{item.club_name}}
+          {{resultList[item].club_name}}
           <text class="cuIcon-peoplefill margin-right margin-top-sm"> 学生</text>
         </view>
-        <text class="cuIcon-camerafill text-black">  北京大学</text>
-        <view class="text-gray margin-top-xs"> {{item.club_description}}</view>
-        <view class="flex justify-between align-end">
+        <image src="/images/favicon.ico" class="cu-avatar bg-white my-icon"> </image><text class="text-black">  北京大学</text>
+        <view class="text-gray margin-top-xs"> {{resultList[item].club_description}}</view>
+        <view class="flex justify-between align-end margin-top">
           <text class="cuIcon-favorfill"> 热度</text>
         </view>
       </view>

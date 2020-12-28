@@ -1,4 +1,5 @@
 // pages/userInfo/edit/edit.js
+const app = getApp()
 Page({
 
   /**
@@ -11,6 +12,21 @@ Page({
   editInput: function(e){
     this.setData({
       innerText: e.detail.value
+    })
+  },
+  tapCommit: function(e){
+    app.setUserInfo(this.data.innerText, res => {
+      console.log(res)
+      if(res.data.status == '200 OK'){
+        wx.showToast({
+          title: '修改成功'
+        })
+        setTimeout(() => {
+          wx.navigateTo({
+            url: '/pages/index/index?CurPage=userInfo'
+          })
+        }, 500)
+      }
     })
   },
   /**

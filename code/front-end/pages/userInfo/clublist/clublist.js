@@ -16,26 +16,27 @@ Page({
       join: [],
       setup: [],
     },
+    pictureList:{
+      join: [],
+      setup: [],
+    },
     loaded: false,
     hided: false,
   },
   tapExit: function(e) {
     let index = e.currentTarget.dataset.index
-    let club_id = this.data.idList[this.data.tabCur][index]
+    let club_id = this.data.listIds[this.data.tabCur][index]
     Api.quit_club(club_id, relations=>{
       {
         this.setData({
           loaded: false
         })
       }
-      let club_id_list = this.data.idList.join
+      let club_id_list = this.data.listIds.join
       club_id_list.splice(index, 1)
-      let club_info_list = this.data.infoList.join
-      club_info_list.splice(index, 1)
       {
         this.setData({
-          "infoList.join": club_info_list,
-          "idList.join": club_id_list,
+          "listIds.join": club_id_list,
           loaded: true,
         })
       }
@@ -59,7 +60,7 @@ Page({
   tapClub: function(e){
     let index = e.currentTarget.dataset.index
     wx.navigateTo({
-      url: '/pages/club/frontpage/frontpage?club_id=' + this.data.idList[this.data.tabCur][index],
+      url: '/pages/club/frontpage/frontpage?club_id=' + this.data.listIds[this.data.tabCur][index],
     })
   },
   /**
@@ -68,58 +69,59 @@ Page({
   onLoad: function (options) {
     let _this = this
     let obj = JSON.parse(options.obj)
-    let join_id = []
-    let setup_id = []
-    let join = []
-    let setup = []
+    let clubIds = []
+    let clubList = {}
+    let pictureList = {}
+    clubIds.push(...obj.join)
+    clubIds.push(...obj.setup)
+    clubIds = Array.from(new Set(clubIds))
+    _this.setData({
+      clubIds: clubIds,
+      listIds: {
+        join: obj.join,
+        setup: obj.setup,
+      }
+    })
     let cnt1 = 0
     let cnt2 = 0
-    let length1 = obj.join.length
-    let length2 = obj.setup.length
-    if(length1 == 0 && length2 == 0)
+    let length = _this.data.clubIds.length
+    console.log(clubIds)
+    if(length == 0)
     {
       _this.setData({
         loaded: true,
       })
     }
-    for (let id of obj.join){
+    for(let id of _this.data.clubIds){
       app.getClubInfo(id, res => {
-        join.push(res.data)
-        join_id.push(id)
-        cnt1 += 1
-        if(cnt1 == length1 && cnt2 == length2){
-          _this.setData({
-            infoList:{
-              join: join,
-              setup: setup,
-            },
-            idList: {
-              join: join_id,
-              setup: setup_id,
-            },
-            loaded: true,
-          })
-        }
+        // if(res.data.status == '200 OK'){
+          clubList[id] = res.data
+          cnt1 += 1
+          if(cnt1 == length && cnt2 == length){
+            _this.setData({
+              clubList: clubList,
+              pictureList: pictureList,
+              loaded: true,
+            })
+          }
+        // }
       })
-    }
-    for (let id of obj.setup){
-      app.getClubInfo(id, res => {
-        setup.push(res.data)
-        setup_id.push(id)
-        cnt2 += 1
-        if(cnt1 == length1 && cnt2 == length2){
-          _this.setData({
-            infoList:{
-              join: join,
-              setup: setup,
-            },
-            idList: {
-              join: join_id,
-              setup: setup_id,
-            },
-            loaded: true,
-          })
-        }
+      app.getClubPictures(id, res => {
+        // if(res.data.status == '200 OK'){
+          let pic_list = []
+          for(let pic of res.data.club_pictures_list){
+            pic_list.push(app.globalData.SERVER_ROOT_URL + pic[1])
+          }
+          pictureList[id] = pic_list
+          cnt2 += 1
+          if(cnt1 == length && cnt2 == length){
+            _this.setData({
+              clubList: clubList,
+              pictureList: pictureList,
+              loaded: true,
+            })
+          }
+        // }
       })
     }
   },

@@ -1,10 +1,10 @@
 <cu-custom bgColor="bg-gradual-blue" isBack="{{true}}"><view slot="backText">返回</view><view slot="content">个人主页</view></cu-custom>
-<loading wx:if="{{!loaded}}"></loading>
+<loading wx:if="{{!(loaded && hasUserInfo)}}"></loading>
 <view wx:else>
   <view class="text-center margin-top-xl">
     <image class="cu-avatar lg round" src="/images/logo.png"></image>
     <view class="margin-top">
-      名字
+      {{user_name}}
     </view>
   </view>
   <view class="cu-bar margin-top">
@@ -36,9 +36,9 @@
     </view>
   </scroll-view>
   <view wx:if="{{loaded}}" class="list bg-gray">
-    <view class="cu-list margin-top-xs">
-      <view wx:for="{{infoList[tabCur]}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white club-card" bindtap="tapClub" data-index="{{index}}">
-        <image class="flex-sub club-card radius-lg my-picture" src="https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg" mode="aspectFill">
+    <view class="cu-list margin-top-xs" wx:if="{{tabCur == 'clubs'}}">
+      <view wx:for="{{idList[tabCur]}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white club-card" bindtap="tapClub" data-index="{{index}}">
+        <image class="flex-sub club-card radius-lg my-picture" src="{{pictureList[item][0]}}" mode="aspectFill">
           <view class="cu-tag my-badge bg-yellow text-center">
             <text class="margin-left-xs">已认证</text>
           </view>
@@ -46,12 +46,12 @@
         <view class="flex-twice">
           <view class="flex-direction margin-left-xs">
             <view class="flex justify-between text-lg text-black margin-top-xs">
-                <text class="my-text">{{item.club_name}}</text>
+                <text class="my-text">{{clubList[item].club_name}}</text>
                 <text class="cuIcon-peoplefill margin-right margin-top-sm"> 学生</text>
             </view>
             <image src="/images/favicon.ico" class="cu-avatar bg-white my-icon"> </image><text class="text-black">  北京大学</text>
             <view class="margin-top-xs my-description-wraper">
-                <view class="text-gray my-description"> {{item.club_description}}</view>
+                <view class="text-gray my-description"> {{clubList[item].club_description}}</view>
             </view>
             <view class="flex justify-between margin-top">
               <text class="cuIcon-favorfill"> 热度</text>

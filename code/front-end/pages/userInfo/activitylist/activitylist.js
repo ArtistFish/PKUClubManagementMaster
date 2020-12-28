@@ -63,68 +63,80 @@ Page({
   onLoad: function (options) {
     let associated_activity_ids = JSON.parse(options.obj)
     let cur_time = new Date().getTime()
+    let activityIds = []
+    activityIds.push(...associated_activity_ids.registered)
+    activityIds.push(...associated_activity_ids.selected)
+    activityIds = Array.from(new Set(activityIds))
     this.setData({
-      cur_time: cur_time
+      cur_time: cur_time,
+      registered_id: associated_activity_ids.registered,
+      selected_id: associated_activity_ids.selected,
+      activityIds: activityIds
     })
-    let infoList = {registered: {during: [], finished: []}, selected: {during: [], finished: []}, setup: {during: [], finished: []}}
+    let activityList = {}
+    let pictureList = {}
+    // let infoList = {registered: {during: [], finished: []}, selected: {during: [], finished: []}, setup: {during: [], finished: []}}
     let idList = {registered: {during: [], finished: []}, selected: {during: [], finished: []}, setup: {during: [], finished: []}}
+    let _this = this
     let cnt1 = 0
     let cnt2 = 0
-    let length1 = associated_activity_ids.registered.length
-    let length2 = associated_activity_ids.selected.length
-    let _this = this
+    let length = _this.data.activityIds.length
     let start_time
     let end_time
-    if(length1 == 0 && length2 == 0){
+    if(length == 0){
       _this.setData({
         loaded: true,
+        activityList: activityList,
+        idList: idList,
       })
     }
-    for(let id of associated_activity_ids.registered){
+    for(let id of _this.data.activityIds){
       app.getActivityInfo(id, res => {
         start_time = res.data.activity_start_time
         end_time = res.data.activity_end_time
         res.data.activity_start_time = new Date(start_time).toLocaleDateString()
         res.data.activity_end_time = new Date(end_time).toLocaleDateString()
         if(new Date(res.data.activity_end_time).getTime() < _this.data.cur_time){
-          infoList.registered.finished.push(res.data)
-          idList.registered.finished.push(id)
+          if(_this.data.registered_id.indexOf(id) != -1)
+            idList.registered.finished.push(id)
+          else{
+            idList.selected.finished.push(id)
+          }
         }
         else{
-          infoList.registered.during.push(res.data)
-          idList.registered.during.push(id)
+          if(_this.data.registered_id.indexOf(id) != -1)
+            idList.registered.during.push(id)
+          else{
+            idList.selected.during.push(id)
+          }
         }
+        activityList[id] = res.data
         cnt1 += 1
-        if(cnt1 == length1 && cnt2 == length2){
+        if(cnt1 == length && cnt2 == length){
           _this.setData({
-            infoList: infoList,
-            idList: idList,
+            activityList:activityList,
             loaded: true,
+            idList: idList,
+            pictureList: pictureList
           })
         }
       })
-    }
-    for(let id of associated_activity_ids.selected){
-      app.getActivityInfo(id, res => {
-        start_time = res.data.activity_start_time
-        end_time = res.data.activity_end_time
-        res.data.activity_start_time = new Date(start_time).toLocaleDateString()
-        res.data.activity_end_time = new Date(end_time).toLocaleDateString()
-        if(new Date(res.data.activity_end_time).getTime() < _this.data.cur_time){
-          infoList.selected.finished.push(res.data)
-          idList.selected.finished.push(id)
-        }
-        else{
-          infoList.selected.during.push(res.data)
-          idList.selected.during.push(id)
-        }
-        cnt2 += 1
-        if(cnt1 == length1 && cnt2 == length2){
-          _this.setData({
-            infoList: infoList,
-            idList: idList,
-            loaded: true,
-          })
+      app.getActivityPictures(id, res => {
+        if(res.data.status == '200 OK'){
+          cnt2 += 1
+          let pic_li = []
+          for(let path of res.data.activity_pictures_list){
+            pic_li.push(app.globalData.SERVER_ROOT_URL + path[1])
+          }
+          pictureList[id] = pic_li
+          if(cnt1 == length && cnt2 == length){
+            _this.setData({
+              activityList: activityList,
+              pictureList: pictureList,
+              loaded: true,
+              idList: idList,
+            })
+          }
         }
       })
     }

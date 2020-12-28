@@ -20,6 +20,20 @@ Page({
   },
   onLoad: function(option){
     let _this = this
+    // 如果是未注册用户，先注册一下
+    app.getUserInfo(app.globalData.openid, res => {
+      if(res.data.status == 'Not Found'){
+        app.createUser(app.globalData.openid, app.globalData.wxUserInfo.nickName, res => {
+          if(res.data.status != '200 OK'){
+            wx.showToast({
+              title: '注册用户失败',
+              image: '/images/fail.png'
+            })
+          }
+        })
+      }
+    })
+    // todo:在这里处理未读消息数量
     app.getMessages(res => {
       let receive_messages = res.data.receive_message_list
       let unread_cnt = 1

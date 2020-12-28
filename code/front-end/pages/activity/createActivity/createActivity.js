@@ -135,22 +135,51 @@ Page({
       wx.showLoading({
         title: '创建中',
       })
-      app.createActivity(this.data.name, this.data.description, this.data.club_id, this.data.place, this.data.start_time, this.data.end_time, this.data.lottery_time, this.data.lottery_method, this.data.max_number, this.data.fee, this.data.sign_up_ddl, this.data.sponsor, this.data.undertaker, res => {
-        if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '发布活动失败',
-            image: '/images/fail.png',
+      new Promise((resolve, reject) => {
+        let imagesList = []
+        imagesList.push(...this.data.coverImgList)
+        imagesList.push(...this.data.displayImgList)
+        let length = imagesList.length
+        let cnt = 0
+        let urls = {}
+        for(let image of imagesList){
+          app.updatePicture(image, res => {
+            // console.log(res.data)
+            let data = JSON.parse(res.data)
+            // console.log(data)
+            urls[imagesList.indexOf(image)] = data.filepath
+            cnt += 1
+            if(cnt == length){
+              let urls_array =[]
+              for(let key of Object.keys(urls)){
+                urls_array.push(urls[key])
+              }
+              resolve(urls_array)
+            }
           })
         }
-        else{
-          wx.showToast({
-            title: '发布活动成功',
-            duration: 500,
-          })
-          setTimeout(() => {
-            wx.navigateBack()
-          }, 500);
-        }
+      }).then(urls_array => {
+        app.createActivity(this.data.name, this.data.description, this.data.club_id, this.data.place, this.data.start_time, this.data.end_time, this.data.lottery_time, this.data.lottery_method, this.data.max_number, this.data.fee, this.data.sign_up_ddl, this.data.sponsor, this.data.undertaker, urls_array, res => {
+          wx.hideLoading()
+          if(res.data.status != '200 OK'){
+            wx.showToast({
+              title: '发布活动失败',
+              image: '/images/fail.png',
+            })
+          }
+          else{
+            wx.showToast({
+              title: '发布活动成功',
+              duration: 500,
+            })
+            setTimeout(() => {
+              wx.navigateBack()
+            }, 500);
+          }
+        })
+      }).catch( () => {
+        wx.hideLoading()
+        console.log('发布活动失败, promise error')
       })
     }
     else{

@@ -14,21 +14,13 @@ Component({
     activityTotal: 0,
     collectTotal: 0,
     loaded: false,
+    userInfo: {name: undefined, avatarUrl: undefined}
   },
 
   /**
    * 组件的方法列表
    */
   methods: {
-    getUserInfo: function(event)
-    {
-      console.log(event)
-      app.globalData.wxUuserInfo = event.detail.userInfo
-      this.setData({
-        wxUserInfo: event.detail.userInfo,
-        hasUserInfo:true
-      })
-    },
     tapAvatar: function(e){
       wx.navigateTo({
         url: '/pages/userInfo/selfie/selfie?wx_id=' + app.globalData.openid,
@@ -57,25 +49,19 @@ Component({
     }
   },
   lifetimes:{
-    attached:function(){
-      if(app.globalData.wxUserInfo != null)
-      {
-        this.setData({
-          hasUserInfo:true,
-          wxUserInfo:app.globalData.wxUserInfo
-        })
-      }
-      else
-      {
-        app.userInfoReadyCallback = res => {
-          this.setData({
-            hasUserInfo:true,
-            wxUserInfo:res.userInfo
+    ready: function(e){
+      let _this = this
+      app.getUserInfo(app.globalData.openid, res => {
+        if(res.data.status == '200 OK'){
+          _this.setData({
+            hasUserInfo: true,
+            userInfo:{
+              name: res.data.user_name,
+              avatarUrl: app.globalData.wxUserInfo.avatarUrl
+            }
           })
         }
-      }
-    },
-    ready: function(e){
+      })
       let load_cnt = 0
       let associated_club_id = {join: [], setup: []}
       let associated_activity_id = {registered: [], selected: []}
@@ -99,7 +85,6 @@ Component({
         associated_club_id.join = Array.from(new Set(associated_club_id.join))
         let i = 0
         let total = associated_club_id.setup.length + associated_club_id.join.length
-        let _this = this
         function func(){
           if(i < total){
             setTimeout(() => {

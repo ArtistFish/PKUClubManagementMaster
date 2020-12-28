@@ -8,7 +8,8 @@ Page({
   data: {
     tabCur: 'moments',
     loaded: false,
-    infoList: {moments: [], clubs: []}
+    infoList: {moments: [], clubs: []},
+    hasUserInfo: false,
   },
   tabSelect: function(e){
     this.setData({
@@ -16,7 +17,8 @@ Page({
     })
   },
   tapClub: function(e){
-    let club_id = this.data.clubIds[e.currentTarget.dataset.index]
+    let index = e.currentTarget.dataset.index
+    let club_id = this.data.idList[this.data.tabCur][index]
     wx.navigateTo({
       url: '/pages/club/frontpage/frontpage?club_id=' + club_id,
     })
@@ -27,43 +29,73 @@ Page({
   onLoad: function (options) {
     let wx_id = options.wx_id
     let _this = this
+    app.getUserInfo(wx_id, res => {
+      if(res.data.status == '200 OK'){
+        _this.setData({
+          user_name: res.data.user_name,
+          hasUserInfo: true,
+        })
+      }
+    })
     app.getClubListOfUser(wx_id, res => {
-      let _clubs = []
-      _clubs.push(...(res.data.president_club_list))
-      _clubs.push(...(res.data.manager_club_list))
-      _clubs.push(...(res.data.member_club_list))
-      _clubs = Array.from(new Set(_clubs))
-      let clubIds = []
-      let clubs = []
-      let cnt = 0
-      let length = _clubs.length
+      let idList = {moment: [], clubs: []}
+      for(let club of res.data.president_club_list){
+        idList.clubs.push(club[0])
+      }
+      for(let club of res.data.manager_club_list){
+        idList.clubs.push(club[0])
+      }
+      for(let club of res.data.member_club_list){
+        idList.clubs.push(club[0])
+      }
+      idList.clubs = Array.from(new Set(idList.clubs))
+      _this.setData({
+        idList: idList,
+      })
+      let clubList = {}
+      let pictureList = {}
+      let cnt1 = 0
+      let cnt2 = 0
+      let length = _this.data.idList.clubs.length
       if(length == 0){
         _this.setData({
-          clubIds: clubIds,
           loaded: true,
         })
       }
-      for(let club of _clubs){
-        let id = club[0]
+      for(let id of _this.data.idList.clubs){
         app.getClubInfo(id, res => {
-          clubIds.push(id)
-          clubs.push(res.data)
-          cnt += 1
-          if(cnt == length){
+          if(res.data.status == '200 OK'){
+            clubList[id] = res.data
+          cnt1 += 1
+          if(cnt1 == length && cnt2 == length){
             _this.setData({
-              clubIds: clubIds,
-              infoList: {
-                moments: [],
-                clubs: clubs,
-              },
+              clubList: clubList,
+              pictureList: pictureList,
+              loaded: true,
+              })
+            }
+          }
+        })
+      app.getClubPictures(id, res => {
+        if(res.data.status == '200 OK'){
+          let pic_list = []
+          for(let path of res.data.club_pictures_list){
+            pic_list.push(app.globalData.SERVER_ROOT_URL + path[1])
+          }
+          pictureList[id] = pic_list
+          cnt2 += 1
+          if(cnt1 == length && cnt2 == length){
+            _this.setData({
+              clubList: clubList,
+              pictureList: pictureList,
               loaded: true,
             })
+           }
           }
         })
       }
     })
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
