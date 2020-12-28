@@ -177,7 +177,7 @@ class DataManager():
                    cursor.execute(
                       "insert into activity_%d_pictures (filepath) values ('%s')" % (object.id, picture))
             elif self.datatype == DataType.user:
-                cursor.execute("insert into users (wxid, user_name) values ('%s', '%s')" % (object.wxid, object.name))
+                cursor.execute("insert into users (wxid, user_name, head_url) values ('%s', '%s', '%s')" % (object.wxid, object.name, object.head_url))
             elif self.datatype == DataType.message:
                 cursor.execute("insert into messages (message_type, message_title, message_content, message_sender_wxid,"
                                " message_receiver_wxid) "

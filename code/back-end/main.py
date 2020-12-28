@@ -28,11 +28,12 @@ create a user (用户注册)
 def createUser():
     wxid = request.form.get("wx_id")
     name = request.form.get("user_name")
+    head_url = request.form.get("head_url")
     datamanager = DataManager(DataType.user)
     res=datamanager.getInfo(wxid)
     if len(res)>0:
         return json.dumps({'status':'Rejected：Already exist'})
-    user = User(wxid=wxid, name=name)
+    user = User(wxid=wxid, name=name, head_url=head_url)
     datamanager.addInfo(user)
 
     res = {'status':'200 OK'}
@@ -42,7 +43,7 @@ def createUser():
 
 '''
 API:
-获取用户name
+获取用户name和head_url
 '''
 @app.route('/gp10/getUserInfo', methods=['POST'])
 def getUserInfo():
@@ -52,7 +53,8 @@ def getUserInfo():
     if len(res)==0:
         return json.dumps({'status':'Not Found'})
     user_name=res[0][2]
-    res = {'status':'200 OK','user_name':user_name}
+    head_url = res[0][3]
+    res = {'status':'200 OK','user_name':user_name, 'head_url': head_url}
     return json.dumps(res)
 
 
@@ -741,10 +743,9 @@ def updatePicture():
     pic_obj = request.files.get('filename')
     pic_randnum = str(random.randint(1,10000000))
     file_path = '/home/images/' + pic_randnum + pic_obj.filename + '.jpg'
-<<<<<<< HEAD
-=======
+
     path_return = '/images/' + pic_randnum + pic_obj.filename + '.jpg'
->>>>>>> master
+
     pic_obj.save(file_path)
 
     res = {'status':'200 OK', 'filepath': path_return}
@@ -792,8 +793,8 @@ def checkLottery():
 
     for i in range(len(activity_info)):
 
-        if (now_time<scheduled_time):
-            continue
+        #if (now_time<scheduled_time):
+           # continue
 
         activity=Activity(at_id=activity_info[i][0], at_name=activity_info[i][1], at_description=activity_info[i][2], 
             at_club_id=activity_info[i][3], at_place=activity_info[i][4], at_start_time=activity_info[i][5], 
@@ -825,3 +826,5 @@ def checkLottery():
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True,host='0.0.0.0',port=5000)
+
+# 测试
