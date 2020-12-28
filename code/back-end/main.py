@@ -29,6 +29,9 @@ def createUser():
     wxid = request.form.get("wx_id")
     name = request.form.get("user_name")
     datamanager = DataManager(DataType.user)
+    res=datamanager.getInfo(wxid)
+    if len(res)>0:
+        return json.dumps({'status':'Rejected：Already exist'})
     user = User(wxid=wxid, name=name)
     datamanager.addInfo(user)
 
@@ -52,6 +55,21 @@ def getUserInfo():
     res = {'status':'200 OK','user_name':user_name}
     return json.dumps(res)
 
+
+'''
+API:
+更换用户name
+'''
+@app.route('/gp10/setUserInfo', methods=['POST'])
+def setUserInfo():
+    wxid = request.form.get("wx_id")
+    name = request.form.get("user_name")
+    user = User(wxid=wxid, name=name)
+    datamanager = DataManager(DataType.user)
+    datamanager.updateInfo(user)
+    res = {'status':'200 OK'}
+    return json.dumps(res)
+
 '''
 API:
 create a club
@@ -65,8 +83,12 @@ def createClub():
 
     club=Club(club_name=club_name,club_description=club_description,club_president_wxid=club_president_wxid,club_picture_list=club_picture_list)
     manager=DataManager(DataType.club)
-    manager.addInfo(club)
+    res=manager.getList()
+    for idx in res:
+        if idx[1]==club_name:
+            return json.dumps({'status':'Rejected：Already exist'})
 
+    manager.addInfo(club)
     res={'status':'200 OK'}
     return json.dumps(res)
 
@@ -780,8 +802,15 @@ def checkLottery():
         activity.lottery_by_random_method()
 
         manager = DataManager(DataType.activity_selected_people)
+        msgmanager = DataManager(DataType.message)
         for j in activity.selected_people_list:
             manager.addSlaveInfo(activity.id,j)
+
+
+            #发送通知消息
+            message = Message(message_type='system_normal', message_title='Congratulations！', message_content='You have joined the activity %s successfully'%(activity_info[i][1]),
+                message_sender_wxid=j, message_receiver_wxid=j)
+            msgmanager.addInfo(message)
 
     return "200 OK"
         
