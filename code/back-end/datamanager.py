@@ -313,7 +313,7 @@ class DataManager():
                                   object.startTime, object.endTime, object.lotteryTime,object.lotteryMethod, object.maxNumber,
                                   object.fee, object.sign_up_ddl, object.sponsor, object.undertaker, object.id))
             elif self.datatype == DataType.user:
-                cursor.execute("update users set username='%s' where wxid='%s'"% (object.name,object.wxid))
+                cursor.execute("update users set user_name='%s' where wxid='%s'"% (object.name,object.wxid))
             elif self.datatype == DataType.message:
                 cursor.execute("update messages set message_type='%s', message_title='%s', message_content='%s', message_sender_wxid='%s',"
                                "message_receiver_wxid='%s' where message_id='%s'"% (object.type, object.title, object.content,object.sender_wxid, object.receiver_wxid,object.id))
