@@ -79,7 +79,7 @@ def createClub():
     club_name = request.form.get("club_name")
     club_description = request.form.get("club_description")
     club_president_wxid = request.form.get("club_president_user_id")
-    club_picture_list = request.form.getlist("club_picture_list")
+    club_picture_list = request.form.get("club_picture_list").split(',')
 
     club=Club(club_name=club_name,club_description=club_description,club_president_wxid=club_president_wxid,club_picture_list=club_picture_list)
     manager=DataManager(DataType.club)
@@ -595,7 +595,7 @@ def getActivityList():
 API:createActivity
 创建一个活动，并添加进社团
 Function: createActivity(name,description,club_id,place,start_time,end_time,lottery_time,lottery_method,max_number,
-                        fee,sign_up_ddl,sponsor,undertaker)
+                        fee,sign_up_ddl,sponsor,undertaker,activity_picture_list)
 return: {status,id} in JSON format
 '''
 @app.route('/gp10/createActivity',methods=['POST'])
@@ -613,13 +613,13 @@ def createActivity():
     activity_sign_up_ddl = request.form.get("sign_up_ddl")
     activity_sponsor = request.form.get("sponsor")
     activity_undertaker = request.form.get("undertaker")
-    activity_picture_list = request.form.getlist("activity_picture_list")
+    activity_picture_list = request.form.get("activity_picture_list").split(',')
 
     newActivity = Activity(at_name=activity_name, at_description=activity_description, at_club_id=activity_club_id,
     at_place=activity_place, at_start_time=activity_start_time, at_end_time=activity_end_time,
     at_lottery_time=activity_lottery_time, at_lottery_method=activity_lottery_method,at_max_number=activity_max_number,
     at_fee=activity_fee, at_sign_up_ddl=activity_sign_up_ddl, at_sponsor=activity_sponsor,
-    at_undertaker=activity_undertaker, picture_list=activity_picture_list)
+    at_undertaker=activity_undertaker, activity_picture_list=activity_picture_list)
 
     manager = DataManager(DataType.activity)
     manager.addInfo(newActivity)
@@ -746,7 +746,6 @@ def updatePicture():
 
     res = {'status':'200 OK', 'filepath': path_return}
     return json.dumps(res)
-
 
 
 '''

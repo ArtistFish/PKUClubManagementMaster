@@ -4,15 +4,15 @@ from datamanager import *
 
 
 class Club():
-    def __init__(self,club_id=0,club_name='',club_description='',club_president_wxid='', picture_list=[]):
-        self.id=club_id
+    def __init__(self,club_id=0,club_name='',club_description='',club_president_wxid='', club_picture_list=[]):
+       	self.id=club_id
         self.name=club_name
         self.description=club_description
         self.president_wxid=club_president_wxid
         self.activity_list=[]  #存储活动id
         self.member_list=[]    #存储成员微信号
         self.manager_list=[]   #存储管理者微信号
-        self.picture_list=picture_list   #存储图片列表
+        self.club_picture_list=club_picture_list   #存储图片列表
 
     def change_president(self,new_president_wxid):
         self.president_wxid=new_president_wxid

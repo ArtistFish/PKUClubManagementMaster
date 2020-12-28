@@ -111,7 +111,6 @@ Page({
       contactImg: this.data.coverImgList,
       displayImgList: this.data.displayImgList,
     })
-    let _this = this
     let illegal = false
     let re = /[^\u4E00-\u9FA5a-zA-Z]/
     let illegal_type = -1
@@ -142,50 +141,20 @@ Page({
     }
     if(!illegal)
     {
-      // wx.showLoading({
-      //   title: '创建中',
-      // })
-      new Promise((resolve, reject) => {
-        let imagesList = []
-        imagesList.push(...this.data.coverImgList)
-        imagesList.push(...this.data.contactImgList)
-        imagesList.push(...this.data.displayImgList)
-        let length = imagesList.length
-        let cnt = 0
-        let urls = {}
-        for(let image of imagesList){
-          app.updatePicture(image, res => {
-            console.log(res.data)
-            let data = JSON.parse(res.data)
-            console.log(data)
-            urls[imagesList.indexOf(image)] = data.filepath
-            cnt += 1
-            if(cnt == length){
-              let urls_array =[]
-              for(let key of Object.keys(urls)){
-                urls_array.push(urls[key])
-              }
-              resolve(urls_array)
-            }
-          })
-        }
-      }).then(urls_array => {
-        console.log(urls_array)
-        app.createClub(this.data.name, this.data.description, urls_array, res => {
-          wx.hideLoading()
-          if(res.data.status == '200 OK'){
-            wx.showToast({
-              title: '创建成功',
-              duration: 500,
-            })
-            setTimeout(() => {
-              wx.navigateBack()
-            }, 500)
-          }
-        })
-      }).catch(() => {
+      wx.showLoading({
+        title: '创建中',
+      })
+      app.createClub(this.data.name, this.data.description, res => {
         wx.hideLoading()
-        console.log('上传图片失败')
+        if(res.data.status == '200 OK'){
+          wx.showToast({
+            title: '创建成功',
+            duration: 500,
+          })
+          setTimeout(() => {
+            wx.navigateBack()
+          }, 500)
+        }
       })
     }
     else{

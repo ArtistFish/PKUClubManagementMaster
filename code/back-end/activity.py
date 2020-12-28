@@ -6,12 +6,12 @@ import random
 class Activity():
     __slots__ = ('id', 'name', 'description', 'club_id', 'place', 'start_time', 'end_time', 'lottery_time', 
                 'lottery_method', 'max_number', 'registered_people_list', 'selected_people_list', 'fee', 'sign_up_ddl',
-                'sponsor', 'undertaker', 'picture_list')
+                'sponsor', 'undertaker', 'activity_picture_list')
 
     #max_id = 0
     def __init__(self, at_id=0, at_name='', at_description='', at_club_id=0, at_place='', at_start_time='', at_end_time='', 
                 at_lottery_time='', at_lottery_method='', at_max_number=0, at_fee=0.0, at_sign_up_ddl='', at_sponsor='',
-                 at_undertaker='', picture_list=[]):
+                 at_undertaker='', activity_picture_list=[]):
         #self.id = at_id
         #if at_id == -1 :
         #    self.id = Activity.max_id + 1  
@@ -34,7 +34,7 @@ class Activity():
         self.undertaker = at_undertaker  #承办方
         self.registered_people_list = [] #报名的人员名单
         self.selected_people_list = [] #选上的人员名单
-        self.picture_list = picture_list #活动的图片列表
+        self.activity_picture_list = activity_picture_list #活动的图片列表
 
     def change_description(self, new_description):
         self.description = new_description
@@ -138,9 +138,8 @@ class Activity():
 
 
     
-    def Jsonfy(self):  #之前需要调用load_slave_data
-        
-        
+    def Jsonfy(self):  #之前需要调用load_slave_dat
+	
         res = {'status':'200 OK', 'activity_id':self.id, 'activity_name':self.name, 'activity_description':self.description,
         'activity_club_id':self.club_id, 'activity_place':self.place, 'activity_start_time':self.start_time, 
         'activity_end_time':self.end_time, 'activity_lottery_time':self.lottery_time, 'activity_lottery_method':self.lottery_method,
@@ -153,4 +152,4 @@ class Activity():
 
 
 if __name__=='__main__':
-    pass
+	pass    

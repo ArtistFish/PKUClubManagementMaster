@@ -1,17 +1,14 @@
 <scroll-view scroll-y class="scrollPage">
-  <image src='/images/PersonBg.png' mode='widthFix' class='png background' style='width:100%;height:486rpx'>
+  <image src='/images/BasicsBg.png' mode='widthFix' class='png' style='width:100%;height:486rpx'>
   </image>
-  <view style='height:486rpx'>
-    <view style='height:35%'></view>
-  <button wx:if="{{!hasUserInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo" class="text-white"> 获取头像昵称 
+  <button wx:if="{{!hasUserInfo}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 
   </button>
   <view wx:else class="text-center">
     <image class="cu-avatar lg round" src="{{wxUserInfo.avatarUrl}}" bind:tap="tapAvatar"></image>
-    <view class="margin-top text-white">
+    <view class="margin-top">
       {{wxUserInfo.nickName}}
     </view>
   </view>
-</view>
   <view class="padding text-center bg-white text-gray shadow-wrap flex margin-top">
     <view class="flex flex-sub flex-direction solid-right" bind:tap="navigation" data-cur="clublist">
       <view class="text-orange text-xxl">{{clubTotal}}</view>
