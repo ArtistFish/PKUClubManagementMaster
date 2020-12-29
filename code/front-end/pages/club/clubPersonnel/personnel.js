@@ -21,39 +21,63 @@ Component({
       let member_list = app.globalData.current_club.member_list
       let manager_list = app.globalData.current_club.manager_list
       let president_id = app.globalData.current_club.club_president_wxid
+      let names = {}
+      let avatars = {}
       let member_detail_list = []
       let manager_detail_list = []
       let count = 0
-      for (let person_id of member_list) {
-        count += 1
-        member_detail_list.push({
-          id: person_id[1],
-          name: person_id[1].slice(-5),
-          duty: "社团成员",
-          avatar: `https://ossweb-img.qq.com/images/lol/web201310/skin/big${10000+count%9}.jpg`
-        })
-      }
-      count += 1
-      manager_detail_list.push({
-        id: president_id,
-        name: president_id.slice(-5),
-        duty: "会长",
-        avatar: `https://ossweb-img.qq.com/images/lol/web201310/skin/big${10000+count%9}.jpg`
-      })
-      for (let person_id of manager_list) {
+      new Promise((resolve, reject) => {
+        let person_list = member_list.concat(manager_list)
+        person_list.push(president_id)
+        let loaded = 0
+        for (let person_id of person_list) {
+          app.getUserInfo(person_id, res => {
+            let user_name = res.data.user_name
+            let avatar_url = res.data.head_url
+            console.log(res)
+            names[person_id] = user_name
+            avatars[person_id] = avatar_url
+            loaded += 1
+            if (loaded === person_list.length)
+            {
+              resolve()
+            }
+          })
+        }
+      }).then(() => {
+        for (let person_id of member_list) {
+          count += 1
+          let id = person_id[1]
+          member_detail_list.push({
+            id: id,
+            name: names[id],
+            duty: "社团成员",
+            avatar: avatars[id]
+          })
+        }
         count += 1
         manager_detail_list.push({
-          id: person_id[1],
-          name: person_id[1].slice(-5),
-          duty: "管理员",
-          avatar: `https://ossweb-img.qq.com/images/lol/web201310/skin/big${10000+count%9}.jpg`
+          id: president_id,
+          name: names[president_id],
+          duty: "会长",
+          avatar: avatars[president_id]
         })
-      }
-      this.setData({
-        "persons.manager.personlist": manager_detail_list,
-        "persons.manager.personlist_show": manager_detail_list.slice(0, 3).reverse(),
-        "persons.member.personlist": member_detail_list,
-        "persons.member.personlist_show": member_detail_list.slice(0, 3).reverse(),
+        for (let person_id of manager_list) {
+          count += 1
+          let id = person_id[1]
+          manager_detail_list.push({
+            id: id,
+            name: names[id],
+            duty: "管理员",
+            avatar: avatars[id]
+          })
+        }
+        this.setData({
+          "persons.manager.personlist": manager_detail_list,
+          "persons.manager.personlist_show": manager_detail_list.slice(0, 3).reverse(),
+          "persons.member.personlist": member_detail_list,
+          "persons.member.personlist_show": member_detail_list.slice(0, 3).reverse(),
+        })
       })
     }
   },
