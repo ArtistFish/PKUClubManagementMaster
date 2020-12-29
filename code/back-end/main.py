@@ -493,6 +493,20 @@ def addCollectorToActivity():
     return json.dumps({'status': '200 OK'})
 
 '''
+API: deleteCollectorFromActivity
+用户取消收藏某一活动
+'''
+@app.route('/gp10/deleteCollectorFromActivity', methods = ['POST'])
+def deleteCollectorFromActivity():
+    activity_id = int(request.form.get("activity_id"))
+    wxid = request.form.get("wx_id")
+    datamanager = DataManager(DataType.activity_collectors)
+    datamanager.deleteSlaveInfo(activity_id, wxid)
+
+    res = {'status': '200 OK'}
+    return json.dumps(res)
+
+'''
 API: getActivityCollectors
 获取收藏某一活动的用户
 '''
