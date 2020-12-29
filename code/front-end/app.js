@@ -753,6 +753,36 @@ App({
       }
     })
   },
+  getClubCollectors: function(club_id, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/getClubCollectors',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        club_id: club_id,
+      },
+      method: 'POST',
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('getClubCollectors fail', res)
+        }
+        callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('getClubCollectors api fail', res)
+        callback(res)
+      }
+    })
+  },
   getClubListOfUser: function(wx_id, callback){
     wx.request({
       url: this.globalData.SERVER_URL + '/getClubListOfUser',

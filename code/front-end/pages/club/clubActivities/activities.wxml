@@ -1,12 +1,12 @@
 <view class="cu-list margin-top-xs">
       <view class="s-list" >
-        <view class="s-item" wx:for="{{activityList}}" wx:key="key" data-index="{{index}}" bindtap="tapActivity">
-          <image src="https://ossweb-img.qq.com/images/lol/web201310/skin/big99008.jpg" class="si-img"></image>
-          <view class="si-title">{{item.activity_name}}</view>
-          <view class="si-data">开始时间:{{item.activity_start_time}}</view>
-          <view class="si-data">报名截止:{{item.activity_sign_up_ddl}}</view>
+        <view class="s-item" wx:for="{{activityIds}}" wx:key="key" data-index="{{index}}" bindtap="tapActivity">
+          <image src="{{pictureList[item][0]}}" class="si-img"></image>
+          <view class="si-title">{{activityList[item].activity_name}}</view>
+          <view class="si-data">开始时间:{{activityList[item].activity_start_time}}</view>
+          <view class="si-data">报名截止:{{activityList[item].activity_sign_up_ddl}}</view>
           <view class="si-other">
-            <view class="sio-price">￥{{item.activity_fee}}</view>
+            <view class="sio-price">￥{{activityList[item].activity_fee}}</view>
             <view class="sio-btn bg-orange">立即报名</view>
           </view>
         </view>

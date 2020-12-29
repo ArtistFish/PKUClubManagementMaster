@@ -38,16 +38,13 @@ Page({
   onLoad: function (options) {
     let _this = this
     let obj = JSON.parse(options.obj)
-    let collectClubIds = obj[0].collector
-    // let collectActivityIds = obj[1].collector
-    console.log(collectClubIds)
     _this.setData({
-      idList: {club: collectClubIds, activity: []}
+      idList: {club: obj[0].collector, activity: obj[1].collected}
     })
     let clubList = {}
     let clubPictureList = {}
     let activityList = {}
-    let avtivityPictureList = {}
+    let activityPictureList = {}
     let cnt1 = 0
     let cnt2 = 0
     let cnt3 = 0
@@ -102,7 +99,7 @@ Page({
             _this.setData({
               clubList: clubList,
               clubPictureList: clubPictureList,
-              loaded: true,
+              clubLoaded: true,
             })
             if(_this.data.activityLoaded){
               _this.setData({
@@ -125,9 +122,9 @@ Page({
           _this.setData({
             activityList: activityList,
             activityPictureList: activityPictureList,
-            loaded: true,
+            activityLoaded: true,
           })
-          if(_this.data.activityLoaded){
+          if(_this.data.clubLoaded){
             _this.setData({
               loaded: true,
             })
@@ -146,9 +143,9 @@ Page({
             _this.setData({
               activityList: activityList,
               activityPictureList: activityPictureList,
-              loaded: true,
+              activityLoaded: true,
             })
-            if(_this.data.activityLoaded){
+            if(_this.data.clubLoaded){
               _this.setData({
                 loaded: true,
               })

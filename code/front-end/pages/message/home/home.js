@@ -43,6 +43,9 @@ Component({
             messageList.inform.receive.push(message)
             read_flags.inform.receive.push(0)
           }
+          else if(type == types.system_normal){
+            messageList.system.receive.push(message)
+          }
         }
         for(let message of send_message_list){
           let type = message[1]

@@ -13,6 +13,7 @@
       </view>
     </view>
   </view>
+  <loading wx:if="{{!(data_loaded && join_loaded && collector_loaded)}}"></loading>
   <view class="wraper shadow">
     <swiper class="screen-swiper square-dot radius" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
       <swiper-item wx:for="{{recommendIds}}">
@@ -29,7 +30,6 @@
         </view>
       </view>
     </view>
-    <loading wx:if="{{!(data_loaded && join_loaded)}}"></loading>
     <scroll-view scroll-x class="bg-white nav margin-top">
       <view class="flex text-center">
         <view class="cu-item flex-sub {{tabCur=='all'?'text-orange cur':''}}" bind:tap="tabSelect" data-list='all'>
@@ -40,7 +40,7 @@
         </view>
       </view>
     </scroll-view>
-    <view wx:if="{{data_loaded && join_loaded}}" class="cu-list margin-top-xs bg-gray">
+    <view class="cu-list margin-top-xs bg-gray">
       <view wx:for="{{tabCur == 'all'? clubIds:recentList}}" class="flex p-xs margin-bottom-sm margin-top-sm radius-lg bg-white club-card" bindtap="tapClub" data-index="{{index}}">
         <image class="flex-sub radius-lg my-picture" src="{{pictureList[item][0]}}" mode="aspectFill">
           <view class="cu-tag my-badge bg-yellow text-center">
@@ -58,7 +58,7 @@
               <view class="text-gray my-description"> {{clubList[item].club_description}}</view>
             </view>
             <view class="flex justify-between margin-top-xs">
-              <text class="cuIcon-favorfill margin-top"> 热度</text>
+              <text class="cuIcon-favorfill margin-top"> 热度 {{collectorList[item].length}}</text>
               <view wx:if="{{clubJoined[index]}}" class="cu-btn bg-gray margin-right-xs round" style="hover-class:'none'">已加入</view>
               <button wx:else class="cu-btn bg-yellow margin-right-xs round" catchtap="tapJoin" data-index="{{index}}">申请加入</button>
             </view>

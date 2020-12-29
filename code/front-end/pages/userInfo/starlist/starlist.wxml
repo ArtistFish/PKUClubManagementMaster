@@ -18,26 +18,38 @@
     <button class="cu-btn bg-yellow round margin-top-sm" bind:tap="tapBtnClub">去收藏</button>
   </view>
   <view wx:else class="cu-list margin-top-xs">
-    <view wx:if="{{tabCur == 'club'}}" wx:for="{{idList[tabCur]}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white club-card" bindtap="tapClub" data-index="{{index}}">
-      <image class="flex-sub club-card radius-lg my-picture" src="{{clubPictureList[item][0]}}" mode="aspectFill">
-        <view class="cu-tag my-badge bg-yellow text-center">
-          <text class="margin-left-xs">已认证</text>
+    <view wx:if="{{tabCur == 'club'}}">
+      <view wx:for="{{idList[tabCur]}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white club-card" bindtap="tapClub" data-index="{{index}}">
+        <image class="flex-sub club-card radius-lg my-picture" src="{{clubPictureList[item][0]}}" mode="aspectFill">
+          <view class="cu-tag my-badge bg-yellow text-center">
+            <text class="margin-left-xs">已认证</text>
+          </view>
+        </image>
+        <view class="flex-twice">
+          <view class="flex-direction margin-left-xs">
+            <view class="flex justify-between text-lg text-black margin-top-xs">
+                <text class="my-text">{{clubList[item].club_name}}</text>
+                <text class="cuIcon-peoplefill margin-right margin-top-sm"> 学生</text>
+            </view>
+            <image src="/images/favicon.ico" class="cu-avatar bg-white my-icon"> </image><text class="text-black">  北京大学</text>
+            <view class="margin-top-xs my-description-wraper">
+                <view class="text-gray my-description"> {{clubList[item].club_description}}</view>
+            </view>
+          </view>
         </view>
-      </image>
-      <view class="flex-twice">
-        <view class="flex-direction margin-left-xs">
-          <view class="flex justify-between text-lg text-black margin-top-xs">
-              <text class="my-text">{{clubList[item].club_name}}</text>
-              <text class="cuIcon-peoplefill margin-right margin-top-sm"> 学生</text>
-          </view>
-          <image src="/images/favicon.ico" class="cu-avatar bg-white my-icon"> </image><text class="text-black">  北京大学</text>
-          <view class="margin-top-xs my-description-wraper">
-              <view class="text-gray my-description"> {{clubList[item].club_description}}</view>
-          </view>
-          <view class="flex justify-between margin-top-xs">
-            <text class="cuIcon-favorfill"> 热度</text>
-            <button class="cu-btn bg-yellow margin-right-xs round" catchtap="tapExit" data-index="{{index}}">退出社团</button>
-          </view>
+      </view>
+    </view>
+    <view wx:else class="si-list">
+      <view class="s-item" wx:for="{{idList[tabCur]}}" wx:key="key" bindtap="tapActivity" data-index="{{index}}">
+        <image src="{{activityPictureList[item][0]}}" class="si-img"></image>
+        <view class="si-title">{{activityList[item].activity_name}}</view>
+        <view class="si-data">开始时间:{{activityList[item].activity_start_time}}</view>
+        <view class="si-data">报名截止:{{activityList[item].activity_sign_up_ddl}}</view>
+        <view class="si-other">
+          <view class="sio-price">¥{{activityList[item].activity_fee}}</view>
+          <!-- <view wx:if="{{due[index]}}" class="sio-btn bg-gray" style="hover-class:'none'">已结束</view>
+          <view wx:if="{{!due[index] && activityJoined[index]}}" class="sio-btn bg-gray" style="hover-class:'none'">已报名</view>
+          <view wx:if="{{!(activityJoined[index] || due[index])}}" class="sio-btn bg-yellow" catchtap="tapSignup" data-index="{{index}}">立即报名</view> -->
         </view>
       </view>
     </view>

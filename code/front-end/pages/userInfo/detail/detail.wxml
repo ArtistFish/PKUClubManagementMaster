@@ -6,7 +6,7 @@
       <text> 姓名 </text>
       </view>
    </view>
-   <view class="cu-item arrow" bind:tap="editInfo" data-cur="学校">
+   <!-- <view class="cu-item arrow" bind:tap="editInfo" data-cur="学校">
      <view class="content">
       <text class="cuIcon-camerafill"></text>
       <text> 学校 </text>
@@ -23,7 +23,7 @@
       <text class="cuIcon-camerafill"></text>
       <text> 年龄 </text>
       </view>
-   </view>
+   </view> -->
    <view class="cu-item">
       <view class="content">
         <text class="cuIcon-btn text-green"></text>

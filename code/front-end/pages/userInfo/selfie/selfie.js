@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    tabCur: 'moments',
+    tabCur: 'clubs',
     loaded: false,
     infoList: {moments: [], clubs: []},
     hasUserInfo: false,

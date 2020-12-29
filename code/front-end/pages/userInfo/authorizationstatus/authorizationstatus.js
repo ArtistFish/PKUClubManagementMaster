@@ -32,6 +32,7 @@ Page({
     else{
       wx.showToast({
         title: '您还未进行认证',
+        image: '/images/fail.png',
       })
     }
 

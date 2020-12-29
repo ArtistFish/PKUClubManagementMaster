@@ -151,6 +151,11 @@ Component({
             title: '报名活动成功',
           })
           console.log('register success', res.data.status)
+          let new_status = _this.data.activityJoined
+          new_status[index] = true
+          _this.setData({
+            activityJoined: new_status,
+          })
         }
         else if(res.data.status == 'Rejected: User is not member of the club'){
           wx.showToast({

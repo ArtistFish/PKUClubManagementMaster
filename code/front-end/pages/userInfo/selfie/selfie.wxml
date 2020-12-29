@@ -7,7 +7,7 @@
       {{user_name}}
     </view>
   </view>
-  <view class="cu-bar margin-top">
+  <!-- <view class="cu-bar margin-top">
     <view class="action">
       <text class="cuIcon-title text-blue"></text>认证信息
     </view>
@@ -24,12 +24,12 @@
         <view>学号</view>
       </view>
     </view>
-  </view>
+  </view> -->
   <scroll-view scroll-x class="bg-white nav margin-top">
     <view class="flex text-center">
-      <view class="cu-item flex-sub {{tabCur=='moments'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='moments'>
+      <!-- <view class="cu-item flex-sub {{tabCur=='moments'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='moments'>
         动态
-      </view>
+      </view> -->
       <view class="cu-item flex-sub {{tabCur=='clubs'?'text-orange cur':''}}" bind:tap="tabSelect" data-cur='clubs'>
         加入的社团
       </view>
@@ -53,9 +53,9 @@
             <view class="margin-top-xs my-description-wraper">
                 <view class="text-gray my-description"> {{clubList[item].club_description}}</view>
             </view>
-            <view class="flex justify-between margin-top">
+            <!-- <view class="flex justify-between margin-top">
               <text class="cuIcon-favorfill"> 热度</text>
-            </view>
+            </view> -->
           </view>
         </view>
       </view>

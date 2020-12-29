@@ -10,7 +10,9 @@ Component({
     recentList:[],
     gridCol: 3,
     tabCur: 'all',
-    loaded: false,
+    data_loaded: false,
+    join_loaded: false,
+    collector_loaded: false,
     keyWords: '',
   },
   lifetimes:{
@@ -36,9 +38,11 @@ Component({
       }).then(() => {
         let clubList = {}
         let pictureList = {}
+        let collectorList = {}
         let length = _this.data.clubIds.length
         let cnt1 = 0
         let cnt2 = 0
+        let cnt3 = 0
         if(length == 0){
           _this.setData({
             clubList: clubList,
@@ -49,6 +53,16 @@ Component({
         }
         // console.log(_this.data.clubIds)
         for(let id of _this.data.clubIds){
+          app.getClubCollectors(id, res => {
+            collectorList[id] = res.data.club_collector_list
+            cnt3 += 1
+            if(cnt3 == length){
+              _this.setData({
+                collectorList: collectorList,
+                collector_loaded: true,
+              })
+            }
+          })
           app.getClubInfo(id, res => {
             if(res.data.status == '200 OK'){
               cnt1 += 1

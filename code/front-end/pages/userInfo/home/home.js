@@ -65,7 +65,7 @@ Component({
       })
       let load_cnt = 0
       let associated_club_id = {join: [], setup: [], collector: []}
-      let associated_activity_id = {registered: [], selected: []}
+      let associated_activity_id = {registered: [], selected: [], collected: []}
       app.getClubListOfUser(app.globalData.openid, res => {
         // console.log(res)
         let president_club_list = res.data.president_club_list
@@ -104,7 +104,7 @@ Component({
           else{
             _this.setData({
               clubTotal: total,
-              collectTotal: collector_club_list.length,
+              collectTotal: collector_club_list.length + _this.data.collectTotal,
             })
           }
         }
@@ -119,9 +119,11 @@ Component({
         }
       })
       app.getActivityListOfUser(app.globalData.openid, res => {
-        // console.log(res)
+        console.log(res)
         let registered_activity_list = res.data.registered_activity_list
         let selected_activity_list = res.data.selected_activity_list
+        let collected_activity_list = res.data.collected_activity_list
+        // console.log(collecteded_activity_list)
         for(let activity of registered_activity_list){
           let id = activity[0]
           associated_activity_id.registered.push(id)
@@ -129,6 +131,10 @@ Component({
         for(let activity of selected_activity_list){
           let id = activity[0]
           associated_activity_id.selected.push(id)
+        }
+        for(let activity of collected_activity_list){
+          let id = activity[0]
+          associated_activity_id.collected.push(id)
         }
         let temp = associated_activity_id.registered
         temp.push(...associated_activity_id.selected)
@@ -148,7 +154,8 @@ Component({
           }
           else{
             _this.setData({
-              activityTotal: total
+              activityTotal: total,
+              collectTotal: collected_activity_list.length + _this.data.collectTotal
             })
           }
         }

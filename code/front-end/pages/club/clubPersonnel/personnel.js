@@ -200,7 +200,7 @@ Component({
             {
               // 查看个人主页的跳转接口
               wx.navigateTo({
-                url: '/pages/frontpage/frontpage',
+                url: '/pages/userInfo/selfie/selfie?wx_id=' + this.data.modalId,
               })
             }
             else if (tabInd === 1)
