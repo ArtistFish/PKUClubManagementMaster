@@ -594,6 +594,35 @@ def sendMessage():
 
 '''
 API:
+更新message
+'''
+@app.route('/gp10/setMessageInfo', methods = ['POST'])
+def setMessageContent():
+    message_id = int(request.form.get("message_id"))
+    message_type = request.form.get("type")
+    message_title = request.form.get("title")
+    message_content = request.form.get("content")
+    message_sender_wxid = request.form.get("wx_id_sender")
+    message_receiver_wxid = request.form.get("wx_id_receiver")
+
+    # 判断type是否符合规定
+    type_list = ['0', '1', '2', '5', '10', 'inform_normal', 'inform_managerInvite', 'inform_presidentExchange',
+                 'reply_normal', 'system_normal']
+    if not message_type in type_list:
+        myError = {'status': '400 TYPE_ERROR'}
+        return json.dumps(myError)
+
+    message = Message(message_id=message_id, message_type=message_type, message_title=message_title, message_content=message_content,
+                      message_sender_wxid=message_sender_wxid, message_receiver_wxid=message_receiver_wxid)
+    datamanager = DataManager(DataType.message)
+    datamanager.updateInfo(message)
+
+    res = {'status': '200 OK'}
+    return json.dumps(res)
+
+
+'''
+API:
 Function: getMessages(wx_id)
 Return: {status: ‘’, send_message_list: [ {id: '', type: ‘’, title: ‘’, content: ‘’, sender: ‘’, receiver: ‘’} , …], 
     receive_message_list: [ {id: '', type: ‘’, title: ‘’, content: ‘’, sender: ‘’, receiver: ‘’} , …]}

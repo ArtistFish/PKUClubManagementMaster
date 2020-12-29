@@ -340,7 +340,7 @@ class DataManager():
                 cursor.execute("update users set user_name='%s' where wxid='%s'"% (object.name,object.wxid))
             elif self.datatype == DataType.message:
                 cursor.execute("update messages set message_type='%s', message_title='%s', message_content='%s', message_sender_wxid='%s',"
-                               "message_receiver_wxid='%s' where message_id='%s'"% (object.type, object.title, object.content,object.sender_wxid, object.receiver_wxid,object.id))
+                               "message_receiver_wxid='%s' where message_id='%d'"% (object.type, object.title, object.content,object.sender_wxid, object.receiver_wxid,object.id))
             else:
                 pass
             conn.commit()
