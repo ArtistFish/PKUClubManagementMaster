@@ -18,8 +18,6 @@ def test_form():
     return "response from SE group 10"
 
 
-
-
 '''
 API:
 create a user (用户注册)
@@ -28,11 +26,12 @@ create a user (用户注册)
 def createUser():
     wxid = request.form.get("wx_id")
     name = request.form.get("user_name")
+    head_url = request.form.get("head_url")
     datamanager = DataManager(DataType.user)
     res=datamanager.getInfo(wxid)
     if len(res)>0:
-        return json.dumps({'status':'Rejected:Already exist'})
-    user = User(wxid=wxid, name=name)
+        return json.dumps({'status':'Rejected：Already exist'})
+    user = User(wxid=wxid, name=name, head_url=head_url)
     datamanager.addInfo(user)
 
     res = {'status':'200 OK'}
@@ -42,7 +41,7 @@ def createUser():
 
 '''
 API:
-获取用户name
+获取用户name和head_url
 '''
 @app.route('/gp10/getUserInfo', methods=['POST'])
 def getUserInfo():
@@ -52,7 +51,8 @@ def getUserInfo():
     if len(res)==0:
         return json.dumps({'status':'Not Found'})
     user_name=res[0][2]
-    res = {'status':'200 OK','user_name':user_name}
+    head_url = res[0][3]
+    res = {'status':'200 OK','user_name':user_name, 'head_url': head_url}
     return json.dumps(res)
 
 
@@ -79,7 +79,7 @@ def createClub():
     club_name = request.form.get("club_name")
     club_description = request.form.get("club_description")
     club_president_wxid = request.form.get("club_president_user_id")
-    club_picture_list = request.form.getlist("club_picture_list")
+    club_picture_list = request.form.get("club_picture_list").split(',')
 
     club=Club(club_name=club_name,club_description=club_description,club_president_wxid=club_president_wxid,club_picture_list=club_picture_list)
     manager=DataManager(DataType.club)
@@ -147,6 +147,17 @@ def getClubMembers():
     return json.dumps({'status':'200 OK', 'club_member_list': res})
 
 '''
+API: getClubCollectors
+获取社团收藏者列表
+'''
+@app.route('/gp10/getClubCollectors', methods = ['POST'])
+def getClubCollectors():
+    club_id = int(request.form.get("club_id"))
+    datamanager = DataManager(DataType.club_collectors)
+    res = datamanager.getSlaveList(club_id)
+    return json.dumps({'status': '200 OK', 'club_collector_list': res})
+
+'''
 API: getClubActivities
 获取社团活动列表
 '''
@@ -196,6 +207,24 @@ def addMemberToClub():
     wxid = request.form.get("wx_id")
     datamanager = DataManager(DataType.club_members)
     res=datamanager.getSlaveList(club_id)
+    for i in range(len(res)):
+        if wxid==res[i][1]:
+            return json.dumps({'status':'Already in the club! failed!'})
+
+    datamanager.addSlaveInfo(club_id, wxid)
+    res = {'status': '200 OK'}
+    return json.dumps(res)
+
+'''
+API: addCollectorToClub
+向社团增加收藏者
+'''
+@app.route('/gp10/addCollectorToClub', methods = ['POST'])
+def addCollectorToClub():
+    club_id = int(request.form.get("club_id"))
+    wxid = request.form.get("wx_id")
+    datamanager = DataManager(DataType.club_collectors)
+    res = datamanager.getSlaveList(club_id)
     for i in range(len(res)):
         if wxid==res[i][1]:
             return json.dumps({'status':'Already in the club! failed!'})
@@ -271,6 +300,20 @@ def deleteMemberFromClub():
     club_id = int(request.form.get("club_id"))
     wxid = request.form.get("wx_id")
     datamanager = DataManager(DataType.club_members)
+    datamanager.deleteSlaveInfo(club_id, wxid)
+
+    res = {'status': '200 OK'}
+    return json.dumps(res)
+
+'''
+API: deleteCollectorFromClub
+从社团删除收藏者
+'''
+@app.route('/gp10/deleteCollectorFromClub', methods = ['POST'])
+def deleteCollectorFromClub():
+    club_id = int(request.form.get("club_id"))
+    wxid = request.form.get("wx_id")
+    datamanager = DataManager(DataType.club_collectors)
     datamanager.deleteSlaveInfo(club_id, wxid)
 
     res = {'status': '200 OK'}
@@ -374,8 +417,20 @@ def getClubListOfUser():
             if member[1] == wxid:
                 member_club_list.append((club[0], club[1]))
 
+    #获取用户收藏的社团
+    collect_club_list = []
+    for club in res:
+        club_id = club[0]
+        datamanager_club_collectors = DataManager(DataType.club_collectors)
+        res_club_collectors = datamanager_club_collectors.getSlaveList(club_id)
+
+        for collector in res_club_collectors:
+            if collector[1] == wxid:
+                collect_club_list.append((club[0], club[1]))
+
     return json.dumps({'status': '200 OK', 'president_club_list': president_club_list,
-                       'manager_club_list': manager_club_list, 'member_club_list': member_club_list})
+                       'manager_club_list': manager_club_list, 'member_club_list': member_club_list,
+                       'collector_club_list': collect_club_list})
 
 '''
 API: registerUserToActivity
@@ -420,6 +475,33 @@ def registerUserToActivity():
     datamanager.addSlaveInfo(activity_id, wxid)
     return json.dumps({'status': '200 OK'})
 
+'''
+API: addCollectorToActivity
+用户收藏某一活动
+'''
+@app.route('/gp10/addCollectorToActivity', methods = ['POST'])
+def addCollectorToActivity():
+    wxid = request.form.get("wx_id")
+    activity_id = int(request.form.get("activity_id"))
+
+    datamanager = DataManager(DataType.activity_collectors)
+    res = datamanager.getSlaveList(activity_id)
+    for member in res:
+        if member[1]==wxid:
+            return json.dumps({'status': 'Rejected: Already collected'})
+    datamanager.addSlaveInfo(activity_id, wxid)
+    return json.dumps({'status': '200 OK'})
+
+'''
+API: getActivityCollectors
+获取收藏某一活动的用户
+'''
+@app.route('/gp10/getActivityCollectors', methods = ['POST'])
+def getActivityCollectors():
+    activity_id = int(request.form.get("activity_id"))
+    datamanager = DataManager(DataType.activity_collectors)
+    res = datamanager.getSlaveList(activity_id)
+    return json.dumps({'status': '200 OK', 'activity_collector_list': res})
 
 '''
 API: getActivityListOfUser
@@ -453,8 +535,20 @@ def getActivityListOfUser():
             if user[1] == wxid:
                 selected_activity_list.append((activity[0], activity[1]))
 
+    #获取用户收藏的活动
+    collected_activity_list = []
+    for activity in res:
+        activity_id = activity[0]
+        datamanager_activity_collectors = DataManager(DataType.activity_collectors)
+        res_activity_collectors = datamanager_activity_collectors.getSlaveList(activity_id)
+
+        for user in res_activity_collectors:
+            if user[1] == wxid:
+                collected_activity_list.append((activity[0], activity[1]))
+
     return json.dumps({'status': '200 OK', 'registered_activity_list': registered_activity_list,
-                       'selected_activity_list': selected_activity_list})
+                       'selected_activity_list': selected_activity_list, 'collected_activity_list': collected_activity_list})
+
 
 '''
 API:
@@ -595,7 +689,7 @@ def getActivityList():
 API:createActivity
 创建一个活动，并添加进社团
 Function: createActivity(name,description,club_id,place,start_time,end_time,lottery_time,lottery_method,max_number,
-                        fee,sign_up_ddl,sponsor,undertaker)
+                        fee,sign_up_ddl,sponsor,undertaker,activity_picture_list)
 return: {status,id} in JSON format
 '''
 @app.route('/gp10/createActivity',methods=['POST'])
@@ -613,13 +707,13 @@ def createActivity():
     activity_sign_up_ddl = request.form.get("sign_up_ddl")
     activity_sponsor = request.form.get("sponsor")
     activity_undertaker = request.form.get("undertaker")
-    activity_picture_list = request.form.getlist("activity_picture_list")
+    activity_picture_list = request.form.get("activity_picture_list").split(',')
 
     newActivity = Activity(at_name=activity_name, at_description=activity_description, at_club_id=activity_club_id,
     at_place=activity_place, at_start_time=activity_start_time, at_end_time=activity_end_time,
     at_lottery_time=activity_lottery_time, at_lottery_method=activity_lottery_method,at_max_number=activity_max_number,
     at_fee=activity_fee, at_sign_up_ddl=activity_sign_up_ddl, at_sponsor=activity_sponsor,
-    at_undertaker=activity_undertaker, picture_list=activity_picture_list)
+    at_undertaker=activity_undertaker, activity_picture_list=activity_picture_list)
 
     manager = DataManager(DataType.activity)
     manager.addInfo(newActivity)
@@ -738,12 +832,15 @@ return: {status,url}
 '''
 @app.route('/gp10/updatePicture', methods=['POST'])
 def updatePicture():
-    pic_obj = request.files.get('fileName')
+    pic_obj = request.files.get('filename')
     pic_randnum = str(random.randint(1,10000000))
-    file_path = '/home/images/' + pic_randnum + pic_obj.fileName + '.jpg'
+    file_path = '/home/images/' + pic_randnum + pic_obj.filename + '.jpg'
+
+    path_return = '/images/' + pic_randnum + pic_obj.filename + '.jpg'
+
     pic_obj.save(file_path)
 
-    res = {'status':'200 OK', 'filepath': file_path}
+    res = {'status':'200 OK', 'filepath': path_return}
     return json.dumps(res)
 
 
@@ -775,7 +872,7 @@ def getClubListByMemberNum():
 '''
   Check if it is the time to start a lottery.
   Not for the front-end
-  定时运行，不要调用这个API
+  不要调用这个API
 '''
 @app.route('/gp10/checkLottery', methods=['GET','POST'])
 def checkLottery():
