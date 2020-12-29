@@ -10,6 +10,7 @@ class DataType(Enum):
 
     club_managers = 5
     club_members = 6
+    club_collectors = 12
     club_activities = 7
 
     activity_registered_people = 8
@@ -46,6 +47,8 @@ class DataManager():
                 cursor.execute("select * from club_%d_managers" % id)
             elif self.datatype == DataType.club_members:
                 cursor.execute("select * from club_%d_members" % id)
+            elif self.datatype == DataType.club_collectors:
+                cursor.execute("select * from club_%d_collectors" % id)
             elif self.datatype == DataType.club_activities:
                 cursor.execute("select * from club_%d_activities" % id)
             elif self.datatype == DataType.club_pictures:
@@ -111,6 +114,8 @@ class DataManager():
                 cursor.execute("select * from club_%d_managers" % id)
             elif self.datatype == DataType.club_members:
                 cursor.execute("select * from club_%d_members" % id)
+            elif self.datatype == DataType.club_collectors:
+                cursor.execute("select * from club_%d_collectors" % id)
             elif self.datatype == DataType.club_activities:
                 cursor.execute("select * from club_%d_activities" % id)
             elif self.datatype == DataType.club_pictures:
@@ -148,6 +153,7 @@ class DataManager():
                 # 创建每一个club对应的几个附庸数据表
                 cursor.execute("create table club_%d_managers (id INT AUTO_INCREMENT, manager_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
                 cursor.execute("create table club_%d_members (id INT AUTO_INCREMENT, member_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
+                cursor.execute("create table club_%d_collectors (id INT AUTO_INCREMENT, collector_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
                 cursor.execute("create table club_%d_activities (id INT AUTO_INCREMENT, activity_id INT, PRIMARY KEY (id))" % object.id)
                 cursor.execute("create table club_%d_pictures (id INT AUTO_INCREMENT, filepath TEXT, PRIMARY KEY (id))" % object.id)
                 for picture in object.club_picture_list:
@@ -204,6 +210,8 @@ class DataManager():
                 cursor.execute("insert into club_%d_managers (manager_wxid) values ('%s')" % (id, slave_id))
             elif self.datatype == DataType.club_members:
                 cursor.execute("insert into club_%d_members (member_wxid) values ('%s')" % (id, slave_id))
+            elif self.datatype == DataType.club_collectors:
+                cursor.execute("insert into club_%d_collectors (collector_wxid) values ('%s')" % (id, slave_id))
             elif self.datatype == DataType.club_activities:
                 cursor.execute("insert into club_%d_activities (activity_id) values (%d)" % (id, slave_id))
             elif self.datatype == DataType.club_pictures:
@@ -240,6 +248,7 @@ class DataManager():
                 cursor.execute("drop table club_%d_members" % id)
                 cursor.execute("drop table club_%d_activities" % id)
                 cursor.execute("drop table club_%d_pictures" % id)
+                cursor.execute("drop table club_%d_collectors" % id)
             elif self.datatype == DataType.activity:
                 cursor.execute("delete from activities where activity_id = %d" % id)
                 # 删除这一行记录对应的几个附庸数据表
@@ -270,6 +279,8 @@ class DataManager():
                 cursor.execute("delete from club_%d_managers where manager_wxid = '%s'" % (id, slave_id))
             elif self.datatype == DataType.club_members:
                 cursor.execute("delete from club_%d_members where member_wxid = '%s'" % (id, slave_id))
+            elif self.datatype == DataType.club_collectors:
+                cursor.execute(("delete from club_%d_collectors where collector_wxid = '%s'" % (id, slave_id)))
             elif self.datatype == DataType.club_activities:
                 cursor.execute("delete from club_%d_activities where activity_id = %d" % (id, slave_id))
             elif self.datatype == DataType.club_pictures:

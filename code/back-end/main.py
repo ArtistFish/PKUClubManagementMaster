@@ -18,8 +18,6 @@ def test_form():
     return "response from SE group 10"
 
 
-
-
 '''
 API:
 create a user (用户注册)
@@ -149,6 +147,17 @@ def getClubMembers():
     return json.dumps({'status':'200 OK', 'club_member_list': res})
 
 '''
+API: getClubCollectors
+获取社团收藏者列表
+'''
+@app.route('/gp10/getClubCollectors', methods = ['POST'])
+def getClubCollectors():
+    club_id = int(request.form.get("club_id"))
+    datamanager = DataManager(DataType.club_collectors)
+    res = datamanager.getSlaveList(club_id)
+    return json.dumps({'status': '200 OK', 'club_collector_list': res})
+
+'''
 API: getClubActivities
 获取社团活动列表
 '''
@@ -198,6 +207,24 @@ def addMemberToClub():
     wxid = request.form.get("wx_id")
     datamanager = DataManager(DataType.club_members)
     res=datamanager.getSlaveList(club_id)
+    for i in range(len(res)):
+        if wxid==res[i][1]:
+            return json.dumps({'status':'Already in the club! failed!'})
+
+    datamanager.addSlaveInfo(club_id, wxid)
+    res = {'status': '200 OK'}
+    return json.dumps(res)
+
+'''
+API: addCollectorToClub
+向社团增加收藏者
+'''
+@app.route('/gp10/addCollectorToClub', methods = ['POST'])
+def addCollectorToClub():
+    club_id = int(request.form.get("club_id"))
+    wxid = request.form.get("wx_id")
+    datamanager = DataManager(DataType.club_collectors)
+    res = datamanager.getSlaveList(club_id)
     for i in range(len(res)):
         if wxid==res[i][1]:
             return json.dumps({'status':'Already in the club! failed!'})
@@ -273,6 +300,20 @@ def deleteMemberFromClub():
     club_id = int(request.form.get("club_id"))
     wxid = request.form.get("wx_id")
     datamanager = DataManager(DataType.club_members)
+    datamanager.deleteSlaveInfo(club_id, wxid)
+
+    res = {'status': '200 OK'}
+    return json.dumps(res)
+
+'''
+API: deleteCollectorFromClub
+从社团删除收藏者
+'''
+@app.route('/gp10/deleteCollectorFromClub', methods = ['POST'])
+def deleteCollectorFromClub():
+    club_id = int(request.form.get("club_id"))
+    wxid = request.form.get("wx_id")
+    datamanager = DataManager(DataType.club_collectors)
     datamanager.deleteSlaveInfo(club_id, wxid)
 
     res = {'status': '200 OK'}
@@ -376,8 +417,20 @@ def getClubListOfUser():
             if member[1] == wxid:
                 member_club_list.append((club[0], club[1]))
 
+    #获取用户收藏的社团
+    collect_club_list = []
+    for club in res:
+        club_id = club[0]
+        datamanager_club_collectors = DataManager(DataType.club_collectors)
+        res_club_collectors = datamanager_club_collectors.getSlaveList(club_id)
+
+        for collector in res_club_collectors:
+            if collector[1] == wxid:
+                collect_club_list.append((club[0], club[1]))
+
     return json.dumps({'status': '200 OK', 'president_club_list': president_club_list,
-                       'manager_club_list': manager_club_list, 'member_club_list': member_club_list})
+                       'manager_club_list': manager_club_list, 'member_club_list': member_club_list,
+                       'collector_club_list': collect_club_list})
 
 '''
 API: registerUserToActivity
@@ -826,5 +879,3 @@ def checkLottery():
 
 if __name__ == '__main__':
     app.run(debug=True, threaded=True,host='0.0.0.0',port=5000)
-
-# 测试
