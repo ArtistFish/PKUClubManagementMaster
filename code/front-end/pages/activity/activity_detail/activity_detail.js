@@ -27,10 +27,10 @@ Page({
       undertaker:"滑雪场"
     },
     URL: 'https://81.70.150.127/gp10/',
-    valid:false,
+    valid:undefined,
     sign_up_click:false,
     isClick:false,
-    top_src:"/images/share.jpg",
+    top_src:undefined,
     activity_List: undefined
 
   },
@@ -52,7 +52,6 @@ Page({
       },
       method:'POST',
       success: function(res) {
-        console.log(res)
         res.data.activity_sign_up_ddl=new Date(res.data.activity_sign_up_ddl).toLocaleDateString(),
         res.data.activity_start_time=new Date(res.data.activity_start_time).toLocaleDateString(),
         res.data.activity_end_time=new Date(res.data.activity_end_time).toLocaleDateString(),
@@ -67,8 +66,17 @@ Page({
           "activity.sponsor":res.data.activity_sponsor,
           "activity.undertaker":res.data.activity_undertaker
         })
+        app.getActivityCollectors(res.data.activity_id,res=>{
+          console.log(res.data.activity_collector_list)
+          if(res.data.status == '200 OK'){
+            let temp=0
+            for(let i of res.data.activity_collector_list){
+              temp++
+            }
+            _this.setData({"activity.like":temp})
+          } 
+        })
         app.getActivityPictures(res.data.activity_id,res=>{
-          console.log(res)
           if(res.data.status == '200 OK'){
             let pic = []
             for(let path of res.data.activity_pictures_list){
@@ -78,12 +86,11 @@ Page({
               top_src:pic[0],
               activity_List:pic
             })
-            console.log(_this.data.activity_List)
           }
         })
         app.getActivityListOfUser(app.globalData.openid,res=>{
+          console.log(res)
           if(res.data.status == '200 OK'){
-            console.log(res)
             for (let temp of res.data.registered_activity_list){
               if(temp[0]==_this.data.activity.id)
                 _this.setData({
@@ -91,10 +98,14 @@ Page({
                   sign_up_click:true
                 })
             }
-          }
-        
+            for (let temp of res.data.collected_activity_list){
+              if(temp[0]==_this.data.activity.id)
+                _this.setData({
+                  isClick:true
+                })
+            }
+          } 
         })
-
       }
     })
   },
@@ -150,29 +161,43 @@ Page({
 
 
   /**
-   * 点击报名
+   * 点击收藏
    */
-  click: function(){
-    var s = this.data.isClick
-    this.setData({isClick:!s})
+  click_collect: function(){
+    let that = this
+    app.addCollectorToActivity(app.globalData.openid,that.data.activity_id,res=>{
+      if(res.data.status == '200 OK'){
+        that.setData({
+          "isClick":true,
+          "activity.like":that.data.activity.like+1
+        })
+        console.log('collect success', res.data.status)
+      }
+    })
+  },
+  click_cancel: function(){
+    let that = this
+    app.deleteCollectorFromActivity(app.globalData.openid,that.data.activity_id,res=>{
+      if(res.data.status == '200 OK'){
+        that.setData({
+          "isClick":false,
+          "activity.like":that.data.activity.like-1
+        })
+        console.log('cancel success', res.data.status)
+      }
+    })
   },
 
   sign_up: function(){
     let that = this
-    app.registerUserToActivity(app.globalData.openid,this.data.activity_id,res=>{
+    app.registerUserToActivity(app.globalData.openid,that.data.activity_id,res=>{
       if(res.data.status == '200 OK'){
         that.setData({valid:true})
         console.log('register success', res.data.status)
         if(that.data.valid)
-          that.setData({sign_up_click:!that.data.sign_up_click})
+          that.setData({"sign_up_click":!that.data.sign_up_click})
       }
     })
-    // else  
-    // wx.showToast({
-      // title: '请先加入社团',
-      // icon: 'loading',
-      // duration: 1500
-    // })
   },
   
 })
