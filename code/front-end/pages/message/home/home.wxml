@@ -29,7 +29,7 @@
         <view class="text-grey">{{item[2]}}</view>
         <view class="text-gray text-sm flex">
           <text class="text-cut my-content">
-              <text class="cuIcon-infofill text-red  margin-right-xs"></text>{{item[3]}}
+              <text class="cuIcon-infofill text-red  margin-right-xs"></text>{{item[3].info}}
           </text>
           <button class="margin-left-xs cu-btn round sm bg-yellow" wx:if="{{item[1] == messageType.inform_managerInvite || item[1] == messageType.inform_presidentExchange}}" catchtap="tapResponse">回应</button>
         </view>
@@ -52,7 +52,7 @@
         <view class="text-grey">{{item[2]}}</view>
         <view class="text-gray text-sm flex">
           <text class="text-cut">
-              <text class="cuIcon-infofill text-red  margin-right-xs"></text>{{item[3]}}
+              <text class="cuIcon-infofill text-red  margin-right-xs"></text>{{item[3].info}}
           </text>
         </view>
       </view>

@@ -31,27 +31,39 @@ Component({
       let _this = this
       let types = this.data.messageType
       let curPage = api.getCurPage()
-      let unread_cnt = 2
+      let unread_cnt = 0
       app.getMessages(res => {
-        let send_message_list = res.data.send_message_list
-        let receive_message_list = res.data.receive_message_list
+        let send_message_list = res.data.send_message_list.reverse()
+        let receive_message_list = res.data.receive_message_list.reverse()
         let messageList = {inform: {receive: [], send: []}, reply: {receive: [], send: []}, system: {receive: [], send: []}}
         let read_flags = {inform: {receive: [], send: []}, reply: {receive: [], send: []}, system: {receive: [], send: []}}
         for(let message of receive_message_list){
           let type = message[1]
-          if(type == types.inform_normal || type == types.inform_managerInvite || type == inform_presidentExchange){
+          let content = JSON.parse(message[3])
+          message[3] = content
+          if(type == types.inform_normal || type == types.inform_managerInvite || type == types.inform_presidentExchange){
             messageList.inform.receive.push(message)
-            read_flags.inform.receive.push(0)
+            if(message[3].read)
+            {
+              read_flags.inform.receive.push(1)
+            }
+            else{
+              read_flags.inform.receive.push(0)
+              unread_cnt += 1
+            }
           }
           else if(type == types.system_normal){
             messageList.system.receive.push(message)
           }
         }
+        
         for(let message of send_message_list){
           let type = message[1]
-          if(type == types.inform_normal || type == types.inform_managerInvite || type == inform_presidentExchange){
+          let content = JSON.parse(message[3])
+          message[3] = content
+          if(type == types.inform_normal || type == types.inform_managerInvite || type == types.inform_presidentExchange){
             messageList.inform.send.push(message)
-            read_flags.inform.send.push(0)
+            read_flags.inform.send.push(1)
           }
         }
         _this.setData({
@@ -78,7 +90,7 @@ Component({
       let _this = this
       wx.showModal({
         title: messageList[index][2],
-        content: messageList[index][3],
+        content: messageList[index][3].info,
         confirmText: '我知道了',
         success: res => {
           if(res.confirm){

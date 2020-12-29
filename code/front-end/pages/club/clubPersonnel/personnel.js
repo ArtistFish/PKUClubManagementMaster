@@ -16,7 +16,6 @@ Component({
       Api.set_current_user(this)
     },
     ready: function() {
-      console.log(this.data.userIsManager)
       console.log(app.globalData.current_club)
       let member_list = app.globalData.current_club.member_list
       let manager_list = app.globalData.current_club.manager_list
@@ -25,16 +24,15 @@ Component({
       let avatars = {}
       let member_detail_list = []
       let manager_detail_list = []
-      let count = 0
       new Promise((resolve, reject) => {
         let person_list = member_list.concat(manager_list)
-        person_list.push(president_id)
+        person_list.push([0, president_id])
         let loaded = 0
-        for (let person_id of person_list) {
+        for (let person_id_tuple of person_list) {
+          let person_id = person_id_tuple[1]
           app.getUserInfo(person_id, res => {
             let user_name = res.data.user_name
             let avatar_url = res.data.head_url
-            console.log(res)
             names[person_id] = user_name
             avatars[person_id] = avatar_url
             loaded += 1
@@ -46,7 +44,6 @@ Component({
         }
       }).then(() => {
         for (let person_id of member_list) {
-          count += 1
           let id = person_id[1]
           member_detail_list.push({
             id: id,
@@ -55,7 +52,6 @@ Component({
             avatar: avatars[id]
           })
         }
-        count += 1
         manager_detail_list.push({
           id: president_id,
           name: names[president_id],
@@ -63,7 +59,6 @@ Component({
           avatar: avatars[president_id]
         })
         for (let person_id of manager_list) {
-          count += 1
           let id = person_id[1]
           manager_detail_list.push({
             id: id,
@@ -188,6 +183,13 @@ Component({
         `移除${modalName}的管理员身份？`
       ]
       // 查看主页不需要检查
+      if (tabInd === 0)
+            {
+              // 查看个人主页的跳转接口
+              wx.navigateTo({
+                url: '/pages/userInfo/selfie/selfie?wx_id=' + this.data.modalId,
+              })
+            }
       if (tabInd > 0)
       {
         wx.showModal({
@@ -195,34 +197,34 @@ Component({
           content: content[tabInd],
           cancelColor: 'cancelColor',
           success: res=>{
-            let club_id = app.globalData.current_club.club_id
-            if (tabInd === 0)
+            if(res.confirm)
             {
-              // 查看个人主页的跳转接口
-              wx.navigateTo({
-                url: '/pages/userInfo/selfie/selfie?wx_id=' + this.data.modalId,
-              })
-            }
-            else if (tabInd === 1)
-            {
-              app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_presidentExchange,
-                 "移交会长",  
-                 `${this.data.userName}想将${app.globalData.current_club.club_name}社长移交给${modalName}`, 
-                 res=>console.log(res))
-            }
-            else if (tabInd === 2)
-            {
-              app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_managerInvite, "管理员邀请",  
-              `${this.data.userName}想任命${modalName}为${app.globalData.current_club.club_name}社团管理员`,
-               res=>console.log(res))
-              app.addManagerToClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
-               this.triggerEvent('refresh', {tab: 3, club_id: club_id}))
-            }
-            else{
-              app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_normal, "移除管理员",  
-              `${this.data.userName}移除了${modalName}的${app.globalData.current_club.club_name}社团管理员身份`, res=>console.log(res))
-              app.deleteManagerFromClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
+              let club_id = app.globalData.current_club.club_id
+              let message_content = {}
+              if (tabInd === 1)
+              {
+                message_content.club_id = app.globalData.current_club.club_id
+                message_content.read = false
+                message_content.info = `${this.data.userName}想将${app.globalData.current_club.club_name}社长移交给${modalName}`
+                app.sendMessage(app.globalData.openid, app.globalData.openid, app.globalData.messageType.inform_presidentExchange,
+                  "移交会长",  
+                  JSON.stringify(message_content), 
+                  res=>console.log(res))
+              }
+              else if (tabInd === 2)
+              {
+                app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_managerInvite, "管理员邀请",  
+                `${this.data.userName}想任命${modalName}为${app.globalData.current_club.club_name}社团管理员`,
+                res=>console.log(res))
+                app.addManagerToClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
                 this.triggerEvent('refresh', {tab: 3, club_id: club_id}))
+              }
+              else{
+                app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_normal, "移除管理员",  
+                `${this.data.userName}移除了${modalName}的${app.globalData.current_club.club_name}社团管理员身份`, res=>console.log(res))
+                app.deleteManagerFromClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
+                  this.triggerEvent('refresh', {tab: 3, club_id: club_id}))
+              }
             }
           },
           fail: res=>{console.log(res)}

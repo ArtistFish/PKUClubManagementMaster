@@ -36,7 +36,13 @@ Page({
     // todo:在这里处理未读消息数量
     app.getMessages(res => {
       let receive_messages = res.data.receive_message_list
-      let unread_cnt = 1
+      let unread_cnt = 0
+      for(let message of receive_messages){
+        let content = JSON.parse(message[3])
+        if(!content.read){
+          unread_cnt += 1
+        }
+      }
       _this.setData({
         unread_cnt: unread_cnt
       })

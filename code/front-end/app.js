@@ -935,8 +935,8 @@ App({
     clubList: [],
     activityList: [],
     messageList: [],
-    SERVER_URL: 'https://81.70.150.127/gp10',
-    SERVER_ROOT_URL: 'https://81.70.150.127',
+    SERVER_URL: 'https://thunderclub.xyz/gp10',
+    SERVER_ROOT_URL: 'https://thunderclub.xyz',
     current_club: {
       id: undefined, 
       club_name: undefined, 
