@@ -10,10 +10,36 @@
     </view>
   </view>
 </scroll-view>
+<loading wx:if="{{!loaded}}"></loading>
 <scroll-view scroll-y class="list bg-white">
-  <view wx:if="{{infoList[tabCur].length ==0}}" class="flex flex-direction justify-center align-center background-text">
+  <view wx:if="{{idList[tabCur].length ==0}}" class="flex flex-direction justify-center align-center background-text">
     <image src="/images/noEntry.png"></image>
     <view class="text-gray">暂时没有收藏～</view>
     <button class="cu-btn bg-yellow round margin-top-sm" bind:tap="tapBtnClub">去收藏</button>
+  </view>
+  <view wx:else class="cu-list margin-top-xs">
+    <view wx:if="{{tabCur == 'club'}}" wx:for="{{idList[tabCur]}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white club-card" bindtap="tapClub" data-index="{{index}}">
+      <image class="flex-sub club-card radius-lg my-picture" src="{{clubPictureList[item][0]}}" mode="aspectFill">
+        <view class="cu-tag my-badge bg-yellow text-center">
+          <text class="margin-left-xs">已认证</text>
+        </view>
+      </image>
+      <view class="flex-twice">
+        <view class="flex-direction margin-left-xs">
+          <view class="flex justify-between text-lg text-black margin-top-xs">
+              <text class="my-text">{{clubList[item].club_name}}</text>
+              <text class="cuIcon-peoplefill margin-right margin-top-sm"> 学生</text>
+          </view>
+          <image src="/images/favicon.ico" class="cu-avatar bg-white my-icon"> </image><text class="text-black">  北京大学</text>
+          <view class="margin-top-xs my-description-wraper">
+              <view class="text-gray my-description"> {{clubList[item].club_description}}</view>
+          </view>
+          <view class="flex justify-between margin-top-xs">
+            <text class="cuIcon-favorfill"> 热度</text>
+            <button class="cu-btn bg-yellow margin-right-xs round" catchtap="tapExit" data-index="{{index}}">退出社团</button>
+          </view>
+        </view>
+      </view>
+    </view>
   </view>
 </scroll-view>

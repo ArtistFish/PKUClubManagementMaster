@@ -64,13 +64,14 @@ Component({
         }
       })
       let load_cnt = 0
-      let associated_club_id = {join: [], setup: []}
+      let associated_club_id = {join: [], setup: [], collector: []}
       let associated_activity_id = {registered: [], selected: []}
       app.getClubListOfUser(app.globalData.openid, res => {
         // console.log(res)
         let president_club_list = res.data.president_club_list
         let manager_club_list = res.data.manager_club_list
         let member_club_list = res.data.member_club_list
+        let collector_club_list = res.data.collector_club_list
         for(let club of president_club_list){
           let id = club[0]
           associated_club_id.setup.push(id)
@@ -82,6 +83,10 @@ Component({
         for(let club of member_club_list){
           let id = club[0]
           associated_club_id.join.push(id)
+        }
+        for(let club of collector_club_list){
+          let id = club[0]
+          associated_club_id.collector.push(id)
         }
         associated_club_id.join = Array.from(new Set(associated_club_id.join))
         let i = 0
@@ -98,7 +103,8 @@ Component({
           }
           else{
             _this.setData({
-              clubTotal: total
+              clubTotal: total,
+              collectTotal: collector_club_list.length,
             })
           }
         }

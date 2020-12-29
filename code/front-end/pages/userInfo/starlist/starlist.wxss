@@ -7,3 +7,108 @@
   height:50vh;
   width:100%;
 }
+.list{
+  height: 84vh;
+  width: 100%;
+}
+.background-text{
+  height:50vh;
+  width:100%;
+}
+.foot {
+	position: fixed;
+	width: 100%;
+	bottom: 0;
+	z-index: 1024;
+	box-shadow: 0 -1rpx 6rpx rgba(0, 0, 0, 0.1);
+}
+.bottom-btn {
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+  margin-left: 30rpx;
+  margin-right: 30rpx;
+  width: 80%;
+}
+.wraper{
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 15px;
+}
+.club-card{
+  height:100px;
+}
+
+.new-card{
+  height:200px;
+}
+.my-badge {
+	border-radius: 12rpx;
+	position: absolute;
+	top: -10rpx;
+	left: -10rpx;
+	font-size: 25rpx;
+	padding: 0rpx 10rpx;
+	height: 40rpx;
+  color: var(--white);
+  margin-top:1px;
+}
+
+.radius-lg {
+	border-radius: 12rpx;
+}
+
+.xxx{
+  margin-bottom: -10px;
+}
+.club-card{
+  height: 300rpx;
+}
+.my-text {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 310rpx;
+}
+.my-picture {
+	height: 100%;
+}
+.my-parent {
+	position: relative;
+}
+.my-content {
+	bottom: 0;
+	flex-grow: inherit;
+	position: absolute;
+}
+.my-description-wraper {
+	height: 85rpx;
+	display: flex;
+	align-items: center;
+}
+.my-description {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+.my-icon {
+	height: 50rpx;
+	width: 50rpx;
+}
+
+.wraper{
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-top: 15px;
+}
+.my-badge {
+	border-radius: 12rpx;
+	position: absolute;
+	top: -10rpx;
+	left: -10rpx;
+	font-size: 25rpx;
+	padding: 0rpx 10rpx;
+	height: 40rpx;
+  color: var(--white);
+  margin-top:1px;
+}
