@@ -136,6 +136,7 @@ Component({
           let id = activity[0]
           associated_activity_id.collected.push(id)
         }
+        console.log(associated_activity_id)
         let temp = associated_activity_id.registered
         temp.push(...associated_activity_id.selected)
         temp = Array.from(new Set(temp))

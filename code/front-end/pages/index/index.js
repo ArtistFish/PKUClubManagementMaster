@@ -21,6 +21,7 @@ Page({
   onLoad: function(option){
     let _this = this
     // 如果是未注册用户，先注册一下
+    // console.log(app.globalData.openid)
     app.getUserInfo(app.globalData.openid, res => {
       if(res.data.status == 'Not Found'){
         app.createUser(app.globalData.openid, app.globalData.wxUserInfo.nickName, app.globalData.wxUserInfo.avatarUrl, res => {

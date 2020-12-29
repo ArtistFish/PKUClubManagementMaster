@@ -199,31 +199,32 @@ Component({
           success: res=>{
             if(res.confirm)
             {
-              let club_id = app.globalData.current_club.club_id
               let message_content = {}
+              message_content.club_id = app.globalData.current_club.club_id
+              message_content.read = false
               if (tabInd === 1)
               {
-                message_content.club_id = app.globalData.current_club.club_id
-                message_content.read = false
                 message_content.info = `${this.data.userName}想将${app.globalData.current_club.club_name}社长移交给${modalName}`
-                app.sendMessage(app.globalData.openid, app.globalData.openid, app.globalData.messageType.inform_presidentExchange,
+                app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_presidentExchange,
                   "移交会长",  
                   JSON.stringify(message_content), 
                   res=>console.log(res))
               }
               else if (tabInd === 2)
               {
+                message_content.info = `${this.data.userName}想任命${modalName}为${app.globalData.current_club.club_name}社团管理员`
                 app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_managerInvite, "管理员邀请",  
-                `${this.data.userName}想任命${modalName}为${app.globalData.current_club.club_name}社团管理员`,
+                JSON.stringify(message_content),
                 res=>console.log(res))
-                app.addManagerToClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
-                this.triggerEvent('refresh', {tab: 3, club_id: club_id}))
+                // app.addManagerToClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
+                // this.triggerEvent('refresh', {tab: 3, club_id: club_id}))
               }
               else{
+                message_content.info = `${this.data.userName}移除了${modalName}的${app.globalData.current_club.club_name}社团管理员身份`
                 app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_normal, "移除管理员",  
-                `${this.data.userName}移除了${modalName}的${app.globalData.current_club.club_name}社团管理员身份`, res=>console.log(res))
-                app.deleteManagerFromClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
-                  this.triggerEvent('refresh', {tab: 3, club_id: club_id}))
+                JSON.stringify(message_content), res=>console.log(res))
+                // app.deleteManagerFromClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
+                //   this.triggerEvent('refresh', {tab: 3, club_id: club_id}))
               }
             }
           },

@@ -53,7 +53,7 @@ Component({
   methods: {
     changeClubInfo() {
       wx.navigateTo({
-        url: '/pages/changeInfo/changeInfo',  
+        url: '/pages/club/changeInfo/changeInfo',  
         })
     },
     DotStyle(e) {

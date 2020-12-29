@@ -31,7 +31,7 @@
           <text class="text-cut my-content">
               <text class="cuIcon-infofill text-red  margin-right-xs"></text>{{item[3].info}}
           </text>
-          <button class="margin-left-xs cu-btn round sm bg-yellow" wx:if="{{item[1] == messageType.inform_managerInvite || item[1] == messageType.inform_presidentExchange}}" catchtap="tapResponse">回应</button>
+          <button class="margin-left-xs cu-btn round sm bg-yellow" wx:if="{{item[1] == messageType.inform_managerInvite || item[1] == messageType.inform_presidentExchange}}" catchtap="tapResponse" data-index="{{index}}" data-kind="{{'receive'}}">回应</button>
         </view>
       </view>
       <view class="action">

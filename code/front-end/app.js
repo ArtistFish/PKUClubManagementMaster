@@ -547,13 +547,13 @@ App({
       },
       method: 'POST',
       success: res => {
-        if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '获取信息失败',
-            image: '/images/fail.png',
-          })
-          console.log('addManagerToClub fail', res)
-        }
+        // if(res.data.status != '200 OK'){
+        //   wx.showToast({
+        //     title: '获取信息失败',
+        //     image: '/images/fail.png',
+        //   })
+        //   console.log('addManagerToClub fail', res)
+        // }
         callback(res)
       },
       fail: res =>{
@@ -813,6 +813,98 @@ App({
       }
     })
   },
+  getActivityCollectors(activity_id, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/getActivityCollectors',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        activity_id: activity_id,
+      },
+      method: 'POST',
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('getActivityCollectors fail', res)
+        }
+        callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('getActivityCollectors api fail', res)
+        callback(res)
+      }
+    })
+  },
+  deleteCollectorFromActivity(wx_id, activity_id, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/deleteCollectorFromActivity',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        wx_id: wx_id,
+        activity_id: activity_id,
+      },
+      method: 'POST',
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('deleteCollectorFromActivity fail', res)
+        }
+        callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('deleteCollectorFromActivity api fail', res)
+        callback(res)
+      }
+    })
+  },
+  addCollectorToActivity(wx_id, activity_id, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/addCollectorToActivity',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        wx_id: wx_id,
+        activity_id: activity_id,
+      },
+      method: 'POST',
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('addCollectorToActivity fail', res)
+        }
+        callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('addCollectorToActivity api fail', res)
+        callback(res)
+      }
+    })
+  },
   getActivityListOfUser: function(wx_id, callback){
     wx.request({
       url: this.globalData.SERVER_URL + '/getActivityListOfUser',
@@ -908,6 +1000,41 @@ App({
       }
     })
   },
+  setMessageInfo(message_id, type, title, content, wx_id_sender, wx_id_receiver, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/setMessageInfo',
+      method: 'POST',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        message_id: message_id,
+        type: type,
+        title: title,
+        content: content,
+        wx_id_sender: wx_id_sender,
+        wx_id_receiver: wx_id_receiver,
+      },
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '没有加入社团',
+            image: '/images/fail.png',
+          })
+          console.log('setMessageInfo fail', res)
+        }
+        callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('setMessageInfo api fail', res)
+        callback(res)
+      }
+    })
+  },
   updatePicture: function(filePath, callback){
     wx.uploadFile({
       filePath: filePath,
@@ -918,94 +1045,48 @@ App({
       }
     })
   },
-  getActivityCollectors: function(activity_id,callback){
+  addPictureToClub: function(club_id, filePath, callback){
     wx.request({
-      url: this.globalData.SERVER_URL + '/getActivityCollectors',
+      url: this.globalData.SERVER_URL + '/addPictureToClub',
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        activity_id:activity_id
+        club_id: club_id,
+        filePath: filePath
       },
       success: res => {
         if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '获取收藏活动失败',
-            image: '/images/fail.png',
-          })
-          console.log('register fail', res)
+          console.log('addPicture fail', res)
         }
         callback(res)
       },
       fail: res =>{
-        wx.showToast({
-          title: '获取信息失败',
-          image: '/images/fail.png',
-        })
-        console.log('getActivityCollectors api fail', res)
+        console.log('addPicture fail', res)
         callback(res)
       }
     })
   },
-  addCollectorToActivity: function(wx_id, activity_id,callback){
+  deletePictureFromClub: function(club_id, filePath, callback){
     wx.request({
-      url: this.globalData.SERVER_URL + '/addCollectorToActivity',
+      url: this.globalData.SERVER_URL + '/deletePictureFromClub',
       method: 'POST',
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        wx_id: wx_id,
-        activity_id:activity_id
+        club_id: club_id,
+        filePath: filePath
       },
       success: res => {
         if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '收藏失败',
-            image: '/images/fail.png',
-          })
-          console.log('register fail', res)
+          console.log('deletePicture fail', res)
         }
         callback(res)
       },
       fail: res =>{
-        wx.showToast({
-          title: '收藏社团失败',
-          image: '/images/fail.png',
-        })
-        console.log('addCollectorToActivity api fail', res)
-        callback(res)
-      }
-    })
-  },
-  deleteCollectorFromActivity: function(wx_id, activity_id,callback){
-    wx.request({
-      url: this.globalData.SERVER_URL + '/deleteCollectorFromActivity',
-      method: 'POST',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: {
-        wx_id:wx_id,
-        activity_id:activity_id
-      },
-      success: res => {
-        if(res.data.status != '200 OK'){
-          wx.showToast({
-            title: '删除收藏活动失败',
-            image: '/images/fail.png',
-          })
-          console.log('delete fail', res)
-        }
-        callback(res)
-      },
-      fail: res =>{
-        wx.showToast({
-          title: '删除活动失败 ',
-          image: '/images/fail.png',
-        })
-        console.log('deleteActivityCollectors api fail', res)
+        console.log('deletePicture fail', res)
         callback(res)
       }
     })

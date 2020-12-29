@@ -48,7 +48,8 @@ Component({
             clubList: clubList,
             pictureList: pictureList,
             recommendIds: [],
-            data_loaded: true
+            data_loaded: true,
+            collector_loaded: true,
           })
         }
         // console.log(_this.data.clubIds)
@@ -65,6 +66,7 @@ Component({
           })
           app.getClubInfo(id, res => {
             if(res.data.status == '200 OK'){
+              console.log(res.data)
               cnt1 += 1
               clubList[id] = res.data
               if(cnt1 == length && cnt2 == length){
@@ -158,16 +160,16 @@ Component({
       })
       console.log(this.data.keyWords)
       app.getRelatedClubList(this.data.keyWords, res => {
-          wx.hideLoading()
-          let list = []
-          for(let obj of res.data.related_club_list){
-            list.push(obj[0])
-          }
-          list = JSON.stringify(list)
-          wx.navigateTo({
-            url: '/pages/playground/search/search?list=' + list
-          })
+        wx.hideLoading()
+        let list = []
+        for(let obj of res.data.related_club_list){
+          list.push(obj[0])
+        }
+        list = JSON.stringify(list)
+        wx.navigateTo({
+          url: '/pages/playground/search/search?list=' + list
         })
+      })
     }
   }
 })

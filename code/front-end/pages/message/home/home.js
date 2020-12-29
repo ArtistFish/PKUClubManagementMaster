@@ -54,6 +54,14 @@ Component({
           }
           else if(type == types.system_normal){
             messageList.system.receive.push(message)
+            if(message[3].read)
+            {
+              read_flags.system.receive.push(1)
+            }
+            else{
+              read_flags.system.receive.push(0)
+              unread_cnt += 1
+            }
           }
         }
         
@@ -81,22 +89,80 @@ Component({
    * 组件的方法列表
    */
   methods: {
+    tapResponse: function(e){
+      let tabCur = this.data.tabCur
+      let kind = e.currentTarget.dataset.kind
+      let index = e.currentTarget.dataset.index
+      let message = this.data.messageList[tabCur][kind][index]
+      let content = '是否要接受会长移交？'
+      if(message[1] == this.data.messageType.inform_managerInvite){
+        content = '是否要接受管理员任命?'
+      }
+      wx.showModal({
+        title: '职务变动回应',
+        content: content,
+        success: res => {
+          if(res.confirm){
+            if(message[1] == this.data.messageType.inform_managerInvite){
+              app.addManagerToClub(message[3].club_id, app.globalData.openid, res => {
+                if(res.data.status == '200 OK'){
+                  wx.showToast({
+                    title: '成功接受任命',
+
+                  })
+                }
+                else if(res.data.status == 'Already in the club! failed!'){
+                  wx.showToast({
+                    title: '请勿重复接受邀请',
+                    icon: 'none'
+                  })
+                }
+                console.log(res.data)
+              })
+            }
+            else if(message[1] == this.data.messageType.inform_presidentExchange){
+              new Promise((resolve, reject) => {
+                app.getClubInfo(message[3].club_id, res => {
+                  if(res.data.status == '200 OK'){
+                    resolve(res.data)
+                  }
+                })
+              }).then(club_info => {
+                app.setClubInfo(club_info.club_id, club_info.club_name, club_info.club_description, app.globalData.openid, res => {
+                  if(res.data.status == '200 OK'){
+                    if(res.data.status == '200 OK'){
+                      wx.showToast({
+                        title: '成功接受任命',
+                      })
+                    }
+                  }
+                })
+              })
+            }
+          }
+        }
+      })
+    },
     tapMessage: function(e){
       let tabCur = this.data.tabCur
       let kind = e.currentTarget.dataset.kind
       let index = e.currentTarget.dataset.index
-      let messageList = this.data.messageList[tabCur][kind]
+      let message = this.data.messageList[tabCur][kind][index]
       // todo:这里加上将消息标记为已读
       let _this = this
       wx.showModal({
-        title: messageList[index][2],
-        content: messageList[index][3].info,
+        title: message[2],
+        content: message[3].info,
         confirmText: '我知道了',
         success: res => {
           if(res.confirm){
             if(_this.data.read_flags[tabCur][kind][index] == 0){
+              message[3].read = true
               let read_flags = _this.data.read_flags
               let curPage = api.getCurPage()
+              app.setMessageInfo(message[0], message[1], message[2], JSON.stringify(message[3]), message[4], message[5], res => {
+                console.log(res.data)
+              })
               read_flags[tabCur][kind][index] = 1
               _this.setData({
                 read_flags: read_flags

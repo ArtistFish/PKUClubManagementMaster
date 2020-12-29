@@ -43,7 +43,7 @@ Page({
     _this.setData({activity_id:options.activity_id}),
     console.log(_this.data.activity_id),
     wx.request({
-      url: _this.data.URL+'getActivityInfo', 
+      url: app.globalData.SERVER_URL+'/getActivityInfo', 
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },

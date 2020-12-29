@@ -41,6 +41,7 @@ Page({
     _this.setData({
       idList: {club: obj[0].collector, activity: obj[1].collected}
     })
+    console.log(_this.data.idList)
     let clubList = {}
     let clubPictureList = {}
     let activityList = {}
@@ -133,8 +134,9 @@ Page({
       })
       app.getActivityPictures(id, res => {
         // if(res.data.status == '200 OK'){
+          console.log(res.data)
           let pic_list = []
-          for(let pic of res.data.club_pictures_list){
+          for(let pic of res.data.activity_pictures_list){
             pic_list.push(app.globalData.SERVER_ROOT_URL + pic[1])
           }
           activityPictureList[id] = pic_list
