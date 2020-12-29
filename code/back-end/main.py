@@ -475,6 +475,33 @@ def registerUserToActivity():
     datamanager.addSlaveInfo(activity_id, wxid)
     return json.dumps({'status': '200 OK'})
 
+'''
+API: addCollectorToActivity
+用户收藏某一活动
+'''
+@app.route('/gp10/addCollectorToActivity', methods = ['POST'])
+def addCollectorToActivity():
+    wxid = request.form.get("wx_id")
+    activity_id = int(request.form.get("activity_id"))
+
+    datamanager = DataManager(DataType.activity_collectors)
+    res = datamanager.getSlaveList(activity_id)
+    for member in res:
+        if member[1]==wxid:
+            return json.dumps({'status': 'Rejected: Already collected'})
+    datamanager.addSlaveInfo(activity_id, wxid)
+    return json.dumps({'status': '200 OK'})
+
+'''
+API: getActivityCollectors
+获取收藏某一活动的用户
+'''
+@app.route('/gp10/getActivityCollectors', methods = ['POST'])
+def getActivityCollectors():
+    activity_id = int(request.form.get("activity_id"))
+    datamanager = DataManager(DataType.activity_collectors)
+    res = datamanager.getSlaveList(activity_id)
+    return json.dumps({'status': '200 OK', 'activity_collector_list': res})
 
 '''
 API: getActivityListOfUser
@@ -508,8 +535,20 @@ def getActivityListOfUser():
             if user[1] == wxid:
                 selected_activity_list.append((activity[0], activity[1]))
 
+    #获取用户收藏的活动
+    collected_activity_list = []
+    for activity in res:
+        activity_id = activity[0]
+        datamanager_activity_collectors = DataManager(DataType.activity_collectors)
+        res_activity_collectors = datamanager_activity_collectors.getSlaveList(activity_id)
+
+        for user in res_activity_collectors:
+            if user[1] == wxid:
+                collected_activity_list.append((activity[0], activity[1]))
+
     return json.dumps({'status': '200 OK', 'registered_activity_list': registered_activity_list,
-                       'selected_activity_list': selected_activity_list})
+                       'selected_activity_list': selected_activity_list, 'collected_activity_list': collected_activity_list})
+
 
 '''
 API:

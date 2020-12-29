@@ -15,6 +15,7 @@ class DataType(Enum):
 
     activity_registered_people = 8
     activity_selected_people = 9
+    activity_collectors = 13
     
     club_pictures = 10
     activity_pictures = 11
@@ -58,6 +59,8 @@ class DataManager():
                 cursor.execute("select * from activity_%d_registered_people" % id)
             elif self.datatype == DataType.activity_selected_people:
                 cursor.execute("select * from activity_%d_selected_people" % id)
+            elif self.datatype == DataType.activity_collectors:
+                cursor.execute("select * from activity_%d_collectors" % id)
             elif self.datatype == DataType.activity_pictures:
                 cursor.execute("select * from activity_%d_pictures" % id)
             else:
@@ -125,6 +128,8 @@ class DataManager():
                 cursor.execute("select * from activity_%d_registered_people" % id)
             elif self.datatype == DataType.activity_selected_people:
                 cursor.execute("select * from activity_%d_selected_people" % id)
+            elif self.datatype == DataType.activity_collectors:
+                cursor.execute("select * from activity_%d_collectors" % id)
             elif self.datatype == DataType.activity_pictures:
                 cursor.execute("select * from activity_%d_pictures" % id)
             else:
@@ -178,6 +183,8 @@ class DataManager():
                 cursor.execute(
                     "create table activity_%d_selected_people (id INT AUTO_INCREMENT, selected_person_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
                 cursor.execute(
+                    "create table activity_%d_collectors (id INT AUTO_INCREMENT, collector_wxid TINYTEXT, PRIMARY KEY (id))" % object.id)
+                cursor.execute(
                     "create table activity_%d_pictures (id INT AUTO_INCREMENT, filepath TEXT, PRIMARY KEY (id))" % object.id)
                 for picture in object.activity_picture_list:
                    cursor.execute(
@@ -223,6 +230,9 @@ class DataManager():
             elif self.datatype == DataType.activity_selected_people:
                 cursor.execute("insert into activity_%d_selected_people (selected_person_wxid) values ('%s')"
                                % (id, slave_id))
+            elif self.datatype == DataType.activity_collectors:
+                cursor.execute("insert into activity_%d_collectors (collector_wxid) values ('%s')"
+                               % (id, slave_id))
             elif self.datatype == DataType.activity_pictures:
                 cursor.execute("insert into activity_%d_pictures (filepath) values ('%s')" % (id, slave_id))
             else:
@@ -254,6 +264,7 @@ class DataManager():
                 # 删除这一行记录对应的几个附庸数据表
                 cursor.execute("drop table activity_%d_registered_people" % id)
                 cursor.execute("drop table activity_%d_selected_people" % id)
+                cursor.execute("drop table activity_%d_collectors" % id)
                 cursor.execute("drop table activity_%d_pictures" % id)
             elif self.datatype == DataType.user:
                 cursor.execute("delete from users where wxid = '%s'" % id)
@@ -292,6 +303,8 @@ class DataManager():
             elif self.datatype == DataType.activity_selected_people:
                 cursor.execute("delete from activity_%d_selected_people where selected_person_wxid = '%s'"
                                % (id, slave_id))
+            elif self.datatype == DataType.activity_collectors:
+                cursor.execute("delete from activity_%d_collectors where collector_wxid = '%s'" % (id, slave_id))
             elif self.datatype == DataType.activity_pictures:
                 cursor.execute("delete from activity_%d_pictures where filepath = '%s'"
                                % (id, slave_id))
