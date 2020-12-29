@@ -24,4 +24,27 @@
       <text> 年龄 </text>
       </view>
    </view>
+   <view class="cu-item">
+      <view class="content">
+        <text class="cuIcon-btn text-green"></text>
+        <text class="text-grey">头像</text>
+      </view>
+      <view class="action">
+        <button class="cu-btn round bg-green shadow" bind:tap="tapUpload">
+          <text class="cuIcon-upload"></text> 上传</button>
+      </view>
+    </view>
+    <view class="cu-form-group">
+  <view class="grid col-4 grid-square flex-sub">
+    <view class="bg-img" wx:for="{{avatarImg}}" wx:key="{{index}}" bindtap="ViewImage" data-url="{{avatarImg[index]}}" data-cur="cover">
+      <image src='{{avatarImg[index]}}' mode='aspectFill'></image>
+      <view class="cu-tag bg-red" catchtap="DelImg" data-index="{{index}}" data-cur="cover">
+        <text class="cuIcon-close"></text>
+      </view>
+    </view>
+    <view class="solids" bindtap="ChooseImage" wx:if="{{avatarImg.length<1}}" data-cur="cover">
+      <text class="cuIcon-cameraadd"></text>
+    </view>
+  </view>
+</view>
  </view>

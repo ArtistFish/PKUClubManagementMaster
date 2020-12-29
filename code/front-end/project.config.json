@@ -32,13 +32,13 @@
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
+    "userConfirmedBundleSwitch": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
-    "userConfirmedBundleSwitch": false,
     "minifyWXSS": false
   },
   "compileType": "miniprogram",
-  "libVersion": "2.7.3",
+  "libVersion": "2.4.3",
   "appid": "wxb668543108717363",
   "projectname": "ColorUI-template",
   "debugOptions": {

@@ -2,7 +2,7 @@
 <loading wx:if="{{!(loaded && hasUserInfo)}}"></loading>
 <view wx:else>
   <view class="text-center margin-top-xl">
-    <image class="cu-avatar lg round" src="/images/logo.png"></image>
+    <image class="cu-avatar lg round" src="{{head_url}}"></image>
     <view class="margin-top">
       {{user_name}}
     </view>

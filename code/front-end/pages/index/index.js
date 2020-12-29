@@ -23,7 +23,7 @@ Page({
     // 如果是未注册用户，先注册一下
     app.getUserInfo(app.globalData.openid, res => {
       if(res.data.status == 'Not Found'){
-        app.createUser(app.globalData.openid, app.globalData.wxUserInfo.nickName, res => {
+        app.createUser(app.globalData.openid, app.globalData.wxUserInfo.nickName, app.globalData.wxUserInfo.avatarUrl, res => {
           if(res.data.status != '200 OK'){
             wx.showToast({
               title: '注册用户失败',

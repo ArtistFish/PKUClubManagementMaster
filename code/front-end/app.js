@@ -91,6 +91,9 @@ App({
                 })
                 console.log('getClubInfo fail', res)
               }
+            },
+            fail: res => {
+              console.log(res)
             }
           })
         }
@@ -234,7 +237,7 @@ App({
       }
     })
   },
-  setUserInfo: function(user_name, callback){
+  setUserInfo: function(user_name, avatarUrl, callback){
     wx.request({
       url: this.globalData.SERVER_URL + '/setUserInfo',
       header: {
@@ -243,7 +246,8 @@ App({
       method: 'POST',
       data: {
         wx_id: this.globalData.openid,
-        user_name: user_name
+        user_name: user_name,
+        avatarUrl: avatarUrl,
       },
       success: res => {
         callback(res)
@@ -311,7 +315,7 @@ App({
       }
     })
   },
-  createUser: function(wx_id, user_name, callback){
+  createUser: function(wx_id, user_name, head_url, callback){
     wx.request({
       url: this.globalData.SERVER_URL + '/createUser',
       header: {
@@ -320,6 +324,7 @@ App({
       data: {
         wx_id: wx_id,
         user_name: user_name,
+        head_url: head_url,
       },
       method: 'POST',
       success: res => {
@@ -900,8 +905,8 @@ App({
     clubList: [],
     activityList: [],
     messageList: [],
-    SERVER_URL: 'https://thunderclub.xyz/gp10',
-    SERVER_ROOT_URL: 'https://thunderclub.xyz',
+    SERVER_URL: 'https://81.70.150.127/gp10',
+    SERVER_ROOT_URL: 'https://81.70.150.127',
     current_club: {
       id: undefined, 
       club_name: undefined, 

@@ -33,6 +33,7 @@ Page({
       if(res.data.status == '200 OK'){
         _this.setData({
           user_name: res.data.user_name,
+          head_url: res.data.head_url,
           hasUserInfo: true,
         })
       }

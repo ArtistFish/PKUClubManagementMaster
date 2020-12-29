@@ -57,9 +57,10 @@ Component({
             hasUserInfo: true,
             userInfo:{
               name: res.data.user_name,
-              avatarUrl: app.globalData.wxUserInfo.avatarUrl
+              avatarUrl: res.data.head_url
             }
           })
+          app.globalData.ourUserInfo = _this.data.userInfo
         }
       })
       let load_cnt = 0

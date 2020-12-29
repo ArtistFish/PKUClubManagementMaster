@@ -15,19 +15,21 @@ Page({
     })
   },
   tapCommit: function(e){
-    app.setUserInfo(this.data.innerText, res => {
-      console.log(res)
-      if(res.data.status == '200 OK'){
-        wx.showToast({
-          title: '修改成功'
-        })
-        setTimeout(() => {
-          wx.navigateTo({
-            url: '/pages/index/index?CurPage=userInfo'
+    if(this.data.title == '姓名'){
+      app.setUserInfo(this.data.innerText, app.globalData.ourUserInfo.avatarUrl, res => {
+        console.log(res)
+        if(res.data.status == '200 OK'){
+          wx.showToast({
+            title: '修改成功'
           })
-        }, 500)
-      }
-    })
+          setTimeout(() => {
+            wx.navigateTo({
+              url: '/pages/index/index?CurPage=userInfo'
+            })
+          }, 500)
+        }
+      })
+    }
   },
   /**
    * 生命周期函数--监听页面加载
