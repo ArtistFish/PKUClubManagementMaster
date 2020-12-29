@@ -3,9 +3,9 @@
   <view slot="backText">返回</view>
   <view slot="content">社团详情</view>
 </cu-custom>
-<view wx:if="{{loaded_info && loaded_manager && loaded_member}}">
+<view wx:if="{{loaded_info && loaded_manager && loaded_member && loaded_pictures}}">
   <view class="grid col-2 padding-sm">
-    <view class="bg-img padding-top-xl flex align-end" style="background-image: url('https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg');height: 207rpx;">
+    <view class="bg-img padding-top-xl flex align-end" style="background-image: url({{cover_url}});height: 207rpx;">
         <view class="bg-shadeBottom flex solid-bottom padding justify-end padding-top-xl flex-sub">
           <view class="cuIcon-friend lg"></view>
           <text>{{member_number}}</text>

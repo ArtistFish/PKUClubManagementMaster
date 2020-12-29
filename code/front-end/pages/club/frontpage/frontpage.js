@@ -34,7 +34,8 @@ Page({
     this.setData({
       loaded_info: false,
       loaded_manager: false,
-      loaded_member: false
+      loaded_member: false,
+      loaded_pictures: false
     })
     new Promise((resolve, reject) => {
       app.getClubInfo(club_id, function(res){
@@ -51,6 +52,22 @@ Page({
         resolve()
       })
     }).then(() => {
+      app.getClubPictures(club_id, res => {
+        let picture_list = res.data.club_pictures_list
+        app.globalData.current_club.cover_pircure = app.globalData.SERVER_ROOT_URL + picture_list[0][1]
+        app.globalData.current_club.contact_QR = app.globalData.SERVER_ROOT_URL + picture_list[1][1]
+        let display_pictures = []
+        for (let pic of picture_list.slice(2))
+        {
+          display_pictures.push(app.globalData.SERVER_ROOT_URL + pic[1])
+        }
+        app.globalData.current_club.display_pictures = display_pictures
+        _this.setData(
+          {
+            loaded_pictures: true,
+            cover_url: app.globalData.current_club.cover_pircure 
+          })
+      })
       return new Promise((resolve, reject) => {
         app.getClubMembers(club_id, res=>{
           let member_list = res.data.club_member_list
