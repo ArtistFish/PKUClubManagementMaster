@@ -166,8 +166,8 @@ Page({
           resolve([])
         }
       }).then(urls_array => {
-        console.log(urls_array)
         let current_club = app.globalData.current_club
+        console.log(current_club.raw_picture_urls.slice(2))
         let promises = []
         if (urls_array.length > 0)
         {
@@ -190,7 +190,7 @@ Page({
         {
           for (let old_url of current_club.raw_picture_urls.slice(2))
           {
-            urls_array.push(...old_url[1])
+            urls_array.push(old_url[1])
           }          
         }
         promises.push(new Promise((resolve, reject) => {

@@ -137,7 +137,7 @@ Component({
         if (res.data.status != '200 OK')
         {
           wx.showToast({
-            title: '该社团已收藏！',
+            title: '已收藏该社团！',
             image: '/images/fail.png',
             duration: 800
           })
