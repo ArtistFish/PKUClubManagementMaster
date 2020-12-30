@@ -177,21 +177,27 @@ Page({
               app.deletePictureFromClub(current_club.club_id, old_url[1], res=>resolve(res))
             }))
           }
-        }
-        if (this.data.coverImgList.length === 0)
-        {
-          urls_array.splice(0, 0, current_club.raw_picture_urls[0][1])
-        }
-        if (this.data.contactImgList.length === 0)
-        {
-          urls_array.splice(1, 0, current_club.raw_picture_urls[1][1])
-        }
-        if (this.data.displayImgList.length === 0)
-        {
-          for (let old_url of current_club.raw_picture_urls.slice(2))
+          if (this.data.coverImgList.length === 0)
           {
-            urls_array.push(old_url[1])
-          }          
+            urls_array.splice(0, 0, current_club.raw_picture_urls[0][1])
+          }
+          if (this.data.contactImgList.length === 0)
+          {
+            urls_array.splice(1, 0, current_club.raw_picture_urls[1][1])
+          }
+          if (this.data.displayImgList.length === 0)
+          {
+            for (let old_url of current_club.raw_picture_urls.slice(2))
+            {
+              urls_array.push(old_url[1])
+            }          
+          }
+          for (let pic_url of urls_array)
+          {
+            promises.push(new Promise((resolve, reject) => {
+              app.addPictureToClub(current_club.club_id, pic_url, res=>resolve(res))
+            }))
+          } 
         }
         promises.push(new Promise((resolve, reject) => {
           app.setClubInfo(
@@ -202,12 +208,6 @@ Page({
             res=>resolve(res)
           )
         }))
-        for (let pic_url of urls_array)
-          {
-            promises.push(new Promise((resolve, reject) => {
-              app.addPictureToClub(current_club.club_id, pic_url, res=>resolve(res))
-            }))
-          } 
         Promise.all(promises).then((reses) => {
           console.log(reses)
           for (let res of reses)
@@ -230,7 +230,8 @@ Page({
           })
           wx.hideLoading()
           setTimeout(() => {
-            wx.navigateTo({url: `/pages/club/frontpage/frontpage?club_id=${current_club.club_id}`})
+            wx.navigateBack()
+            wx.redirectTo({url: `/pages/club/frontpage/frontpage?club_id=${current_club.club_id}`})
           }, 500)
         })
       }).catch(() => {
