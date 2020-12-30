@@ -905,6 +905,37 @@ App({
       }
     })
   },
+  addCollectorToClub(wx_id, club_id, callback) {
+    wx.request({
+      url: this.globalData.SERVER_URL + '/addCollectorToClub',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        wx_id: wx_id,
+        club_id: club_id,
+      },
+      method: 'POST',
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('addCollectorToClub fail', res)
+        }
+        callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('addCollectorToClub api fail', res)
+        callback(res)
+      }
+    })
+  },
   addCollectorToActivity(wx_id, activity_id, callback){
     wx.request({
       url: this.globalData.SERVER_URL + '/addCollectorToActivity',
@@ -1085,7 +1116,7 @@ App({
       },
       data: {
         club_id: club_id,
-        filePath: filePath
+        filepath: filePath
       },
       success: res => {
         if(res.data.status != '200 OK'){
@@ -1108,7 +1139,7 @@ App({
       },
       data: {
         club_id: club_id,
-        filePath: filePath
+        filepath: filePath
       },
       success: res => {
         if(res.data.status != '200 OK'){

@@ -8,7 +8,7 @@ Page({
   data: {
     TabCur: 0,
     scrollLeft:0,
-    Tabs: ["社团详情", "社团活动", "社团动态", "社团人员"],
+    Tabs: ["社团详情", "社团活动", "社团人员"],
     member_number: 0,
   },
   tabSelect(e) {
@@ -22,7 +22,7 @@ Page({
    */
   onLoad: function (options) {
     let tab = options.tab
-    if (tab != undefined)
+    if (tab !== undefined)
     {
       this.setData({
         TabCur: tab
@@ -35,7 +35,8 @@ Page({
       loaded_info: false,
       loaded_manager: false,
       loaded_member: false,
-      loaded_pictures: false
+      loaded_pictures: false,
+      loaded_collector: false
     })
     new Promise((resolve, reject) => {
       app.getClubInfo(club_id, function(res){
@@ -52,8 +53,17 @@ Page({
         resolve()
       })
     }).then(() => {
+      app.getClubCollectors(club_id, res => {
+        let collect_number = res.data.club_collector_list.length
+        _this.setData({
+          collect_number: collect_number,
+          loaded_collector: true,
+        })
+      })
       app.getClubPictures(club_id, res => {
         let picture_list = res.data.club_pictures_list
+        console.log(app.globalData.current_club)
+        app.globalData.current_club.raw_picture_urls = picture_list
         app.globalData.current_club.cover_pircure = app.globalData.SERVER_ROOT_URL + picture_list[0][1]
         app.globalData.current_club.contact_QR = app.globalData.SERVER_ROOT_URL + picture_list[1][1]
         let display_pictures = []

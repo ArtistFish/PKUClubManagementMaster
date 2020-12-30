@@ -116,33 +116,14 @@ Page({
     let re = /[^\u4E00-\u9FA5a-zA-Z]/
     let illegal_type = -1
     let illegal_inform = ['请输入合法的社团名!', '请输入合法的社团简介!', '请上传封面图片!', '请上传联系方式!', '请上传介绍图片!']
-    if(this.data.name == undefined || this.data.name.length == 0 || re.test(this.data.name)){
+    if(re.test(this.data.name)){
       illegal = true
       illegal_type = 0
     }
-    else if(this.data.description == undefined || this.data.description.length == 0){
-      illegal = true
-      illegal_type = 1
-    }
-    // else if(this.data.coverImgList.length == 0)
-    // {
-    //   illegal = true
-    //   illegal_type = 2
-    // }
-    // else if(this.data.contactImgList.length == 0)
-    // {
-    //   illegal = true
-    //   illegal_type = 3
-    // }
-    // else if(this.data.displayImgList.length == 0)
-    // {
-    //   illegal = true
-    //   illegal_type = 4
-    // }
     if(!illegal)
     {
       wx.showLoading({
-        title: '创建中',
+        title: '修改中',
       })
       new Promise((resolve, reject) => {
         let imagesList = []
@@ -154,9 +135,21 @@ Page({
         let urls = {}
         for(let image of imagesList){
           app.updatePicture(image, res => {
-            console.log(res.data)
-            let data = JSON.parse(res.data)
-            console.log(data)
+            let data
+            try
+            {
+              data = JSON.parse(res.data)
+            }
+            catch(err)
+            {
+              wx.hideLoading()
+              wx.showToast({
+                title: '图片尺寸过大！',
+                image: '/images/fail.png',
+                duration: 1000,          
+              })
+              return
+            }          
             urls[imagesList.indexOf(image)] = data.filepath
             cnt += 1
             if(cnt == length){
@@ -176,44 +169,35 @@ Page({
         console.log(urls_array)
         let current_club = app.globalData.current_club
         let promises = []
+        if (urls_array.length > 0)
+        {
+          for (let old_url of current_club.raw_picture_urls)
+          {
+            promises.push(new Promise((resolve, reject) => {
+              app.deletePictureFromClub(current_club.club_id, old_url[1], res=>resolve(res))
+            }))
+          }
+        }
         if (this.data.coverImgList.length === 0)
         {
-          urls_array.splice(0, 0, current_club.cover_picture)
-        }
-        else
-        {
-          promises.push(new Promise((resolve, reject) => {
-            app.deletePictureFromClub(current_club.club_id, current_club.cover_picture, res=>resolve(res))
-          }))
+          urls_array.splice(0, 0, current_club.raw_picture_urls[0][1])
         }
         if (this.data.contactImgList.length === 0)
         {
-          urls_array.splice(1, 0, current_club.contact_QR)
-        }
-        else
-        {
-          promises.push(new Promise((resolve, reject) => {
-            app.deletePictureFromClub(current_club.club_id, current_club.contact_QR, res=>resolve(res))
-          }))
+          urls_array.splice(1, 0, current_club.raw_picture_urls[1][1])
         }
         if (this.data.displayImgList.length === 0)
         {
-          urls_array.push(...current_club.display_pictures)
-        }
-        else
-        {
-          for (let pic_url of current_club.display_pictures)
+          for (let old_url of current_club.raw_picture_urls.slice(2))
           {
-            promises.push(new Promise((resolve, reject) => {
-              app.deletePictureFromClub(current_club.club_id, pic_url, res=>resolve(res))
-            }))
-          }        
+            urls_array.push(...old_url[1])
+          }          
         }
         promises.push(new Promise((resolve, reject) => {
           app.setClubInfo(
             app.globalData.current_club.club_id,
-            this.data.name,
-            this.data.description,
+            this.data.name === undefined ? current_club.club_name: this.data.name,
+            this.data.description === undefined ? current_club.club_description: this.data.description,
             current_club.club_president_wxid,
             res=>resolve(res)
           )
@@ -224,7 +208,6 @@ Page({
               app.addPictureToClub(current_club.club_id, pic_url, res=>resolve(res))
             }))
           } 
-        console.log(urls_array)   
         Promise.all(promises).then((reses) => {
           console.log(reses)
           for (let res of reses)
@@ -247,7 +230,7 @@ Page({
           })
           wx.hideLoading()
           setTimeout(() => {
-            wx.navigateBack()
+            wx.navigateTo({url: `/pages/club/frontpage/frontpage?club_id=${current_club.club_id}`})
           }, 500)
         })
       }).catch(() => {

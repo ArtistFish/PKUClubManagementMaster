@@ -3,7 +3,7 @@
   <view slot="backText">返回</view>
   <view slot="content">社团详情</view>
 </cu-custom>
-<view wx:if="{{loaded_info && loaded_manager && loaded_member && loaded_pictures}}">
+<view wx:if="{{loaded_info && loaded_manager && loaded_member && loaded_pictures && loaded_collector}}">
   <view class="grid col-2 padding-sm">
     <view class="bg-img padding-top-xl flex align-end" style="background-image: url({{cover_url}});height: 207rpx;">
         <view class="bg-shadeBottom flex solid-bottom padding justify-end padding-top-xl flex-sub">
@@ -19,19 +19,19 @@
                 <text class="cuIcon-likefill"></text>
               </view>
               <view class="cu-tag line-red">
-                12
+               {{collect_number}}
               </view>
             </view>
-            <view class="padding-top-xl">
+            <!-- <view class="padding-top-xl">
               <view class="cu-tag bg-red padding-sm">{{club_tag}}</view>
-            </view>
+            </view> -->
           
           </view>
     </view>
   </view>
   <scroll-view scroll-x class="bg-white nav">
     <view class="flex text-center">
-      <view class="cu-item flex-sub text-lg text-shadow {{index==TabCur?'text-orange cur':'text-gray'}}" wx:for="{{4}}" wx:key bindtap="tabSelect" data-id="{{index}}">
+      <view class="cu-item flex-sub text-lg text-shadow {{index==TabCur?'text-orange cur':'text-gray'}}" wx:for="{{3}}" wx:key bindtap="tabSelect" data-id="{{index}}">
         {{Tabs[index]}}
       </view>
     </view>
@@ -39,8 +39,7 @@
 
   <basicInfo bind:refresh="refresh" wx:if="{{TabCur==0}}"></basicInfo>
   <activities wx:if="{{TabCur==1}}"></activities>
-  <moments wx:if="{{TabCur==2}}"></moments>
-  <personnel bind:refresh="refresh" wx:if="{{TabCur==3}}"></personnel>
+  <personnel bind:refresh="refresh" wx:if="{{TabCur==2}}"></personnel>
 </view>
 
 <loading wx:else></loading>
