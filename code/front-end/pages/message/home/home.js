@@ -104,20 +104,27 @@ Component({
         success: res => {
           if(res.confirm){
             if(message[1] == this.data.messageType.inform_managerInvite){
-              app.addManagerToClub(message[3].club_id, app.globalData.openid, res => {
-                if(res.data.status == '200 OK'){
-                  wx.showToast({
-                    title: '成功接受任命',
-
-                  })
-                }
-                else if(res.data.status == 'Already in the club! failed!'){
-                  wx.showToast({
-                    title: '请勿重复接受邀请',
-                    icon: 'none'
-                  })
-                }
-                console.log(res.data)
+              new Promise((resolve, reject) => {
+                app.deleteMemberFromClub(message[3].club_id, app.globalData.openid, res => {
+                  console.log(res)
+                  resolve()
+                })
+              }).then(() => {
+                app.addManagerToClub(message[3].club_id, app.globalData.openid, res => {
+                  if(res.data.status == '200 OK'){
+                    wx.showToast({
+                      title: '成功接受任命',
+  
+                    })
+                  }
+                  else if(res.data.status == 'Already in the club! failed!'){
+                    wx.showToast({
+                      title: '请勿重复接受邀请',
+                      icon: 'none'
+                    })
+                  }
+                  console.log(res.data)
+                })
               })
             }
             else if(message[1] == this.data.messageType.inform_presidentExchange){
@@ -128,6 +135,7 @@ Component({
                   }
                 })
               }).then(club_info => {
+                app.deleteManagerFromClub(club_info.club_id, app.globalData.openid, res => console.log(res.data))
                 app.setClubInfo(club_info.club_id, club_info.club_name, club_info.club_description, app.globalData.openid, res => {
                   if(res.data.status == '200 OK'){
                     if(res.data.status == '200 OK'){

@@ -13,7 +13,7 @@
           {{resultList[item].club_name}}
           <text class="cuIcon-peoplefill margin-right margin-top-sm"> 学生</text>
         </view>
-        <image src="/images/favicon.ico" class="cu-avatar bg-white my-icon"> </image><text class="text-black">  北京大学</text>
+        <image src="/images/pku.jpeg" class="cu-avatar bg-white my-icon"> </image><text class="text-black">  北京大学</text>
         <view class="text-gray margin-top-xs"> {{resultList[item].club_description}}</view>
         <view class="flex justify-between align-end margin-top">
           <text class="cuIcon-favorfill"> 热度</text>

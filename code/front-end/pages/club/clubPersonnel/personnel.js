@@ -223,8 +223,9 @@ Component({
                 message_content.info = `${this.data.userName}移除了${modalName}的${app.globalData.current_club.club_name}社团管理员身份`
                 app.sendMessage(app.globalData.openid, this.data.modalId, app.globalData.messageType.inform_normal, "移除管理员",  
                 JSON.stringify(message_content), res=>console.log(res))
-                // app.deleteManagerFromClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
-                //   this.triggerEvent('refresh', {tab: 3, club_id: club_id}))
+                app.addMemberToClub(app.globalData.current_club.club_id, this.data.modalId, res => console.log(res.data))
+                app.deleteManagerFromClub(app.globalData.current_club.club_id, this.data.modalId, ()=>
+                  this.triggerEvent('refresh', {tab: 3, club_id: club_id}))
               }
             }
           },

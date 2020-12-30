@@ -17,8 +17,7 @@
     <view class="text-gray">暂时没有收藏～</view>
     <button class="cu-btn bg-yellow round margin-top-sm" bind:tap="tapBtnClub">去收藏</button>
   </view>
-  <view wx:else class="cu-list margin-top-xs">
-    <view wx:if="{{tabCur == 'club'}}">
+    <view wx:if="{{idList[tabCur].length !=0 && tabCur == 'club'}}" class="cu-list margin-top-xs">
       <view wx:for="{{idList[tabCur]}}" class="flex p-xs margin-bottom-sm mb-sm radius-lg bg-white club-card" bindtap="tapClub" data-index="{{index}}">
         <image class="flex-sub club-card radius-lg my-picture" src="{{clubPictureList[item][0]}}" mode="aspectFill">
           <view class="cu-tag my-badge bg-yellow text-center">
@@ -31,7 +30,7 @@
                 <text class="my-text">{{clubList[item].club_name}}</text>
                 <text class="cuIcon-peoplefill margin-right margin-top-sm"> 学生</text>
             </view>
-            <image src="/images/favicon.ico" class="cu-avatar bg-white my-icon"> </image><text class="text-black">  北京大学</text>
+            <image src="/images/pku.jpeg" class="cu-avatar bg-white my-icon"> </image><text class="text-black">  北京大学</text>
             <view class="margin-top-xs my-description-wraper">
                 <view class="text-gray my-description"> {{clubList[item].club_description}}</view>
             </view>
@@ -39,7 +38,8 @@
         </view>
       </view>
     </view>
-    <view wx:else class="si-list">
+    <view wx:if="{{idList[tabCur].length !=0 && tabCur == 'activity'}}" class=" margin-top-xs">
+      <view class="si-list">
       <view class="s-item" wx:for="{{idList[tabCur]}}" wx:key="key" bindtap="tapActivity" data-index="{{index}}">
         <image src="{{activityPictureList[item][0]}}" class="si-img"></image>
         <view class="si-title">{{activityList[item].activity_name}}</view>

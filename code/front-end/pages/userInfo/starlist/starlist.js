@@ -15,6 +15,12 @@ Page({
       url: '/pages/club/frontpage/frontpage?club_id=' + this.data.idList[this.data.tabCur][index],
     })
   },
+  tapActivity: function(e){
+    let index = e.currentTarget.dataset.index
+    wx.navigateTo({
+      url: '/pages/activity/activity_detail/activity_detail?activity_id=' + this.data.idList[this.data.tabCur][index],
+    })
+  },
   tabSelect: function(e){
     this.setData({
       tabCur: e.currentTarget.dataset.cur
