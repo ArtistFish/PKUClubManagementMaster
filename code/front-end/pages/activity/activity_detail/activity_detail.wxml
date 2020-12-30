@@ -65,7 +65,8 @@
   </view>
 
     <view class=" cu-bar btn-group bg-white foot">
-      <button class="cu-btn  bg-yellow  round  "  bindtap="sign_up"   wx:if="{{!sign_up_click}}">立即报名</button>
+      <button class="cu-btn  bg-grey  round  "  wx:if="{{due}}">已结束</button>
+      <button class="cu-btn  bg-yellow  round  "  bindtap="sign_up"   wx:elif="{{!sign_up_click}}">立即报名</button>
       <button class="cu-btn  bg-grey  round  "  wx:else>已报名</button>
       <button class="cu-btn  bg-blue  round  "  bindtap="click_collect"  wx:if="{{!isClick}}">收藏</button>
       <button class="cu-btn  bg-grey  round  "  bindtap="click_cancel"  wx:else>已收藏</button>

@@ -8,7 +8,7 @@ Component({
     tabCur: 'all',
     loaded: false,
     activityList: [],
-    activityIds: [],
+    activityIds: []
   },
   options:{
     addGlobalClass: true

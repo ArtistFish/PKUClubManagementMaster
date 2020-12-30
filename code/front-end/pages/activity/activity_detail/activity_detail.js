@@ -26,13 +26,13 @@ Page({
       sponsor:"北京大学滑雪社",
       undertaker:"滑雪场"
     },
-    URL: 'https://81.70.150.127/gp10/',
+    URL: 'https://thunderclub.xyz/gp10/',
     valid:undefined,
+    due:false,
     sign_up_click:false,
     isClick:false,
     top_src:undefined,
     activity_List: undefined
-
   },
 
   /**
@@ -40,8 +40,12 @@ Page({
    */
   onLoad: function (options) {
     let _this=this;
-    _this.setData({activity_id:options.activity_id}),
-    console.log(_this.data.activity_id),
+    let cur_time = new Date().getTime();
+    let end_time;
+    _this.setData({
+      activity_id:options.activity_id,
+    }),
+   
     wx.request({
       url: app.globalData.SERVER_URL+'/getActivityInfo', 
       header: {
@@ -55,6 +59,7 @@ Page({
         res.data.activity_sign_up_ddl=new Date(res.data.activity_sign_up_ddl).toLocaleDateString(),
         res.data.activity_start_time=new Date(res.data.activity_start_time).toLocaleDateString(),
         res.data.activity_end_time=new Date(res.data.activity_end_time).toLocaleDateString(),
+        end_time = new Date(res.data.activity_end_time).getTime(),
         _this.setData({
           "activity.fee":res.data.activity_fee,
           "activity.id": res.data.activity_id, 
@@ -66,8 +71,11 @@ Page({
           "activity.sponsor":res.data.activity_sponsor,
           "activity.undertaker":res.data.activity_undertaker
         })
+        if(end_time<cur_time)
+          _this.setData({due:true})
         app.getActivityCollectors(res.data.activity_id,res=>{
           console.log(res.data.activity_collector_list)
+          
           if(res.data.status == '200 OK'){
             let temp=0
             for(let i of res.data.activity_collector_list){
@@ -107,7 +115,9 @@ Page({
           } 
         })
       }
+      
     })
+    
   },
 
   /**
@@ -175,6 +185,9 @@ Page({
       }
     })
   },
+   /**
+   * 取消收藏
+   */
   click_cancel: function(){
     let that = this
     app.deleteCollectorFromActivity(app.globalData.openid,that.data.activity_id,res=>{
@@ -187,7 +200,9 @@ Page({
       }
     })
   },
-
+ /**
+   * 报名活动
+   */
   sign_up: function(){
     let that = this
     app.registerUserToActivity(app.globalData.openid,that.data.activity_id,res=>{
