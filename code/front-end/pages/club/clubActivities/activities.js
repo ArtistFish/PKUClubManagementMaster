@@ -29,7 +29,7 @@ Component({
       }).then(activity_list => {
         let activityIds = []
         for(let activity of activity_list){
-          activityIds.push(activity[0])
+          activityIds.push(activity[1])
         }
         _this.setData({
           activityIds: activityIds,
