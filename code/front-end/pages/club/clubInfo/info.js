@@ -126,6 +126,30 @@ Component({
       Api.join_club(club_id, () => {
         this.triggerEvent('refresh', {tab: 0, club_id: club_id})
       })
+    },
+    collectClub() {
+      let club_id = app.globalData.current_club.club_id
+      wx.showLoading({
+      })
+      app.addCollectorToClub(app.globalData.openid, club_id, res => {
+        wx.hideLoading({
+        })
+        if (res.data.status != '200 OK')
+        {
+          wx.showToast({
+            title: '该社团已收藏！',
+            image: '/images/fail.png',
+            duration: 800
+          })
+        }
+        else
+        {
+          wx.showToast({
+            title: '收藏成功！',
+            duration: 800
+          })
+        }
+      })
     }
   }
 })
