@@ -49,7 +49,6 @@ Component({
         }
         for(let id of _this.data.activityIds){
           app.getActivityInfo(id, res => {
-            cnt1 += 1
             let start_time = res.data.activity_start_time
             let end_time = res.data.activity_end_time
             let sign_up_ddl = res.data.activity_sign_up_ddl
@@ -57,23 +56,25 @@ Component({
             res.data.activity_end_time = new Date(end_time).toLocaleDateString()
             res.data.activity_sign_up_ddl = new Date(sign_up_ddl).toLocaleDateString()
             activityList[id] = res.data
+            cnt1 += 1
             if(cnt1 == length && cnt2 == length){
               // console.log(activityList)
               _this.setData({
                 activityList: activityList,
-                loaded: true,
+                pictureList: pictureList,
+                data_loaded: true,
                 recommendIds: _this.data.activityIds.slice(0, 6),
               })
             }
           })
           app.getActivityPictures(id, res => {
             if(res.data.status == '200 OK'){
-              cnt2 += 1
               let pic_li = []
               for(let path of res.data.activity_pictures_list){
                 pic_li.push(app.globalData.SERVER_ROOT_URL + path[1])
               }
               pictureList[id] = pic_li
+              cnt2 += 1
               if(cnt1 == length && cnt2 == length){
                 _this.setData({
                   activityList: activityList,

@@ -160,6 +160,37 @@ App({
       }
     })
   },
+  addOthersToClub: function(club_id, wx_id, callback){
+    wx.request({
+      url: this.globalData.SERVER_URL + '/addMemberToClub',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      data: {
+        club_id: club_id,
+        wx_id: wx_id,
+      },
+      method: 'POST',
+      success: res => {
+        if(res.data.status != '200 OK'){
+          wx.showToast({
+            title: '获取信息失败',
+            image: '/images/fail.png',
+          })
+          console.log('addMemberToClub fail', res)
+        }
+        callback(res)
+      },
+      fail: res =>{
+        wx.showToast({
+          title: '获取信息失败',
+          image: '/images/fail.png',
+        })
+        console.log('addMemberToClub api fail', res)
+        callback(res)
+      }
+    })
+  },
   addMemberToClub: function(club_id, callback){
     wx.request({
       url: this.globalData.SERVER_URL + '/addMemberToClub',
