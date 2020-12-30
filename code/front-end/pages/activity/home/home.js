@@ -79,8 +79,8 @@ Component({
                 _this.setData({
                   activityList: activityList,
                   pictureList: pictureList,
+                  data_loaded: true,
                   recommendIds: _this.data.activityIds.slice(0, 6),
-                  data_loaded: true
                 })
               }
             }

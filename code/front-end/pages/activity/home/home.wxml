@@ -24,7 +24,7 @@
       </view>
     </view>
   </view>
-  <loading wx:if="{{!loaded}}"></loading>
+  <loading wx:if="{{!(loaded && data_loaded)}}"></loading>
   <scroll-view wx:else scroll-x class="bg-white nav margin-top">
     <view class="flex text-center">
       <view class="cu-item flex-sub {{tabCur=='all'?'text-orange cur':''}}" bind:tap="tabSelect" data-list='all'>
