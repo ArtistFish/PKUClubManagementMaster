@@ -18,4 +18,4 @@
     * `code/front-end/pages/loading/*`
     * `code/front-end/app.js`
     * 注：部分功能的实现与测试与张瑞峰共同完成
-        
+* hr: 胡冉
