@@ -35,10 +35,10 @@
         * `code/front-end/pages/club/clubPersonnel`
         * `code/front-end/pages/club/changeInfo`
         * `code/front-end/pages/club/clubMoments（未上线）`
-* 姚一茗 提交在main分支和yym分支
-* 徐为伯 提交在main分支
-* 谢一平 提交在main分支
-* 白宇辉 提交在main分支和picture分支
+* 姚一茗(ArtistFish) 提交在main分支和yym分支
+* 徐为伯(WebboHsu) 提交在main分支
+* 谢一平(eVen-p) 提交在main分支
+* 白宇辉(Bai-1998) 提交在main分支和picture分支
 
 
 #### 项目简介：
