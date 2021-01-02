@@ -19,3 +19,16 @@
     * `code/front-end/app.js`
     * 注：部分功能的实现与测试与张瑞峰共同完成
 * hr: 胡冉
+* zrf && main：张瑞峰(invimirage)，主要提交在main分支
+    + 负责与社团相关的页面，包括：
+	    * 社团主页
+        * 社团人员管理页
+        * 社团信息修改页面
+        * 社团动态页（最终未上线）
+        * 其他页面中与社团相关的部分，如加入、退出社团按钮等
+    + 主要代码路径（参与修改了其他部分）：
+        * `code/front-end/pages/club/frontpage`
+        * `code/front-end/pages/club/clubInfo`
+        * `code/front-end/pages/club/clubPersonnel`
+        * `code/front-end/pages/club/changeInfo`
+        * `code/front-end/pages/club/clubMoments（未上线）`
