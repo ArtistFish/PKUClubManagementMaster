@@ -1,5 +1,8 @@
 # ThunderClub
 
+#### Github地址
+ https://github.com/ArtistFish/PKUClubManagementMaster/
+
 欢迎使用社团管理平台小程序! \
 我们是来自北京大学2020-2021秋季学期软件工程课程实践的第十小组～ \
 我们小组一共有8人，其中叶其琛、张瑞峰、胡冉、牟星名负责前端开发，徐为伯、谢一平、白宇辉、姚一茗负责后端开发。\
